@@ -1,21 +1,28 @@
-import React, {Component} from 'react';
-import {Route} from 'react-router-dom';
-import Login from './Login/Login';
+import React, { Component } from 'react';
+import landingPageHeader from './LandingPage/landingPageHeader';
+import landingPageDescription from './LandingPage/landingPageDescription';
+import NavBar from './LandingPage/Navbar';
 import Home from './Home/Home';
-import Delete from './Delete/Delete';
-import Create from './Create/Create';
-import Navbar from './LandingPage/Navbar';
+import Login from './Login/Login';
+import Register from './Login/Register'
+import { Route } from 'react-router-dom';
 //Create a Main Component
 class Main extends Component {
-    render(){
-        return(
-            <div>
-                {/*Render Different Component based on Route*/}
-                <Route path="/" component={Navbar}/>
-                <Route path="/login" component={Login}/>
-                <Route path="/home" component={Home}/>
-                <Route path="/delete" component={Delete}/>
-                <Route path="/create" component={Create}/>
+    render() {
+        return (
+            <div className="homepage">
+            <div id="site-content">
+                <Route path="/" component={NavBar} />
+                <Route
+                    path="/register"
+                    render={props => <Register {...props} />}
+                />
+                <Route
+                    path="/login"
+                    render={props => <Login {...props} />}
+                />
+                <Route path="/home" component={Home} />
+            </div>
             </div>
         )
     }

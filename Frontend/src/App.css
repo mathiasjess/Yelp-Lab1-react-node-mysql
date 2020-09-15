@@ -48,3 +48,46 @@
 }
 .back { text-align: left; margin-top:10px;}
 .back a {color: #444444; font-size: 13px;text-decoration: none;}
+
+.navbar-inverse {
+  background-color: #d32323;
+  /* background-image:url(./images/yelp_logo.jpg); */
+  /* min-height: 600px;
+
+  /* Center and scale the image nicely */
+  /* background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; */
+  
+  /* Needed to position the navbar */
+  /* position: relative; */
+  }
+
+  .landingPageSearchContainer{
+    background-image:url(./images/yelp_logo.jpg);
+  min-height: 600px;
+
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover; 
+  position: relative;
+}
+.landingPageSearch{
+
+  position: absolute;
+  left: 50%;
+  bottom: 60%;
+  transform: translatex(-50%);
+  }
+.regColumn{
+  margin: auto;
+  float:left;
+  width: 50%;
+  padding: 10px;
+}
+.regRow:after{
+  content: "";
+  display: table;
+  clear: both;
+}

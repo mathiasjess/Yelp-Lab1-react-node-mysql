@@ -1,14 +1,8 @@
-import React, { Component } from 'react';
-import '../../App.css';
-import MainContent from '../LandingPage/MainContent'
-import Main from '../Main';
+import React, {Component} from 'react';
 
-class Home extends React.Component {
+class landingPageDescription extends React.Component {
     constructor() {
-        super();
-        this.state = {
-            books: []
-        }
+        super()
     }
     render() {
         return (
@@ -24,6 +18,8 @@ class Home extends React.Component {
 
         )
     }
+
 }
-//export Home Component
-export default Home;
+
+export default landingPageDescription;
+
