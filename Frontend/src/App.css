@@ -1,14 +1,28 @@
 
 .form-heading { color:#fff; font-size:23px;}
-.panel h2{ color:#444444; font-size:18px; margin:0 0 8px 0;}
+.panel h2{ text-align: center; color:#444444; font-size:18px; margin:0 0 8px 0;}
 .panel p { color:#777777; font-size:14px; margin-bottom:30px; line-height:24px;}
-.login-form .form-control {
+.authHeader{
+  display: flex;
+  justify-content:center;
+}
+.authlinks{
+  display: flex;
+  justify-content:space-around;
+}
+.yelpLogo{
+  top: inherit;
+  height: 50px;
+}
+.form-control {
   background: #f7f7f7 none repeat scroll 0 0;
   border: 1px solid #d4d4d4;
   border-radius: 4px;
   font-size: 14px;
   height: 50px;
   line-height: 50px;
+  width: 50%;
+  align-content: center;
 }
 .main-div {
   background: #ffffff none repeat scroll 0 0;
@@ -48,19 +62,11 @@
 }
 .back { text-align: left; margin-top:10px;}
 .back a {color: #444444; font-size: 13px;text-decoration: none;}
-
+.navbar-brand{
+  padding: 0px;
+}
 .navbar-inverse {
   background-color: #d32323;
-  /* background-image:url(./images/yelp_logo.jpg); */
-  /* min-height: 600px;
-
-  /* Center and scale the image nicely */
-  /* background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover; */
-  
-  /* Needed to position the navbar */
-  /* position: relative; */
   }
 
   .landingPageSearchContainer{

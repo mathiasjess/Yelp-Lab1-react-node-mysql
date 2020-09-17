@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import Home from '../Home/Home';
 import '../../App.css';
 import cookie from 'react-cookies';
+import yelp_logo from '../../images/yelp_icon.png'
 import {
     BrowserRouter as Router, Route,
     Redirect, Switch
@@ -59,7 +60,7 @@ class Navbar extends Component {
                 <nav class="navbar navbar-inverse">
                     <div class="container-fluid">
                         <div class="navbar-header">
-                            <a class="navbar-brand"><Link to="/home">Yelp</Link></a>
+                            <a class="navbar-brand"><Link to="/home"><img class="yelpLogo" src={yelp_logo} /></Link></a>
                         </div>
                         <ul class="nav navbar-nav">
                             <li><Link to="/review">Write a Review</Link></li>
