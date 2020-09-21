@@ -6,10 +6,7 @@ import Main from '../Main';
 class Home extends React.Component {
     constructor() {
         super();
-        this.state = {
-            books: []
         }
-    }
     render() {
         return (
             <div class="landingPageSearchContainer">

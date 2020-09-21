@@ -44,12 +44,12 @@ class Main extends Component {
                         render={props => <RestaurantLogin {...props} />}
                     />
                     <Route
-                    path="/customerhomepage"
-                    render={props => <CustomerHomePage {...props} />}
+                        path="/customerhomepage"
+                        render={props => <CustomerHomePage {...props} />}
                     />
                     <Route
-                    path="/restauranthomepage"
-                    render={props => <RestaurantHomePage  {...props} />}
+                        path="/restauranthomepage/:id" exact
+                        render={props => <RestaurantHomePage  {...props} />}
                     />
                     <Route path="/home" component={Home} />
                 </div>

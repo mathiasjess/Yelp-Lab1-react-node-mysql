@@ -1,4 +1,6 @@
 import React from 'react'
+import cookie from 'react-cookies';
+import Cookies from 'js-cookie';
 import axios from 'axios';
 
 class RestaurantLogin extends React.Component {
@@ -19,6 +21,7 @@ class RestaurantLogin extends React.Component {
     }
 
     submitLogin(event){
+        let responseObj = {}
         event.preventDefault();
         const restaurantLoginData = {
             email : this.state.email,
@@ -29,18 +32,18 @@ class RestaurantLogin extends React.Component {
         //make a post request with the user data
         axios.post('http://localhost:3001/restaurant/restaurantlogin',restaurantLoginData)
         .then(response => {
-            console.log("Status Code : ",response.status);
-            if(response.status === 200){
-                console.log("Login successful")
-                this.props.history.replace('/restauranthomepage');
+            if(response.data.message === "success"){
+                console.log("The data got is", response.data)
+                Cookies.set('id',response.data.data.restaurantId)
+                Cookies.set('role','restaurant')
+                console.log(Cookies())
+                
+                this.props.history.replace(`/restauranthomepage/${response.data.data.restaurantId}`);
+            }
+            else if (response.data.message === "error"){
+                alert("Invalid credentials")
             }
         })
-        .catch(()=>{
-            console.log("Invalid Credentials")
-        }
-            // console.log(error.response.data.msg)
-            // alert(error.response.data.msg)
-            )
     }
     render() {
         return (
