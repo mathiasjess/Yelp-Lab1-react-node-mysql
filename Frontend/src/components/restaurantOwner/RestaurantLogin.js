@@ -1,11 +1,12 @@
 import React from 'react'
-import cookie from 'react-cookies';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import {connect} from 'react-redux';
+import {restaurantLogin} from '../../actions/restaurantAction'
 
 class RestaurantLogin extends React.Component {
-    constructor() {
-        super()
+    constructor(props) {
+        super(props)
         this.state = {
             email:'',
             password:''
@@ -23,20 +24,21 @@ class RestaurantLogin extends React.Component {
     submitLogin(event){
         let responseObj = {}
         event.preventDefault();
-        const restaurantLoginData = {
+        const data = {
             email : this.state.email,
             password : this.state.password
         }
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.post('http://localhost:3001/restaurant/restaurantlogin',restaurantLoginData)
+        axios.post('http://localhost:3001/restaurant/restaurantlogin',data)
         .then(response => {
             if(response.data.message === "success"){
-                console.log("The data got is", response.data)
+                console.log("The data got is", response.data.data)
                 Cookies.set('id',response.data.data.restaurantId)
                 Cookies.set('role','restaurant')
-                console.log(Cookies())
+                // console.log('Getting Cookie ID', Cookies.get('id'))
+                this.props.restaurantLogin(response.data.data);
                 
                 this.props.history.replace(`/restauranthomepage/${response.data.data.restaurantId}`);
             }
@@ -45,6 +47,16 @@ class RestaurantLogin extends React.Component {
             }
         })
     }
+    // componentDidMount(){
+        // if(Cookies.get('id')){
+        //     if (Cookies.get('role') == 'restaurant'){
+        //         this.props.history.replace(`/restauranthomepage/${Cookies.get('id')}`);
+        //     }
+        // }
+        // else{
+        //     this.props.history.push(`/login/restaurantlogin`);
+        // }
+    // }
     render() {
         return (
             <form>
@@ -64,4 +76,11 @@ class RestaurantLogin extends React.Component {
 
 }
 
-export default RestaurantLogin;
+function mapDispatchToProps(dispatch){
+    console.log("Dispatch",dispatch);
+    return {
+        restaurantLogin : (data) => dispatch(restaurantLogin(data))
+    }
+}
+export default connect(null,mapDispatchToProps)(RestaurantLogin);
+// export default RestaurantLogin; 

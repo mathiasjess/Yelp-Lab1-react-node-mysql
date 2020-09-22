@@ -51,12 +51,12 @@ class Navbar extends Component {
             )
         }
         let redirectVar = null;
-        if (cookie.load('cookie')) {
-            redirectVar = <Redirect to="/home" />
-        }
+        // if (cookie.load('cookie')) {
+        //     redirectVar = <Redirect to="/home" />
+        // }
         return (
             <div>
-                {redirectVar}
+                {/* {redirectVar}*/}
                 <nav class="navbar navbar-inverse">
                     <div class="container-fluid">
                         <div class="navbar-header">

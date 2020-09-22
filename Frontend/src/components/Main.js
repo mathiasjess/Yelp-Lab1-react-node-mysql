@@ -11,6 +11,9 @@ import CustomerLogin from './customer/CustomerLogin'
 import RestaurantLogin from './restaurantOwner/RestaurantLogin'
 import CustomerHomePage from './customer/CustomerHomePage'
 import RestaurantHomePage from './restaurantOwner/RestaurantHomePage'
+import UpdateRestaurantProfile from './restaurantOwner/UpdateRestaurantProfile'
+import UpdateRestaurantMenu from './restaurantOwner/UpdateRestaurantMenu'
+import ViewCustomerReviews from './restaurantOwner/ViewCustomerReviews'
 import { Route } from 'react-router-dom';
 //Create a Main Component
 class Main extends Component {
@@ -51,7 +54,19 @@ class Main extends Component {
                         path="/restauranthomepage/:id" exact
                         render={props => <RestaurantHomePage  {...props} />}
                     />
-                    <Route path="/home" component={Home} />
+                    <Route
+                    path="/updaterestaurantprofile" exact
+                    render={props => <UpdateRestaurantProfile  {...props} />}
+                    />
+                    <Route
+                    path="/updaterestaurantMenu" exact
+                    render={props => <UpdateRestaurantMenu  {...props} />}
+                    />
+                    <Route
+                    path="/viewcustomerreviews" exact
+                    render={props => <ViewCustomerReviews {...props} />}
+                    />
+                    <Route path="/home" exact component={Home} />
                 </div>
             </div>
         )
