@@ -42,3 +42,33 @@
     width: 150px;
     border-radius: 50%;
   }
+.restaurantName {
+    font-size: 28px;
+    line-height: 36px;
+    font-family: Poppins,Helvetica Neue,Helvetica,Arial,sans-serif;
+    font-weight: 900;
+    word-wrap: break-word!important;
+    word-break: break-word!important;
+    overflow-wrap: break-word!important;
+    color: #2b273c;
+}
+.restaurantdetails{
+    width: 50%;
+    display: flex;
+    justify-content: space-between;
+    line-height: 20px;
+    font-family: Open Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 20px;
+    color: #2b273c;
+}
+.restaurantdescription {
+  font-family: Open Sans,Helvetica Neue,Helvetica,Arial,sans-serif;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+}
+.card{
+  width: 18rem;
+}

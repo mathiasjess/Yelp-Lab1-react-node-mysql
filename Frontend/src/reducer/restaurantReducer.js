@@ -14,7 +14,10 @@ export const restaurantInitialState = {
     country: '',
     zipcode: '',
     restaurantImage: '',
-    timings: ''
+    timings: '',
+    curbPickup:false,
+    dineIn : false,
+    yelpDelivery : false
 }
 
 const restaurantReducer = ((state = restaurantInitialState, action)=>{

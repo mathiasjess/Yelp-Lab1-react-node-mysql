@@ -5,22 +5,56 @@ import './RestaurantHomePage.css'
 import restaurantprofileImage from '../../images/restaurantprofileImage.png'
 import RestaurantProfile from './restaurantProfile'
 import UpdateRestaurantProfile from './UpdateRestaurantProfile'
+import Orders from './Orders'
+import Menu from './Menu'
 
 class RestaurantHomePage extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            homePage : true,
-            restProfFlag : false,
+            homePageFlag: true,
+            updateProfileFlag: false,
+            addMenuFlag: false,
+            ordersFlag:false,
             profileData: ''
         }
-        this.handlerestProf = this.handlerestProf.bind(this)
+        this.handleMainProfile = this.handleMainProfile.bind(this)
+        this.handleUpdateRestaurantProfile= this.handleUpdateRestaurantProfile.bind(this)
+        this.handleAddMenu = this.handleAddMenu.bind(this)
+        this.handleOrders = this.handleOrders.bind(this)
 
     }
-    handlerestProf(){
+    handleMainProfile(){
         this.setState({
-            homePage : false,
-            restProfFlag : true
+            homePageFlag: true,
+            updateProfileFlag: false,
+            addMenuFlag:false,
+            ordersFlag:false
+        })
+
+    }
+    handleUpdateRestaurantProfile() {
+        this.setState({
+            homePageFlag: false,
+            updateProfileFlag: true,
+            addMenuFlag:false,
+            ordersFlag:false
+        })
+    }
+    handleAddMenu() {
+        this.setState({
+            homePageFlag: false,
+            updateProfileFlag: false,
+            addMenuFlag:true,
+            ordersFlag:false
+        })
+    }
+    handleOrders() {
+        this.setState({
+            homePageFlag: false,
+            updateProfileFlag: false,
+            addMenuFlag:false,
+            ordersFlag:true
         })
     }
 
@@ -45,24 +79,28 @@ class RestaurantHomePage extends React.Component {
         return (
             <div>
                 <div class="split left">
-                <div class="leftTop">
-                <h1>Hi How are you</h1>
-                </div>
+                    <div class="leftTop">
+                        <h1>Hi How are you</h1>
+                    </div>
                     <div class="centeredLeft">
 
-                    <ul class="nav flex-column">
+                        <ul class="nav flex-column">
                             <li class="nav-item">
-                                {/* <Link to='/updaterestaurantprofile' class="nav-link" >Update  Restaurant Profile</Link> */} 
-                                <span onClick = {this.handlerestProf} class="nav-link" >Update  Restaurant Profile</span>
+                                <Link to='#' class="nav-link" onClick={this.handleMainProfile}>View Profile</Link>
+                                {/* <span  class="nav-link" >Update  Restaurant Profile</span>*/}
                             </li>
                             <li class="nav-item">
-                                <Link to='/updaterestaurantMenu' class="nav-link" >Add/Edit Dishes</Link>
+                                <Link to='#' class="nav-link" onClick={this.handleUpdateRestaurantProfile} >Update  Restaurant Profile</Link>
+                                {/* <span  class="nav-link" >Update  Restaurant Profile</span>*/}
+                            </li>
+                            <li class="nav-item">
+                                <Link to = '#' class="nav-link" onClick = {this.handleAddMenu}>Add Dishes to Menu</Link>
                             </li>
                             <li class="nav-item">
                                 <Link to='/viewcustomerreviews' class="nav-link disabled" >Reviews</Link>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link disabled" href="#">Orders</a>
+                                <Link to = '#' class="nav-link disabled" onClick={this.handleOrders}>Orders</Link>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link disabled" href="#">Events</a>
@@ -73,8 +111,10 @@ class RestaurantHomePage extends React.Component {
                 </div>
 
                 <div class="split right">
-                {this.state.homePage && <RestaurantProfile />}
-                {this.state.restProfFlag  && <UpdateRestaurantProfile />}
+                    {this.state.homePageFlag && <RestaurantProfile />}
+                    {this.state.updateProfileFlag && <UpdateRestaurantProfile />}
+                    {this.state.addMenuFlag && <Menu />}
+                    {this.state.ordersFlag && <Orders />}
                 </div>
             </div>
         )

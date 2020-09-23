@@ -65,6 +65,9 @@
 .navbar-brand{
   padding: 0px;
 }
+.navbar{
+  z-index:1;
+} 
 .navbar-inverse {
   background-color: #d32323;
   }
