@@ -11,10 +11,9 @@ import CustomerLogin from './customer/CustomerLogin'
 import RestaurantLogin from './restaurantOwner/RestaurantLogin'
 import CustomerHomePage from './customer/CustomerHomePage'
 import RestaurantHomePage from './restaurantOwner/RestaurantHomePage'
-import UpdateRestaurantProfile from './restaurantOwner/UpdateRestaurantProfile'
-import UpdateRestaurantMenu from './restaurantOwner/UpdateRestaurantMenu'
-import ViewCustomerReviews from './restaurantOwner/ViewCustomerReviews'
-import { Route } from 'react-router-dom';
+import EditDish from './restaurantOwner/EditDish'
+import EditEvent from './restaurantOwner/EditEvent'
+import { Switch, Route, withRouter } from 'react-router-dom';
 //Create a Main Component
 class Main extends Component {
     render() {
@@ -51,22 +50,18 @@ class Main extends Component {
                         render={props => <CustomerHomePage {...props} />}
                     />
                     <Route
-                        path="/restauranthomepage/:id" exact
+                        path="/restauranthomepage/:id"
                         render={props => <RestaurantHomePage  {...props} />}
                     />
                     <Route
-                    path="/updaterestaurantprofile" exact
-                    render={props => <UpdateRestaurantProfile  {...props} />}
+                        path="/editdish/:id"
+                        render={props => <EditDish  {...props} />}
                     />
                     <Route
-                    path="/updaterestaurantMenu" exact
-                    render={props => <UpdateRestaurantMenu  {...props} />}
+                        path="/editevent/:id"
+                        render={props => <EditEvent  {...props} />}
                     />
-                    <Route
-                    path="/viewcustomerreviews" exact
-                    render={props => <ViewCustomerReviews {...props} />}
-                    />
-                    <Route path="/home" exact component={Home} />
+                    <Route path="/home" component={Home} />
                 </div>
             </div>
         )

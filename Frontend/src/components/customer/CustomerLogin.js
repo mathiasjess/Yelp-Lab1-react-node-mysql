@@ -28,21 +28,34 @@ class CustomerLogin extends React.Component {
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.post('http://localhost:3001/customer/customerlogin',customerLoginData)
+        axios.post('http://localhost:3001/customerlogin/customerlogin',customerLoginData)
         .then(response => {
-            console.log("Status Code : ",response.status);
-            if(response.status === 200){
-                console.log("Login successful")
-                this.props.history.replace('/customerhomepage');
+            if(response.data.message === "success"){
+                console.log("The data got is", response.data.data)
+                Cookies.set('id',response.data.data.id)
+                Cookies.set('role','customer')
+                console.log("Cookies ID", Cookies.get('id'))
+                console.log("Cookies role", Cookies.get('role'))
+                // console.log('Getting Cookie ID', Cookies.get('id'))
+                this.props.customerLogin(response.data.data);
+                
+                this.props.history.replace(`/customerhomepage/${response.data.data.id}`);
+            }
+            else if (response.data.message === "error"){
+                alert("Invalid credentials")
             }
         })
-        .catch(()=>{
-            console.log("Invalid Credentials")
-        }
-            // console.log(error.response.data.msg)
-            // alert(error.response.data.msg)
-            )
     }
+        // componentDidMount(){
+        // if(Cookies.get('id')){
+        //     if (Cookies.get('role') == 'customer'){
+        //         this.props.history.replace(`/customerhomepage/${Cookies.get('id')}`);
+        //     }
+        // }
+        // else{
+        //     this.props.history.push(`/login/customerlogin`);
+        // }
+    // }
     render() {
         return (
             <form>

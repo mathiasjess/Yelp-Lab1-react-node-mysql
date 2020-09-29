@@ -1,6 +1,8 @@
 import React from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import {connect} from 'react-redux';
+import {registerRestaurant} from '../../actions/restaurantAction'
 
 class restaurantRegister extends React.Component {
     constructor() {
@@ -38,6 +40,7 @@ class restaurantRegister extends React.Component {
         console.log("Status Code : ",response.status);
         if(response.status === 200){
             alert("Restaurant Registration successful")
+            this.props.registerRestaurant(restaurantRegistrationData);
             this.props.history.replace('/login/restaurantlogin');
         }
     })
@@ -71,4 +74,11 @@ class restaurantRegister extends React.Component {
 
 }
 
-export default restaurantRegister;
+function mapDispatchToProps(dispatch){
+    console.log("Dispatch",dispatch);
+    return {
+        registerRestaurant : (data) => dispatch(registerRestaurant(data))
+    }
+}
+
+export default connect(null, mapDispatchToProps)(restaurantRegister) ;

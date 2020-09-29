@@ -20,6 +20,14 @@ class RestaurantLogin extends React.Component {
             [event.target.name]:event.target.value
         })
     }
+    componentDidMount(){
+        if(!Cookies.get('id')){
+            this.props.history.replace('/login/restaurantlogin');
+        }
+        else if (!Cookies.get('role') === 'restaurant'){
+            this.props.history.replace(`/restauranthomepage/${Cookies.get('id')}`);
+        }
+    }
 
     submitLogin(event){
         let responseObj = {}
@@ -37,6 +45,8 @@ class RestaurantLogin extends React.Component {
                 console.log("The data got is", response.data.data)
                 Cookies.set('id',response.data.data.restaurantId)
                 Cookies.set('role','restaurant')
+                console.log("Cookies ID", Cookies.get('id'))
+                console.log("Cookies role", Cookies.get('role'))
                 // console.log('Getting Cookie ID', Cookies.get('id'))
                 this.props.restaurantLogin(response.data.data);
                 
@@ -67,7 +77,7 @@ class RestaurantLogin extends React.Component {
                     <div class="form-group">
                         <input onChange={this.ChangeHandler} type="password" class="form-control" name="password" placeholder="Password" />
                     </div>
-                    <button onClick={this.submitLogin} class="btn btn-danger">Restaaurant Log In</button>
+                    <button onClick={this.submitLogin} class="btn btn-danger">Restaurant Log In</button>
                 </div>
 
             </form>

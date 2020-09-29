@@ -30,7 +30,7 @@ class customerRegister extends React.Component {
         //set the with credentials to true
         axios.defaults.withCredentials = true;
         //make a post request with the user data
-        axios.post('http://localhost:3001/customer/customerregister',customerRegistrationData)
+        axios.post('http://localhost:3001/customerlogin/customerregister',customerRegistrationData)
         .then(response => {
             console.log("Status Code : ",response.status);
             if(response.status === 200){

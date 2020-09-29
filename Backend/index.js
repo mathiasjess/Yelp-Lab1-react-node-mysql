@@ -5,14 +5,19 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var cookieParser = require('cookie-parser');
 var cors = require('cors');
-app.set('view engine', 'ejs');
+var path = require('path')
+app.set('view engine', 'ejs')
+;
 
 
-var createTables = require('./app_server/routes/createTables')
-var customer = require('./app_server/routes/customer')
-var restaurant = require('./app_server/routes/restaurant')
+var customerlogin = require('./routes/customer/customerlogin')
 
-var db = require('./app_server/models/index')
+
+
+
+var restaurant = require('./routes/restaurant')
+var restaurantevents = require('./routes/restaurant/restaurantevents')
+
 
 //use cors to allow cross origin resource sharing
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
@@ -25,13 +30,14 @@ app.use(session({
     duration: 60 * 60 * 1000,    // Overall duration of Session : 30 minutes : 1800 seconds
     activeDuration: 5 * 60 * 1000
 }));
+app.use(express.static(path.join(__dirname + 'public')));
+// app.use(express.static(path.join(__dirname + 'public')));
 
 // app.use(bodyParser.urlencoded({
 //     extended: true
 //   }));
 app.use(bodyParser.json());
 
-// const createTables = require('./app_server/models/init')
 
 //Allow Access Control
 app.use(function (req, res, next) {
@@ -42,17 +48,17 @@ app.use(function (req, res, next) {
     res.setHeader('Cache-Control', 'no-cache');
     next();
 });
-
-app.use('/',createTables)
-// console.log(createTables)
+app.use(express.static(__dirname + '/public'));
 
 
 //Route to handle Post Request Call for customer
-app.use('/customer',customer)
+app.use('/customerlogin',customerlogin)
 
 //Route to handle Post Request Call for restaurant
-app.use('/restaurant',restaurant)   
+app.use('/restaurant',restaurant)  
 
+//Routes to handle Calls for restaurant event actions
+app.use('/restaurantevents',restaurantevents)
 
 //start your server on port 3001
 app.listen(3001);

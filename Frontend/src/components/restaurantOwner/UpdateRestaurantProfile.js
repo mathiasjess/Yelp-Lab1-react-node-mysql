@@ -2,19 +2,95 @@ import React from 'react';
 import './RestaurantHomePage.css';
 import './UpdateRestaurantProfile.css';
 import Cookies from 'js-cookie';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import axios from 'axios';
+import { connect } from 'react-redux';
+import {restaurantProfileUpdate} from '../../actions/restaurantAction'
 import restaurantprofileImage from '../../images/restaurantprofileImage.png'
+
 
 class UpdateRestaurantProfile extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {
+            restaurantName: this.props.user.restaurantName,
+            email: this.props.user.email,
+            description: this.props.user.description,
+            contact: this.props.user.contact,
+            location: this.props.user.location,
+            city: this.props.user.city,
+            state: this.props.user.state,
+            country: this.props.user.country,
+            zipcode: this.props.user.zipcode,
+            restaurantImage: this.props.user.restaurantImage,
+            timings: this.props.user.timings,
+            curbPickup: this.props.user.curbPickup,
+            dineIn: this.props.user.dineIn,
+            yelpDelivery: this.props.user.yelpDelivery
+        }
 
-        this.handleUpdate = this.handleUpdate.bind(this)
+        this.handleRestaurantInfoUpdate = this.handleRestaurantInfoUpdate.bind(this)
+        this.updateRestaurantProfile = this.updateRestaurantProfile.bind(this)
     }
-    handleUpdate() {
-        this.props.history.replace(`/restauranthomepage/${Cookies.get('id')}`);
+    // componentDidMount(){
+    //     this.setState({
+    //         restaurantName: this.props.user.restaurantName,
+    //         email: this.props.user.email,
+    //         description: this.props.user.description,
+    //         contact: this.props.user.contact,
+    //         location: this.props.user.location,
+    //         city: this.props.user.city,
+    //         state: this.props.user.state,
+    //         country: this.props.user.country,
+    //         zipcode: this.props.user.zipcode,
+    //         restaurantImage: this.props.user.restaurantImage,
+    //         timings: this.props.user.timings,
+    //         curbPickup: this.props.user.curbPickup,
+    //         dineIn: this.props.user.dineIn,
+    //         yelpDelivery: this.props.user.yelpDelivery
+    //     })
+    // }
+    handleRestaurantInfoUpdate(event) {
+        event.preventDefault();
+        event.target.type === "checkbox"? 
+        this.setState({[event.target.name] : event.target.checked}) : 
+        this.setState({[event.target.name]: event.target.value})
+        console.log(event.target.value)
+
     }
-    componentDidMount() {
+    updateRestaurantProfile(event){
+        event.preventDefault();
+        const data = {
+            restaurantName: this.state.restaurantName,
+            email: this.state.email,
+            description: this.state.description,
+            contact: this.state.contact,
+            location: this.state.location,
+            city: this.state.city,
+            state: this.state.state,
+            country: this.state.country,
+            zipcode: this.state.zipcode,
+            restaurantImage: this.state.restaurantImage,
+            timings: this.state.timings,
+            curbPickup: this.state.curbPickup,
+            dineIn: this.state.dineIn,
+            yelpDelivery: this.state.yelpDelivery,
+        }
+        axios.post(`http://localhost:3001/restaurant/restaurantprofileUpdate/${this.props.user.restaurantId}`,data)
+        .then(response => {
+            if(response.data.message === "success"){
+                console.log("The data got is", response.data)
+                // console.log('Getting Cookie ID', Cookies.get('id'))
+                this.props.restaurantProfileUpdate(data);
+                
+                this.props.history.push(`/restauranthomepage/${this.props.user.restaurantId}`);
+                alert('Saved Changes to Profile')
+            }
+            else if (response.data.message === "error"){
+                alert("Something Went wrong. Could not update")
+                this.props.history.push(`/restauranthomepage/${this.props.user.restaurantId}`);
+            }
+        })
 
     }
     render() {
@@ -26,53 +102,57 @@ class UpdateRestaurantProfile extends React.Component {
                         <div class="biz-info-row">
                             <ul>
                                 <li class="BusinessName"><label class="u-nowrap">Restaurant Profile Image</label></li>
-                                <li><input type="file" class="inputFields" /></li>
+                                <li><input type="file" 
+                                    name="restaurantImage" 
+                                    onChange={this.handleRestaurantInfoUpdate} 
+                                    class="inputFields" /></li>
                                 <li class="BusinessName"><label class="u-nowrap">Restaurant Name</label></li>
                                 <li><input type="text" class="inputFields"
-                                    value="Jess's takeout"
                                     onChange={this.handleRestaurantInfoUpdate}
                                     name="restaurantName"
-                                    placeholder="Restaurant Name" /></li>
+                                    placeholder={this.props.user.restaurantName} /></li>
+                                <li class="BusinessName"><label class="u-nowrap">Email</label></li>
+                                <li><input type="email" class="inputFields"
+                                    onChange={this.handleRestaurantInfoUpdate}
+                                    name="email"
+                                    placeholder={this.props.user.email} /></li>
                                 <li class="BusinessName"><label class="u-nowrap">Location</label></li>
                                 <li><input type="text" class="inputFields"
-                                    value="Jess's takeout"
                                     onChange={this.handleRestaurantInfoUpdate}
-                                    name="restaurantName"
-                                    placeholder="Restaurant Name" /></li>
+                                    name="location"
+                                    placeholder={this.props.user.location} /></li>
                                 <li class="BusinessName"><label class="u-nowrap">City</label></li>
                                 <li><input type="text" class="inputFields"
-                                    value="Jess's takeout"
                                     onChange={this.handleRestaurantInfoUpdate}
-                                    name="restaurantName"
-                                    placeholder="Restaurant Name" /></li>
+                                    name="city"
+                                    placeholder={this.props.user.city} /></li>
                                 <li class="BusinessName"><label class="u-nowrap">State</label></li>
                                 <li><input type="text" class="inputFields"
-                                    value="Jess's takeout"
                                     onChange={this.handleRestaurantInfoUpdate}
-                                    name="restaurantName"
-                                    placeholder="Restaurant Name" /></li>
+                                    name="state"
+                                    placeholder={this.props.user.state} /></li>
                                 <li class="BusinessName"><label class="u-nowrap">Zip Code</label></li>
                                 <li><input type="text" class="inputFields"
-                                    value="Jess's takeout"
                                     onChange={this.handleRestaurantInfoUpdate}
-                                    name="restaurantName"
-                                    placeholder="Restaurant Name" /></li>
+                                    name="zipcode"
+                                    placeholder={this.props.user.zipcode} /></li>
                                 <li class="BusinessName"><label class="u-nowrap">Description</label></li>
-                                <li><textarea class="inputFields" id="w3review" name="w3review" rows="4" cols="50">
-                                    At w3schools.com you will learn how to make a website. They offer free tutorials in all web development technologies.
-                                            </textarea></li>
+                                <li><textarea class="inputFields"
+                                    name="description"
+                                    rows="4" cols="50"
+                                    placeholder = {this.props.user.description}
+                                    onChange = {this.handleRestaurantInfoUpdate}>
+                                </textarea></li>
                                 <li class="BusinessName"><label class="u-nowrap">Contact Information</label></li>
                                 <li><input type="text" class="inputFields"
-                                    value="Jess's takeout"
                                     onChange={this.handleRestaurantInfoUpdate}
-                                    name="restaurantName"
-                                    placeholder="Restaurant Name" /></li>
+                                    name="contact"
+                                    placeholder={this.props.user.contact} /></li>
                                 <li class="BusinessName"><label class="u-nowrap">Timings</label></li>
                                 <li><input type="text" class="inputFields"
-                                    value="Jess's takeout"
                                     onChange={this.handleRestaurantInfoUpdate}
-                                    name="restaurantName"
-                                    placeholder="Restaurant Name" /></li>
+                                    name="timings"
+                                    placeholder={this.props.user.timings} /></li>
                             </ul>
                         </div>
                     </div>
@@ -80,47 +160,32 @@ class UpdateRestaurantProfile extends React.Component {
                         <h2 class="page-title">Amenities and more</h2>
                         <div class="biz-info-row">
                             <ul>
-                                <li class="BusinessName"><label class="u-nowrap">Curbside Pickup</label></li>
-                                <div class="arrange_unit">
-                                    <div>
-                                        <input type="radio" id="male" name="gender" value="male" />
-                                        <label class="u-nowrap" for="male">Yes</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" id="female" name="gender" value="female" />
-                                        <label class="u-nowrap" for="female">No</label>
-                                    </div>
-                                </div>
-                                <li class="BusinessName"><label class="u-nowrap">Dine In</label></li>
-                                <div class="arrange_unit">
-                                    <div>
-                                        <input type="radio" id="male" name="gender" value="male" />
-                                        <label class="u-nowrap" for="male">Yes</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" id="female" name="gender" value="female" />
-                                        <label class="u-nowrap" for="female">No</label>
-                                    </div>
-                                </div>
-                                <li class="BusinessName"><label class="u-nowrap">Yelp Delivery</label></li>
-                                <div class="arrange_unit">
-                                    <div>
-                                        <input type="radio" id="male" name="gender" value="male" />
-                                        <label class="u-nowrap" for="male">Yes</label>
-                                    </div>
-                                    <div>
-                                        <input type="radio" id="female" name="gender" value="female" />
-                                        <label class="u-nowrap" for="female">No</label>
-                                    </div>
-                                </div>
+                                <li class="BusinessName"><label class="u-nowrap">
+                                    <input type="checkbox"
+                                        name="curbPickup"
+                                        checked={this.state.curbPickup}
+                                        onChange={this.handleRestaurantInfoUpdate} />
+                                        Curbside Pickup</label></li>
 
+                                <li class="BusinessName"><label class="u-nowrap">
+                                    <input type="checkbox"
+                                        name="dineIn"
+                                        checked={this.state.dineIn}
+                                        onChange={this.handleRestaurantInfoUpdate} />
+                                        Dine In</label></li>
+                                <li class="BusinessName"><label class="u-nowrap">
+                                    <input type="checkbox"
+                                        name="yelpDelivery"
+                                        checked={this.state.yelpDelivery}
+                                        onChange={this.handleRestaurantInfoUpdate} />
+                                        Yelp Delivery</label></li>
                             </ul>
                         </div>
 
                     </div>
-                    <div class = "SubmitUpdate">
-                    <button type="submit" class="ybtn ybtn--primary"><span>Save Changes</span></button>
-                    <Link to="#" >Cancel</Link>
+                    <div class="SubmitUpdate">
+                        <button type="submit" onClick = {this.updateRestaurantProfile} class="ybtn ybtn--primary"><span>Save Changes</span></button>
+                        <Link to="#" >Cancel</Link>
                     </div>
                 </form>
             </div>
@@ -129,4 +194,15 @@ class UpdateRestaurantProfile extends React.Component {
 
 }
 
-export default UpdateRestaurantProfile
+const mapStateToProps = state => ({
+    user: state.restaurantReducer
+});
+
+function mapDispatchToProps(dispatch){
+    return {
+        restaurantProfileUpdate : (data) => dispatch(restaurantProfileUpdate(data))
+    }
+}
+
+// export default connect(mapStateToProps)(UpdateRestaurantProfile);
+export default withRouter(connect(mapStateToProps,mapDispatchToProps)(UpdateRestaurantProfile));

@@ -2,8 +2,10 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Home from '../Home/Home';
 import '../../App.css';
-import cookie from 'react-cookies';
+import Cookies from 'js-cookie';
 import yelp_logo from '../../images/yelp_icon.png'
+import {connect} from 'react-redux';
+import {restaurantProfileLogout} from '../../actions/restaurantAction'
 import {
     BrowserRouter as Router, Route,
     Redirect, Switch
@@ -22,7 +24,27 @@ class Navbar extends Component {
     }
     //handle logout to destroy the cookie
     handleLogout = () => {
-        cookie.remove('cookie', { path: '/' })
+        Cookies.remove('id');
+        Cookies.remove('role');
+        const data = {
+        restaurantId: '',
+        restaurantName: '',
+        email: '',
+        password: '',
+        description: '',
+        contact: '',
+        location: '',
+        city: '',
+        state: '',
+        country: '',
+        zipcode: '',
+        restaurantImage: '',
+        timings: '',
+        curbPickup: false,
+        dineIn: false,
+        yelpDelivery: false
+    }
+        this.props.restaurantProfileLogout(data)
     }
     handleHome() {
         this.setState({
@@ -32,14 +54,14 @@ class Navbar extends Component {
     render() {
         //if Cookie is set render Logout Button
         let navLogin = null;
-        if (cookie.load('cookie')) {
+        if (Cookies.get('id')) {
             console.log("Able to read cookie");
             navLogin = (
                 <ul class="nav navbar-nav navbar-right">
-                    <li><Link to="/" onClick={this.handleLogout}><span class="glyphicon glyphicon-user"></span>Logout</Link></li>
+                    <li><Link to="/home" onClick={this.handleLogout}><span class="glyphicon glyphicon-user"></span>Logout</Link></li>
                 </ul>
             );
-        } else {
+        } else {    
             //Else display login button
             console.log("Not Able to read cookie");
             navLogin = (
@@ -75,4 +97,10 @@ class Navbar extends Component {
         )
     }
 }
-export default Navbar;
+
+function mapDispatchToProps(dispatch){
+    return {
+        restaurantProfileLogout : (data) => dispatch(restaurantProfileLogout(data))
+    }
+}
+export default connect(null,mapDispatchToProps)( Navbar);
