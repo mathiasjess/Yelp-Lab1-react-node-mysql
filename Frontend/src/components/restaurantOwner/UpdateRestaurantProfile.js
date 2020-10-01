@@ -31,25 +31,7 @@ class UpdateRestaurantProfile extends React.Component {
 
         this.handleRestaurantInfoUpdate = this.handleRestaurantInfoUpdate.bind(this)
         this.updateRestaurantProfile = this.updateRestaurantProfile.bind(this)
-    }
-    // componentDidMount(){
-    //     this.setState({
-    //         restaurantName: this.props.user.restaurantName,
-    //         email: this.props.user.email,
-    //         description: this.props.user.description,
-    //         contact: this.props.user.contact,
-    //         location: this.props.user.location,
-    //         city: this.props.user.city,
-    //         state: this.props.user.state,
-    //         country: this.props.user.country,
-    //         zipcode: this.props.user.zipcode,
-    //         restaurantImage: this.props.user.restaurantImage,
-    //         timings: this.props.user.timings,
-    //         curbPickup: this.props.user.curbPickup,
-    //         dineIn: this.props.user.dineIn,
-    //         yelpDelivery: this.props.user.yelpDelivery
-    //     })
-    // }
+    } 
     handleRestaurantInfoUpdate(event) {
         event.preventDefault();
         event.target.type === "checkbox"? 

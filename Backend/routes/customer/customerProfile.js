@@ -1,0 +1,40 @@
+var express = require('express');
+var router = express.Router();
+var mysqlConnection = require('../../models/index')
+
+//Router to handle post request to update Customer Profile Data
+router.put('/updatecustomerprofile', function (req, res) {
+    let returnObject = {};
+    console.log("ID", req.body.id);
+    let sql1 = "update customer set email= '" + req.body.email
+    + "', firstName= '" + req.body.firstName
+    + "', lastName= '" + req.body.lastName
+    + "', DOB= '" + req.body.DOB
+    + "', location= '" + req.body.location
+    + "', city= '" + req.body.city
+    + "', state= + '"+ req.body.state
+    + "', country= '"+ req.body.country
+    + "', nickName= '" + req.body.nickName
+    + "', phoneNumber= '" + req.body.phoneNumber
+    + "', thingsILove= '" + req.body.thingsILove
+    + "', findmeIn= '" + req.body.findmeIn
+    + "', websiteDetails= '" + req.body.websiteDetails
+    + "', favourites= '" + req.body.favourites
+    + "', headline= '" + req.body.headline
+    + "', zipcode= '" + req.body.zipcode
+    + "' where id='" + req.body.id + "'";
+
+    mysqlConnection.query(sql1, (err, result) => {
+        console.log("result", result);
+        if (err) {
+            returnObject.message = "error";
+            res.json(returnObject);
+        }
+        else {
+            returnObject.message = "success";
+            returnObject.data = result;
+            res.json(returnObject);
+        }
+    });
+});
+module.exports = router;

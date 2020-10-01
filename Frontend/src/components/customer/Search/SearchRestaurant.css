@@ -1,0 +1,92 @@
+.table{ 
+  display: table; 
+  width: 100%;
+  height: 100%;
+position: absolute; top: 7%; bottom: 0; left: 0; right: 0
+}
+.tr-top{ 
+  display: table-row; 
+  height: 7%;
+  background-color: white;
+}
+.td-top1{ 
+  display: table-cell; 
+  width: 20%;
+  vertical-align: middle;
+  text-align: center;
+}
+.td-top2{ 
+  display: table-cell; 
+  width: 60%;
+}
+.td-top3{ 
+  display: table-cell; 
+  width: 20%;
+  vertical-align: middle;
+}
+.tr-middle1{
+  display: table-row; 
+  height: 85%;
+  background-color:white;
+}
+
+.td-filter{ 
+  display: table-cell; 
+  width: 20%;
+}
+.tr-filtermode{
+  top: 0%;
+  height: 250px;
+  justify-content: left;
+}
+.tr-filterlocation{
+  height : 250px;
+}
+.tr-filterOthers{
+  height : 30%;
+}
+.td-restaurant{ 
+  display: table-cell; 
+  width: 55%;
+  align-items: center;
+}
+.td-maps{ 
+  display: table-cell; 
+  width: 25%;
+  vertical-align: middle;
+}
+.card{
+  width: 600px;
+  padding-bottom: 0.5rem;
+  margin: 0 auto; /* Added */
+  float: none; /* Added */
+  margin-bottom: 10px;
+}
+.card-img-top{
+  float:center;
+  height: 250px;
+  width: 600px;
+}
+h4{
+  line-height: 1.28571em;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  color: #333;
+  margin: 0 0 6px;
+}
+h5{
+  line-height: 1.28571em;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #333;
+}
+.u-nowrap {
+  white-space: nowrap !important;
+}
+.BusinessName{
+  margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}

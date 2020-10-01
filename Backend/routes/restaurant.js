@@ -66,7 +66,6 @@ router.post('/restaurantlogin', function (req, res) {
             console.log(result[0])
             if (!result[0]) {
                 returnObject.message = "nouser";
-                console.log('Invalid user');
                 res.json(returnObject);
             }
             resolve(result[0])
@@ -76,7 +75,6 @@ router.post('/restaurantlogin', function (req, res) {
             new Promise((resolve, reject) => {
                 bcrypt.compare(password, value.password, (err, result) => {
                     if (err) throw err;
-                    console.log("Password matched")
                     resolve([result, value]);
                 })
             })
@@ -86,7 +84,6 @@ router.post('/restaurantlogin', function (req, res) {
                         returnObject.data = value[1]
                     }
                     else {
-                        console.log("Invalid credentials")
                         returnObject.message = "error"
                     }
                     res.json(returnObject)
@@ -126,6 +123,25 @@ router.post('/restaurantprofileUpdate/:id', function (req, res) {
         }
     });
 });
+
+//Router to handle get request to fetch dishes
+router.get('/restaurantprofiledetails/:id', function(req,res) {
+    let returnObject = {};
+    console.log("Inside restaurant profile");
+    var sql5 = "select * from  restaurant where restaurantId = '" + req.params.id + "'";
+    mysqlConnection.query(sql5,(err,result)=>{
+        if(err) {
+            returnObject.message = 'error'
+        }
+        else{
+            returnObject.message = "success"
+            returnObject.data = result
+            res.json(returnObject)
+            console.log("Profile Data", returnObject)
+        }
+    })
+
+})
 
 //Router to handle post request to add dishes to Menu
 router.post('/updateMenu', upload.single('dishImage1'),function (req, res) {
@@ -189,7 +205,7 @@ router.put('/editMenu', upload.single('dishImage1'),function (req, res) {
 //Router to handle post request to fetch dishes
 router.get('/fetchMenu/:id', function(req,res) {
     let returnObject = {};
-    console.log("ID", req.params.id);
+    console.log("Inside fetch Menu");
     var sql5 = "select * from  menu where restaurantId = '" + req.params.id + "'";
     mysqlConnection.query(sql5,(err,result)=>{
         if(err) {
@@ -199,6 +215,7 @@ router.get('/fetchMenu/:id', function(req,res) {
             returnObject.message = "success"
             returnObject.data = result
             res.json(returnObject)
+            console.log("Menu Data",returnObject)
         }
     })
 
@@ -218,7 +235,6 @@ router.get('/fetchdish/:id', function(req,res) {
             returnObject.message = "success"
             returnObject.data = result
             res.json(returnObject)
-            console.log(returnObject)
         }
     })
 

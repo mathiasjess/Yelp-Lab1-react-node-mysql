@@ -30,6 +30,7 @@ router.post('/addEvent/:id', function (req, res) {
 //Router to handle get request to fetch events
 router.get('/fetchEvents/:id', function(req,res) {
     let returnObject = {};
+    console.log("Inside events")
     var sql7 = "select * from  events where restaurantId = '" + req.params.id + "'";
     mysqlConnection.query(sql7,(err,result)=>{
         if(err) {
@@ -39,6 +40,7 @@ router.get('/fetchEvents/:id', function(req,res) {
             returnObject.message = "success"
             returnObject.data = result
             res.json(returnObject)
+            console.log("Events", returnObject)
         }
     })
 

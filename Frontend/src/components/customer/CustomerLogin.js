@@ -1,5 +1,8 @@
 import React from 'react'
 import axios from 'axios';
+import Cookies from 'js-cookie';
+import {connect} from 'react-redux';
+import {customerLogin} from '../../actions/customerAction'
 
 
 class CustomerLogin extends React.Component {
@@ -75,4 +78,10 @@ class CustomerLogin extends React.Component {
 
 }
 
-export default CustomerLogin;
+function mapDispatchToProps(dispatch){
+    console.log("Dispatch",dispatch);
+    return {
+        customerLogin : (data) => dispatch(customerLogin(data))
+    }
+}
+export default connect(null,mapDispatchToProps)(CustomerLogin);

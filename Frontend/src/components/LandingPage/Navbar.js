@@ -4,8 +4,8 @@ import Home from '../Home/Home';
 import '../../App.css';
 import Cookies from 'js-cookie';
 import yelp_logo from '../../images/yelp_icon.png'
-import {connect} from 'react-redux';
-import {restaurantProfileLogout} from '../../actions/restaurantAction'
+import { connect } from 'react-redux';
+import { restaurantProfileLogout } from '../../actions/restaurantAction'
 import {
     BrowserRouter as Router, Route,
     Redirect, Switch
@@ -17,7 +17,8 @@ class Navbar extends Component {
     constructor(props) {
         super();
         this.state = {
-            displayHome: true
+            displayHome: true,
+            customeractionsFlag: false
         }
         this.handleLogout = this.handleLogout.bind(this);
         this.handleHome = this.handleHome.bind(this);
@@ -27,29 +28,40 @@ class Navbar extends Component {
         Cookies.remove('id');
         Cookies.remove('role');
         const data = {
-        restaurantId: '',
-        restaurantName: '',
-        email: '',
-        password: '',
-        description: '',
-        contact: '',
-        location: '',
-        city: '',
-        state: '',
-        country: '',
-        zipcode: '',
-        restaurantImage: '',
-        timings: '',
-        curbPickup: false,
-        dineIn: false,
-        yelpDelivery: false
-    }
+            restaurantId: '',
+            restaurantName: '',
+            email: '',
+            password: '',
+            description: '',
+            contact: '',
+            location: '',
+            city: '',
+            state: '',
+            country: '',
+            zipcode: '',
+            restaurantImage: '',
+            timings: '',
+            curbPickup: false,
+            dineIn: false,
+            yelpDelivery: false
+        }
         this.props.restaurantProfileLogout(data)
+        this.setState({
+            customeractionsFlag : false
+        })
     }
     handleHome() {
         this.setState({
             displayHome: false
         })
+    }
+    componentDidMount() {
+        if (Cookies.get('role' === "customer")) {
+            this.setState({
+                customeractionsFlag: true
+            })
+        }
+
     }
     render() {
         //if Cookie is set render Logout Button
@@ -61,7 +73,7 @@ class Navbar extends Component {
                     <li><Link to="/home" onClick={this.handleLogout}><span class="glyphicon glyphicon-user"></span>Logout</Link></li>
                 </ul>
             );
-        } else {    
+        } else {
             //Else display login button
             console.log("Not Able to read cookie");
             navLogin = (
@@ -85,10 +97,9 @@ class Navbar extends Component {
                             <a class="navbar-brand"><Link to="/home"><img class="yelpLogo" src={yelp_logo} /></Link></a>
                         </div>
                         <ul class="nav navbar-nav">
-                            <li><Link to="/review">Write a Review</Link></li>
-                            <li><Link to="/create">Events</Link></li>
-                            <li><Link to="/delete">Talk</Link></li>
+                            {this.state.customeractionsFlag && <li><Link to="/create">Events</Link></li>}
                         </ul>
+
                         {navLogin}
                     </div>
                 </nav>
@@ -98,9 +109,9 @@ class Navbar extends Component {
     }
 }
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
     return {
-        restaurantProfileLogout : (data) => dispatch(restaurantProfileLogout(data))
+        restaurantProfileLogout: (data) => dispatch(restaurantProfileLogout(data))
     }
 }
-export default connect(null,mapDispatchToProps)( Navbar);
+export default connect(null, mapDispatchToProps)(Navbar);

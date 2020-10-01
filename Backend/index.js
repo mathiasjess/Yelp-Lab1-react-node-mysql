@@ -11,12 +11,14 @@ app.set('view engine', 'ejs')
 
 
 var customerlogin = require('./routes/customer/customerlogin')
+var customerprofile = require('./routes/customer/customerProfile')
+var searchRestaurant = require('./routes/customer/searchRestaurant')
 
 
 
 
 var restaurant = require('./routes/restaurant')
-var restaurantevents = require('./routes/restaurant/restaurantevents')
+var restaurantevents = require('./routes/restaurant/restaurantevents');
 
 
 //use cors to allow cross origin resource sharing
@@ -51,8 +53,15 @@ app.use(function (req, res, next) {
 app.use(express.static(__dirname + '/public'));
 
 
-//Route to handle Post Request Call for customer
+//Route to handle action calls for customer login and register
 app.use('/customerlogin',customerlogin)
+
+//Route to handle all actions for customer profile
+app.use('/customerprofile',customerprofile)
+
+//Route to handle all actions for customer search
+app.use('/search',searchRestaurant)
+
 
 //Route to handle Post Request Call for restaurant
 app.use('/restaurant',restaurant)  

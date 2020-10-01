@@ -1,19 +1,27 @@
 import {SET_YELPCUSTOMER,UPDATE_YELPCUSTOMERPROFILE} from '../actions/customerAction'
 
 export const customerInitialState = {
-    restaurantId: '',
-    restaurantName: '',
+    id: '',
+    username: '',
     email: '',
     password: '', 
-    description: '',
-    contact: '',
-    location: '',
+    firstName: '',
+    lastName: '',
+    DOB: '',
+    location : '',
     city: '',
     state: '',
     country: '',
-    zipcode: '',
-    restaurantImage: '',
-    timings: ''
+    nickName: '',
+    phoneNumber : '',
+    yelpingSince : '',
+    thingsILove : '',
+    findmeIn : '',
+    websiteDetails : '',
+    profileImage : '',
+    favourites : '',
+    headline : '',
+    zipcode: ''
 }
 
 const customerReducer = ((state = customerInitialState, action)=>{

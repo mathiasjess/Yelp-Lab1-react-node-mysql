@@ -7,9 +7,13 @@ const saltRounds = 10;
 
 // Route to handle Post Request Call for customer Registration
 router.post('/customerregister', function (req, res) {
+    let returnObject = {};
     username = req.body.username
     email = req.body.email
     password = req.body.password
+    yelpingSince = new Date()
+   
+
 
     new Promise((resolve, reject) => {
         bcrypt.genSalt(saltRounds, (err, salt) => {
@@ -21,35 +25,29 @@ router.post('/customerregister', function (req, res) {
         })
     })
         .then((value) => {
-            var sql1 =  "insert into customer (username, email, password) values ('" + username + "', '" + email + "', '" + password + "')";
-            mysqlConnection.query(sql1, function (error, result) {
+            let sql1 = "insert into customer (username, email, password, yelpingSince) values ('" + username + "', '" + email + "', '" + value + "', '" + yelpingSince + "')";
+            mysqlConnection.query(sql1, function (error, rows) {
                 if (error) {
                     returnObject.message = "error";
-                    res.return(returnObject);
+                    returnObject.data = []
+                    res.json(returnObject);
                 }
-
-                if (result.affectedRows === 1) {
+                else {
                     returnObject.message = "Registered Successfully";
+                    returnObject.data = rows[0]
                     res.json(returnObject);
                 }
             });
         })
 
-
-    
-    mysqlConnection.query(sql1, function (error, results, fields) {
-       if (error) throw error;
-       res.end(JSON.stringify(results));
-    });
-
 });
 
 //Route to handle Post Request Call for customer login
-router.post('/restaurantlogin', function (req, res) {
+router.post('/customerlogin', function (req, res) {
     let returnObject = {};
     email = req.body.email
     password = req.body.password
-    var sql2 =  "select id from  customer where email = '" + email + "' and  password = '" + password + "'";
+    var sql2 = "select * from  customer where email = '" + email + "'";
     new Promise((resolve, reject) => {
         mysqlConnection.query(sql2, function (error, result) {
             console.log(result[0])
@@ -82,3 +80,5 @@ router.post('/restaurantlogin', function (req, res) {
                 })
         })
 });
+
+module.exports = router;

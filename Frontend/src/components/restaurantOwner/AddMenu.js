@@ -20,6 +20,7 @@ class Menu extends React.Component {
             dishCategory: 'Appetizer'
         }
         this.handleMenuChange = this.handleMenuChange.bind(this)
+        this.handleCategoryChange = this.handleCategoryChange.bind(this)
         this.updateMenu = this.updateMenu.bind(this)
 
     }
@@ -27,6 +28,13 @@ class Menu extends React.Component {
         event.preventDefault();
         event.target.type === "file" ? this.setState({[event.target.name]: event.target.files[0]}) : this.setState({
             [event.target.name]: event.target.value
+        })
+    }
+
+    handleCategoryChange(event){
+        event.preventDefault();
+        this.setState({
+            dishCategory : event.target.value
         })
     }
 
@@ -77,10 +85,10 @@ render() {
                         <ul>
                             <li class="BusinessName"><label for="cars">Choose a category:</label></li>
                             <li>
-                                <select value={this.state.dishCategory} name="selectValue" onChange={this.handleMenuChange} >
+                                <select value={this.state.dishCategory}  onChange={this.handleCategoryChange} >
                                     <option value="Appetizer">Appetizer</option>
                                     <option value="Salads">Salads</option>
-                                    <option value="MainCourse">Main Course</option>9
+                                    <option value="MainCourse">Main Course</option>
                                         <option value="Deserts">Deserts</option>
                                     <option value="Beverages">Beverages</option>
                                 </select>

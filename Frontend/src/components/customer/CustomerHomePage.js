@@ -1,142 +1,81 @@
 import React from 'react'
 import axios from 'axios';
 import { Link } from 'react-router-dom';
-import './RestaurantHomePage.css'
-import RestaurantProfile from './RestaurantProfile'
-import UpdateRestaurantProfile from './UpdateRestaurantProfile'
+import './CustomerHomePage.css'
+import yelp_brand from '../../images/yelp_brand.png'
 import { connect } from 'react-redux';
-import Orders from './Orders'
-import Menu from './AddMenu'
-import Events from './Events'
+import ProfileDetails from './Profile/ProfileDetails'
 
 
 class CustomerHomePage extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            homePageFlag: true,
-            updateProfileFlag: false,
-            addMenuFlag: false,
-            ordersFlag:false,
-            eventsFlag:false,
-            profileData: ''
+            searchActiveFlag : '',
+            searchParameter1 : '',
+            searchParameter2 : '',
+            props : {}
         }
-        this.handleMainProfile = this.handleMainProfile.bind(this)
-        this.handleUpdateRestaurantProfile= this.handleUpdateRestaurantProfile.bind(this)
-        this.handleAddMenu = this.handleAddMenu.bind(this)
-        this.handleOrders = this.handleOrders.bind(this)
-        this.handleEvents = this.handleEvents.bind(this)
-
+        this.captureSearchParameters = this.captureSearchParameters.bind(this)
+        this.searchRestaurant = this.searchRestaurant.bind(this)
     }
-    handleMainProfile(){
+    componentDidMount(){
         this.setState({
-            homePageFlag: true,
-            updateProfileFlag: false,
-            addMenuFlag:false,
-            ordersFlag:false,
-            eventsFlag:false
-        })
-
-    }
-    handleUpdateRestaurantProfile() {
-        this.setState({
-            homePageFlag: false,
-            updateProfileFlag: true,
-            addMenuFlag:false,
-            ordersFlag:false,
-            eventsFlag:false
+            searchActiveFlag : false
         })
     }
-    handleAddMenu() {
+    captureSearchParameters(event){
+        event.preventDefault();
         this.setState({
-            homePageFlag: false,
-            updateProfileFlag: false,
-            addMenuFlag:true,
-            ordersFlag:false,
-            eventsFlag:false
-        })
-    }
-    handleOrders() {
-        this.setState({
-            homePageFlag: false,
-            updateProfileFlag: false,
-            addMenuFlag:false,
-            ordersFlag:true,
-            eventsFlag:false
+            [event.target.name] : event.target.value
         })
     }
 
-    handleEvents(){
+    searchRestaurant(event){
+        event.preventDefault();
         this.setState({
-            homePageFlag: false,
-            updateProfileFlag: false,
-            addMenuFlag:false,
-            ordersFlag:false,
-            eventsFlag:true
-        })
-
-    }
-
-    componentDidMount() {
-        this.setState({
-            homePageFlag: true,
-            updateProfileFlag: false,
-            addMenuFlag: false,
-            ordersFlag:false,
-            eventsFlag:false
+            searchActiveFlag : true,
+            props : {
+                searchParameter1 : this.state.searchParameter1,
+                searchParameter2 : this.state.searchParameter2
+            }
         })
     }
+
     render() {
+        const searchactive = this.state.searchActiveFlag
         return (
-            <div>
-            <div class="split left">
-                    <div class="leftTop">
-                        <h2>{this.props.user.restaurantName}</h2>
-                        <h6>{this.props.user.location}, {this.props.user.city}</h6>
-                        <h6>{this.props.user.zipcode}</h6>
-                    </div>
-                    <div class="centeredLeft">
-
-                        <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <Link to='#' class="nav-link" onClick={this.handleMainProfile}>View Profile</Link>
-                                {/* <span  class="nav-link" >Update  Restaurant Profile</span>*/}
-                            </li>
-                            <li class="nav-item">
-                                <Link to='#' class="nav-link" onClick={this.handleUpdateRestaurantProfile} >Update  Restaurant Profile</Link>
-                                {/* <span  class="nav-link" >Update  Restaurant Profile</span>*/}
-                            </li>
-                            <li class="nav-item">
-                                <Link to = '#' class="nav-link" onClick = {this.handleAddMenu}>Add Dishes to Menu</Link>
-                            </li>
-                            <li class="nav-item">
-                                <Link to='/viewcustomerreviews' class="nav-link disabled" >Reviews</Link>
-                            </li>
-                            <li class="nav-item">
-                                <Link to = '#' class="nav-link disabled" onClick={this.handleOrders}>Orders</Link>
-                            </li>
-                            <li class="nav-item">
-                            <Link to = '#' class="nav-link disabled" onClick={this.handleEvents}> Add Events</Link>
-                            </li>
-                        </ul>
-
-                    </div>
+            <div class="table">
+                <div class="tr-top">
+                <div class="td-top1">
+                <img class = "yelp_logo"src = {yelp_brand} alt="Avatar" />
                 </div>
-
-                <div class="split right">
-                    {this.state.homePageFlag && <RestaurantProfile />}
-                    {this.state.updateProfileFlag && <UpdateRestaurantProfile />}
-                    {this.state.addMenuFlag && <Menu />}
-                    {this.state.ordersFlag && <Orders />}
-                    {this.state.eventsFlag && <Events />}
+                <div class="td-top2">
+                <form class = "search-class">
+                <input class="form-control mr-sm-2" name = "searchParameter1" type="text" onChange = {this.captureSearchParameters} placeholder="dish names,cuisines," aria-label="Search" />
+                <input class="form-control mr-sm-2" name = "searchParameter2" type="text" onChange={this.captureSearchParameters} placeholder="location, zipcode" aria-label="Search" />
+                {/*<button class="btn btn-outline-success my-2 my-sm-0" onClick = {this.searchRestaurant} type="submit">Search</button>*/}
+                <Link to ={{pathname : '/searchrestaurant', 
+                                                                    aboutProps:
+                                                                         {searchParameter1 : this.state.searchParameter1,
+                                                                          searchParameter2 : this.state.searchParameter2
+                                                                        }}}>Search</Link>
+                </form>
                 </div>
-        </div>
+                <div class="td-top3">
+                <Link to='#' class="nav-link" onClick={this.handleAddMenu}>Events</Link>
+                </div>
+                </div>
+                {/* {searchactive? <SearchRestaurant {...this.state.props} />: <ProfileDetails />}*/}
+                <ProfileDetails />
+            </div>
+
         )
     }
 
 }
 const mapStateToProps = state => ({
-    user: state.restaurantReducer
+    user: state.customerReducer
 });
 
 

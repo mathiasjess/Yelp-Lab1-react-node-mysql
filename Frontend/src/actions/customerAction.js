@@ -8,7 +8,7 @@ export const customerLogin = (data) =>{
     }
 }
 
-export const restaurantProfileUpdate = (data) =>{
+export const customerProfileUpdate = (data) =>{
     return {
         type: 'UPDATE_YELPCUSTOMERPROFILE',
         payload : data

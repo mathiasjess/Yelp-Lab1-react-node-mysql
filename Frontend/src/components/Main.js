@@ -13,6 +13,10 @@ import CustomerHomePage from './customer/CustomerHomePage'
 import RestaurantHomePage from './restaurantOwner/RestaurantHomePage'
 import EditDish from './restaurantOwner/EditDish'
 import EditEvent from './restaurantOwner/EditEvent'
+import UpdateCustomerProfile from './customer/Profile/UpdateCustomerProfile'
+import SearchRestaurant from './customer/Search/SearchRestaurant'
+import CustomerViewofRestaurant from './customer/Search/CustomerViewofRestaurant'
+import MainEventsPage from './customer/Events/MainEventPage'
 import { Switch, Route, withRouter } from 'react-router-dom';
 //Create a Main Component
 class Main extends Component {
@@ -46,7 +50,7 @@ class Main extends Component {
                         render={props => <RestaurantLogin {...props} />}
                     />
                     <Route
-                        path="/customerhomepage"
+                        path="/customerhomepage/:id"
                         render={props => <CustomerHomePage {...props} />}
                     />
                     <Route
@@ -61,6 +65,23 @@ class Main extends Component {
                         path="/editevent/:id"
                         render={props => <EditEvent  {...props} />}
                     />
+                    <Route
+                        path="/updatecustomerprofile"
+                        render={props => <UpdateCustomerProfile  {...props} />}
+                    />
+                    <Route
+                        path="/searchrestaurant"
+                        render={props => <SearchRestaurant  {...props} />}
+                    />
+                    <Route
+                        path="/customerviewofrestaurant/:id"
+                        render={props => <CustomerViewofRestaurant  {...props} />}
+                    />
+                    <Route
+                        path="/mainevents"
+                        render={props => <MainEventsPage  {...props} />}
+                    />
+
                     <Route path="/home" component={Home} />
                 </div>
             </div>
