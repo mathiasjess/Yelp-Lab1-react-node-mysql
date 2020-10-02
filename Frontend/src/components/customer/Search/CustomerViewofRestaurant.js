@@ -2,6 +2,8 @@ import React from 'react'
 import axios from 'axios'
 import './customerviewofrestaurant.css'
 import default_pic from '../../../images/restaurantprofileImage.png'
+import Moment from 'react-moment';
+import 'moment-timezone';
 
 class CustomerViewofRestaurant extends React.Component {
     constructor(props) {
@@ -10,28 +12,36 @@ class CustomerViewofRestaurant extends React.Component {
             profileData: [],
             menuData: [],
             eventData: [],
+            reviews: []
         }
         this.goToEvents = this.goToEvents.bind(this)
+        this.goToOrders = this.goToOrders.bind(this)
     }
     goToEvents() {
 
     }
+    goToOrders(restaurantID, pickup){
+        return this.props.history.push(`/customerorder/${restaurantID}/${pickup}`)
+    }
     componentDidMount() {
-        console.log("RestaurantID",this.props.match.params.id )
+        console.log("RestaurantID", this.props.match.params.id)
         axios.all([
             axios.get(`http://localhost:3001/restaurant/fetchMenu/${this.props.match.params.id}`),
             axios.get(`http://localhost:3001/restaurantevents/fetchEvents/${this.props.match.params.id}`),
-            axios.get(`http://localhost:3001/restaurant/restaurantprofiledetails/${this.props.match.params.id}`)
+            axios.get(`http://localhost:3001/restaurant/restaurantprofiledetails/${this.props.match.params.id}`),
+            axios.get(`http://localhost:3001/reviews/getrestaurantreview/${this.props.match.params.id}`)
         ])
-            .then(axios.spread((response1, response2, response3) => {
+            .then(axios.spread((response1, response2, response3, response4) => {
                 console.log("profile data", response3.data.data[0])
                 console.log("menu data", response1.data.data)
                 console.log("event data", response2.data.data)
+                console.log("reviews data", response4.data.data)
                 this.setState({
                     menuData: response1.data.data,
                     eventData: response2.data.data,
-                    profileData: response3.data.data[0]
-                })  
+                    profileData: response3.data.data[0],
+                    reviews: response4.data.data
+                })
             }))
     }
     render() {
@@ -40,7 +50,7 @@ class CustomerViewofRestaurant extends React.Component {
                 <div class="tr-first">
                     <div class="td-first1">
                     </div>
-                        
+
                     <div class="td-first2">
                         <img class="card-img-top" src={default_pic} alt="Card image cap" />
                     </div>
@@ -58,7 +68,7 @@ class CustomerViewofRestaurant extends React.Component {
                         <h4 class="sub-heading"> </h4>
                         <h4 class="timings">{this.state.profileData.timings}</h4>
                         <div class="buttons">
-                            <button class="btn btn-danger">
+                            <button class="btn btn-danger" onClick={() => this.props.history.push(`/writereview/${this.props.match.params.id}`)}>
                                 <span class="glyphicon glyphicon-star" aria-hidden="true">Write a review</span>
                             </button>
                             <button class="btn btn-default" onClick={() => this.props.history.push('/mainevents')}><span class="glyphicon glyphicon-bookmark">Events</span></button>
@@ -75,7 +85,7 @@ class CustomerViewofRestaurant extends React.Component {
                         <div class="grid-container">
                             <div class="grid-item">Order food</div>
                             <div class="grid-item"><h6>No Fees, Pick up 20-30 min</h6></div>
-                            <div class="grid-item"><button class="btn btn-danger"> Start Order</button></div>
+                            <div class="grid-item"><button class="btn btn-danger" onClick= {()=>this.goToOrders(this.props.match.params.id, this.props.match.params.option)}> Start Order</button></div>
                         </div>
                     </div>
                     <div class="td-second4">
@@ -86,17 +96,17 @@ class CustomerViewofRestaurant extends React.Component {
                     </div>
                     <div class="td-third2">
                         <h2>Menu</h2>
-                        <div class = "flex-display">
-                        {this.state.menuData.map((menu, i) => {
-                            return <div class="card1" key={i}>
-                            <img class="card-img-top1" src={default_pic} alt="Card image cap" />
-                                <div class="container">
-                                    <h4>{menu.dishName}</h4>
-                                    <h5><b>{menu.price}</b></h5>
-                                    <button class="btn btn-primary" value={menu.itemID} onClick={() => this.viewDish(menu.itemID)}>View Dish Details</button>
+                        <div class="flex-display">
+                            {this.state.menuData.map((menu, i) => {
+                                return <div class="card1" key={i}>
+                                    <img class="card-img-top1" src={default_pic} alt="Card image cap" />
+                                    <div class="container">
+                                        <h4>{menu.dishName}</h4>
+                                        <h5><b>{menu.price}</b></h5>
+                                        <button class="btn btn-primary" value={menu.itemID} onClick={() => this.viewDish(menu.itemID)}>View Dish Details</button>
+                                    </div>
                                 </div>
-                            </div>
-                        })}
+                            })}
                         </div>
                         <h2>Events</h2>
                         {this.state.eventData.map((event, i) => {
@@ -113,18 +123,26 @@ class CustomerViewofRestaurant extends React.Component {
                             </div>
                         })}
                         <h2>Reviews</h2>
-                    </div>
-                    <div class="td-third3">
-                        <div class="grid-container2">
-                            <div class="grid-item2">{this.state.profileData.contact}</div>
-                            <div class="grid-item2">{this.state.profileData.email}</div>
-                            <div class="grid-item2">{this.state.profileData.location}, {this.state.profileData.city}, {this.state.profileData.state}, {this.state.profileData.zipcode} </div>
-                        </div>
-                    </div>
-                    <div class="td-third4">
+                        {this.state.reviews.map((review, i) => {
+                           return <div class="Reviews" key = {i}>
+                                <h4>{review.ratings}/5</h4>
+                                <h5>{review.firstName} {review.LastName}</h5>
+                                <h6> <Moment>{review.reviewDate}</Moment></h6>
+                                <h6>{review.comments}</h6>
+                            </div>
+                        })}
+                </div>
+                <div class="td-third3">
+                    <div class="grid-container2">
+                        <div class="grid-item2">{this.state.profileData.contact}</div>
+                        <div class="grid-item2">{this.state.profileData.email}</div>
+                        <div class="grid-item2">{this.state.profileData.location}, {this.state.profileData.city}, {this.state.profileData.state}, {this.state.profileData.zipcode} </div>
                     </div>
                 </div>
+                <div class="td-third4">
+                </div>
             </div>
+        </div>
         )
     }
 }

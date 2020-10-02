@@ -210,3 +210,17 @@
     flex-wrap:wrap; 
     justify-content:flex-start
   }
+  .Reviews{
+
+    width: 100%;
+    display: inline-block;
+    border:0.25px solid rgba(194, 191, 191, 0.8);
+  }
+  .review-first-line{
+    display: flex;
+    justify-content: flex-start;
+  }
+  .review-person-photo{
+    width: 5rem;
+    height: 3rem;
+  }

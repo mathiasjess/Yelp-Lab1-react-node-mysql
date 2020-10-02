@@ -40,7 +40,15 @@ class SearchRestaurant extends React.Component {
 
     }
     goToRestaurant(restaurantId) {
-            this.props.history.push(`/customerviewofrestaurant/${restaurantId}`)
+        if(this.state.delivery.curbPickup == true){
+            let delivery_option = 'pickup'
+            this.props.history.push(`/customerviewofrestaurant/${restaurantId}/${delivery_option}`)
+        }
+        if(this.state.delivery.yelpDelivery == true){
+            let delivery_option = 'delivery'
+            this.props.history.push(`/customerviewofrestaurant/${restaurantId}/${delivery_option}`)
+        }
+            
     }
     Filter(e) {
         this.setState({
@@ -61,7 +69,7 @@ class SearchRestaurant extends React.Component {
                     searchResults: this.state.searchResults.filter((result) => {
                         return result.curbPickup === Number(this.state.delivery.curbPickup) ||
                             result.dineIn === Number(this.state.delivery.dineIn) ||
-                            result.yelpDelivery === Number(this.state.delivery.yelpDelivery ||
+                            result.yelpDelivery === Number(this.state.delivery.yelpDelivery &&
                                 result.zipcode === this.props.user.zipcode);
                     })
                 }), function () { console.log("New results", this.state.searchResults) })

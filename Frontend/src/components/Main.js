@@ -17,6 +17,8 @@ import UpdateCustomerProfile from './customer/Profile/UpdateCustomerProfile'
 import SearchRestaurant from './customer/Search/SearchRestaurant'
 import CustomerViewofRestaurant from './customer/Search/CustomerViewofRestaurant'
 import MainEventsPage from './customer/Events/MainEventPage'
+import WriteaReview from './customer/review/WriteReview'
+import CustomerOrders from './customer/Orders/CustomerOrders'
 import { Switch, Route, withRouter } from 'react-router-dom';
 //Create a Main Component
 class Main extends Component {
@@ -74,8 +76,16 @@ class Main extends Component {
                         render={props => <SearchRestaurant  {...props} />}
                     />
                     <Route
-                        path="/customerviewofrestaurant/:id"
+                        path="/customerviewofrestaurant/:id/:option"
                         render={props => <CustomerViewofRestaurant  {...props} />}
+                    />
+                    <Route
+                    path="/writereview/:id"
+                    render={props => <WriteaReview  {...props} />}
+                    />
+                    <Route
+                    path="/customerorder/:id/:option"
+                    render={props => <CustomerOrders  {...props} />}
                     />
                     <Route
                         path="/mainevents"

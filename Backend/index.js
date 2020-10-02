@@ -13,6 +13,7 @@ app.set('view engine', 'ejs')
 var customerlogin = require('./routes/customer/customerlogin')
 var customerprofile = require('./routes/customer/customerProfile')
 var searchRestaurant = require('./routes/customer/searchRestaurant')
+var review = require('./routes/customer/customerreview')
 
 
 
@@ -62,6 +63,8 @@ app.use('/customerprofile',customerprofile)
 //Route to handle all actions for customer search
 app.use('/search',searchRestaurant)
 
+//Route to handle all actions for customer search
+app.use('/reviews',review)
 
 //Route to handle Post Request Call for restaurant
 app.use('/restaurant',restaurant)  

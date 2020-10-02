@@ -4,10 +4,28 @@ import { Link } from 'react-router-dom';
 import './ProfileDetails.css'
 import default_image from '../../../images/customer_default_pic.png'
 import { connect } from 'react-redux';
+import Moment from 'react-moment';
+import 'moment-timezone';
 
 class ProfileDetails extends React.Component {
     constructor(props) {
         super(props)
+        this.state = {
+            reviews : []
+        }
+    }
+    componentDidMount(){
+            axios.get(`http://localhost:3001/reviews/getcustomerreview/${this.props.user.id}`)
+            .then((response) => {
+                if(response.data.message === "success")
+                {
+                    console.log("reviews data", response.data.data)
+                    this.setState({
+                        reviews: response.data.data
+                    })
+                }
+
+            })
     }
 
     render() {
@@ -78,6 +96,14 @@ class ProfileDetails extends React.Component {
                     </div>
                     <div class="td-2">
                         <h2>Reviews</h2>
+                        {this.state.reviews.map((review, i) => {
+                            return <div class="Reviews">
+                                 <h4>{review.ratings}/5</h4>
+                                 <h5>{review.restaurantName}</h5>
+                                 <h6> <Moment>{review.reviewDate}</Moment></h6>
+                                 <h6>{review.comments}</h6>
+                             </div>
+                         })}
                     </div>
                     <div class="td-3">
                         <h4> About Customer</h4>
