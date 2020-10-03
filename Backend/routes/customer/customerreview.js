@@ -32,7 +32,6 @@ router.get('/getrestaurantreview/:id', function(req,res) {
             returnObject.message = "success"
             returnObject.data = result
             res.json(returnObject)
-            console.log("Events", returnObject)
         }
     })
 })
@@ -49,7 +48,6 @@ router.get('/getcustomerreview/:id', function(req,res) {
             returnObject.message = "success"
             returnObject.data = result
             res.json(returnObject)
-            console.log("Events", returnObject)
         }
     })
 })

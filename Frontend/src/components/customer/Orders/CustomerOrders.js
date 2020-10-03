@@ -3,7 +3,7 @@ import axios from 'axios'
 import default_pic from '../../../images/restaurantprofileImage.png'
 import './CustomerOrders.css'
 import { connect } from 'react-redux'
-import { addToCart, addItem, removeItem } from '../../../actions/cartActions'
+import { addToCart, addItem, removeItem, removecart } from '../../../actions/cartActions'
 
 class CustomerOrders extends React.Component {
     constructor(props) {
@@ -13,7 +13,7 @@ class CustomerOrders extends React.Component {
             restaurantID: '',
             customerID: '',
             orderID: '',
-            delivey_option : '',
+            delivey_option: '',
             completeOrderFlag: false
 
         }
@@ -21,12 +21,12 @@ class CustomerOrders extends React.Component {
         this.handleAddquantity = this.handleAddquantity.bind(this)
         this.handleremovequantity = this.handleremovequantity.bind(this)
         this.completeOrder = this.completeOrder.bind(this)
+        this.CancelOrder = this.CancelOrder.bind(this)
     }
     componentDidMount() {
         this.setState({
             restaurantID: this.props.match.params.id,
             customerID: this.props.user.id,
-            orderID: Math.floor((Math.random() * 500) + 1),
             delivery_option: this.props.match.params.option
 
         })
@@ -46,15 +46,15 @@ class CustomerOrders extends React.Component {
             })
     }
     handleAddToCart(itemID, dishName, price) {
-        let data = {
+        let Orderdata = {
             orderID: this.state.orderID,
             itemID: itemID,
             dishName: dishName,
             price: price
 
         }
-        console.log(data)
-        this.props.addToCart(data)
+        console.log(Orderdata)
+        this.props.addToCart(Orderdata)
     }
 
     handleAddquantity(itemID) {
@@ -64,12 +64,44 @@ class CustomerOrders extends React.Component {
     handleremovequantity(itemID) {
         this.props.removeItem(itemID)
     }
-    completeOrder() {
-        if (this.props.cartItems.addedItems) {
-            this.setState({
-                completeOrderFlag: true
-            })
+    completeOrder(restaurantId) {
+        let OrderDetails = {
+            customerID: this.props.user.id,
+            restaurantID: restaurantId,
+            total_price: this.props.cartItems.total,
+            delivery_option: this.props.match.params.option,
+            delivery_status: 'Order Recieved',
+            deliveryFilter: 'New Order'
         }
+        // let formData= new FormData()
+        // formData.append('data',JSON.stringify())
+        axios.post('http://localhost:3001/orders/sendordersummary', OrderDetails)
+            .then(response => {
+                if (response.data.message === "success") {
+                    axios.post(`http://localhost:3001/orders/sendorderdetails/${response.data.data}`, this.props.cartItems.addedItems)
+                        .then(response => {
+                            if (response.data.message === "success") {
+                                alert('Placed order successfully')
+                                this.props.removecart()
+                                this.props.history.push(`/customerorderhistory/${this.props.user.id}`)
+                            }
+                            else {
+                                console.log('Could not complete order')
+                                this.props.history.push(`/customerhomepage/${this.props.user.id}`)
+                                
+                            }
+                        })
+                }
+                else if (response.data.message === "error") {
+                    alert("Something went wrong")
+                    this.props.removecart()
+                }
+            })
+    }
+
+    CancelOrder(restaurantID) {
+        this.props.removecart()
+        this.props.history.push(`/restauranthomepage/${this.props.user.id}`)
     }
 
     render() {
@@ -115,25 +147,34 @@ class CustomerOrders extends React.Component {
                     </div>
                     <div class="td-items3">
                         {this.props.cartItems.addedItems ?
-                        <div>
-                            <h2> Order Details</h2>
-                            <table>
-                                <tr>
-                                    <th>Dish Name</th>
-                                    <th>Price</th>
-                                    <th>Quantity</th>
-                                    <th>Add</th>
-                                    <th>Remove</th>
-                                </tr>
-                                {addedItems}
-                                <tr>
-                                    <th colspan="2">Total : {this.props.cartItems.total ? this.props.cartItems.total : null}</th>
-                                    <th colspan="3"><button class="btn btn-danger" onClick={() => this.completeOrder}>Complete Order</button></th></tr>
-                            </table> 
-                            {this.state.completeOrderFlag && <div>
+                            <div>
+                                <h2> Order Details</h2>
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Dish Name</th>
+                                            <th>Price</th>
+                                            <th>Quantity</th>
+                                            <th>Add</th>
+                                            <th>Remove</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {addedItems}
+                                    </tbody>
 
-                            </div>}
-                        </div>: null}
+                                    <tfoot>
+                                        <tr>
+                                            <th colSpan="5">Total : {this.props.cartItems.total ? this.props.cartItems.total : null}</th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                                <button class="btn btn-danger" onClick={() => this.completeOrder(this.props.match.params.id)}>Complete Order</button>
+                                <button class="btn btn-danger" onClick={() => this.CancelOrder(this.props.match.params.id)}>Cancel Order</button>
+                                {this.state.completeOrderFlag && <div>
+
+                                </div>}
+                            </div> : null}
                     </div>
                 </div>
             </div>
@@ -149,7 +190,9 @@ function mapDispatchToProps(dispatch) {
     return {
         addToCart: (data) => dispatch(addToCart(data)),
         addItem: (id) => dispatch(addItem(id)),
-        removeItem: (id) => dispatch(removeItem(id))
+        removeItem: (id) => dispatch(removeItem(id)),
+        removecart: () => dispatch(removecart())
+
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CustomerOrders)

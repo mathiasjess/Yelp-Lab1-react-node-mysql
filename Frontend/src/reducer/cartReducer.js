@@ -1,4 +1,4 @@
-import {ADD_TO_CART,ADD_ITEM, REMOVE_ITEM} from '../actions/cartActions'
+import {ADD_TO_CART,ADD_ITEM, REMOVE_ITEM, DELETE_CART} from '../actions/cartActions'
 
 export const cartInitialState = {
    addedItems : [],
@@ -64,6 +64,13 @@ const cartReducer = (state = cartInitialState, action)=>{
             ...state,
             total : state.total - addedItem.price,
             addedItems : newaddedItems
+        }
+    }
+    if(action.type === DELETE_CART){
+        return{
+            ...state,
+            total:0,
+            addedItems : []
         }
     }
     

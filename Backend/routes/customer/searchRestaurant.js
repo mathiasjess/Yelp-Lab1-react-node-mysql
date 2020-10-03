@@ -4,7 +4,6 @@ var mysqlConnection = require('../../models/index')
 
 //Router to handle get request to search restaurants
 router.get('/searchforrestaurant', function(req,res) {
-    console.log("Inside Search");
     let returnObject = {};
     console.log(req.query)
     let param1 = req.query[0]
@@ -23,7 +22,6 @@ router.get('/searchforrestaurant', function(req,res) {
             returnObject.message = "success"
             returnObject.data = result
             res.json(returnObject)
-            console.log(returnObject)
         }
     })
 

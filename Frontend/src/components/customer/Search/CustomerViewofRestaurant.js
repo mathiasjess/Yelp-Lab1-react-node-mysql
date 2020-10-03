@@ -77,7 +77,7 @@ class CustomerViewofRestaurant extends React.Component {
                         <div class="modeofDelivery">
                             <h5>{this.state.profileData.curbPickup ? <span class="glyphicon glyphicon-ok">Curbside Pickup</span> : <span class="glyphicon glyphicon-remove">Curbside Pickup</span>}</h5>
                             <h5>{this.state.profileData.yelpDelivery ? <span class="glyphicon glyphicon-ok">Yelp Delivery</span> : <span class="glyphicon glyphicon-remove">Yelp Delivery</span>}</h5>
-                            <h5>{this.state.profileData.dineIn ? <span class="glyphicon glyphicon-ok">Curbside Pickup</span> : <span class="glyphicon glyphicon-remove">Dine In</span>}</h5>
+                            <h5>{this.state.profileData.dineIn ? <span class="glyphicon glyphicon-ok">Dine In</span> : <span class="glyphicon glyphicon-remove">Dine In</span>}</h5>
                         </div>
 
                     </div>

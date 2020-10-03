@@ -14,6 +14,7 @@ var customerlogin = require('./routes/customer/customerlogin')
 var customerprofile = require('./routes/customer/customerProfile')
 var searchRestaurant = require('./routes/customer/searchRestaurant')
 var review = require('./routes/customer/customerreview')
+var orders = require('./routes/customer/orders')
 
 
 
@@ -65,6 +66,9 @@ app.use('/search',searchRestaurant)
 
 //Route to handle all actions for customer search
 app.use('/reviews',review)
+
+//Route to handle all actions for customer orders
+app.use('/orders',orders)
 
 //Route to handle Post Request Call for restaurant
 app.use('/restaurant',restaurant)  

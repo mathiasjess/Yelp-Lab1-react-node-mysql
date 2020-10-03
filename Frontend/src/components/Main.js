@@ -19,6 +19,7 @@ import CustomerViewofRestaurant from './customer/Search/CustomerViewofRestaurant
 import MainEventsPage from './customer/Events/MainEventPage'
 import WriteaReview from './customer/review/WriteReview'
 import CustomerOrders from './customer/Orders/CustomerOrders'
+import CustomerOrderHistory from './customer/Orders/CustomerOrderHistory'
 import { Switch, Route, withRouter } from 'react-router-dom';
 //Create a Main Component
 class Main extends Component {
@@ -86,6 +87,10 @@ class Main extends Component {
                     <Route
                     path="/customerorder/:id/:option"
                     render={props => <CustomerOrders  {...props} />}
+                    />
+                    <Route
+                    path="/customerorderhistory/:id"
+                    render={props => <CustomerOrderHistory  {...props} />}
                     />
                     <Route
                         path="/mainevents"
