@@ -49,3 +49,13 @@
     padding: 15px;
   }
 
+.card-order{
+  width: 70%;
+  display: inline-block;
+  border:0.25px solid rgba(194, 191, 191, 0.8);
+}
+.order-footer{
+  display: flex;
+  justify-content: space-around;
+  padding: 10px;
+}

@@ -46,5 +46,40 @@ router.post('/sendordersummary', function (req, res) {
         })
 })
 
+//Router to handle get request for orders summary
+router.get('/fetchcustomerordersummary/:id', function(req,res) {
+    let returnObject = {}
+    let sql2 = "SELECT restaurant.restaurantName,ordersummary.orderID, ordersummary.totalPrice, ordersummary.deliveryOption, ordersummary.delivery_status, ordersummary.deliveryFilter, ordersummary.Date FROM restaurant, ordersummary where restaurant.restaurantId = ordersummary.restaurantId and ordersummary.customerId = " + req.params.id + "";
+    console.log(sql2)
+    mysqlConnection.query(sql2,(err,result)=>{
+        if(err) {
+            returnObject.message = 'error'
+        }
+        else{
+            returnObject.message = "success"
+            returnObject.data = result
+            res.json(returnObject)
+            console.log('ordersummary',returnObject)
+        }
+    })
+})
+
+//Router to handle get request for order details
+router.get('/fetchcustomerorderdetails/:id', function(req,res) {
+    let returnObject = {}
+    let sql3 = "select * from orderdetails where orderID in (SELECT orderID from ordersummary where customerId = " + req.params.id + ")";
+    console.log(sql3)
+    mysqlConnection.query(sql3,(err,result)=>{
+        if(err) {
+            returnObject.message = 'error'
+        }
+        else{
+            returnObject.message = "success"
+            returnObject.data = result
+            res.json(returnObject)
+            console.log("order details", returnObject)
+        }
+    })
+})
 
 module.exports = router;

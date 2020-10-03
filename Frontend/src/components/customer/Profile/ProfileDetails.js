@@ -1,6 +1,6 @@
 import React from 'react'
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import './ProfileDetails.css'
 import default_image from '../../../images/customer_default_pic.png'
 import { connect } from 'react-redux';
@@ -13,6 +13,7 @@ class ProfileDetails extends React.Component {
         this.state = {
             reviews : []
         }
+        this.handleOrderPage = this.handleOrderPage.bind(this)
     }
     componentDidMount(){
             axios.get(`http://localhost:3001/reviews/getcustomerreview/${this.props.user.id}`)
@@ -26,6 +27,9 @@ class ProfileDetails extends React.Component {
                 }
 
             })
+    }
+    handleOrderPage(custID){
+        this.props.history.push(`/customerorderhistory/${custID}`)
     }
 
     render() {
@@ -61,7 +65,7 @@ class ProfileDetails extends React.Component {
                                 {/* <span  class="nav-link" >Update  Restaurant Profile</span>*/}
                             </li>
                             <li class="nav-item">
-                                <Link to='#' class="nav-link" onClick={this.handleMainProfile}>Order History</Link>
+                                <button class="profileLinks" onClick={()=>this.handleOrderPage(this.props.user.id)}>Order History</button>
                                 {/* <span  class="nav-link" >Update  Restaurant Profile</span>*/}
                             </li>
                             <li class="nav-item">
@@ -136,4 +140,4 @@ const mapStateToProps = state => ({
 });
 
 
-export default connect(mapStateToProps)(ProfileDetails);
+export default withRouter(connect(mapStateToProps)(ProfileDetails));

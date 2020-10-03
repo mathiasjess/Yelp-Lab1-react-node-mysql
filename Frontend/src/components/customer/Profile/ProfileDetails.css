@@ -182,3 +182,16 @@ h5{
   display: inline-block;
   border:0.25px solid rgba(194, 191, 191, 0.8);
 }
+.profileLinks{
+  display: block;
+  padding: 12px;
+  position: relative;
+  background: none!important;
+  border: none;
+  /*optional*/
+  font-family: arial, sans-serif;
+  /*input has OS specific font-family*/
+  color: #333;
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
