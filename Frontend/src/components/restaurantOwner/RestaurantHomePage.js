@@ -5,7 +5,7 @@ import './RestaurantHomePage.css'
 import RestaurantProfile from './RestaurantProfile'
 import UpdateRestaurantProfile from './UpdateRestaurantProfile'
 import { connect } from 'react-redux';
-import Orders from './Orders'
+import Orders from './Orders/Orders'
 import Menu from './AddMenu'
 import Events from './Events'
 

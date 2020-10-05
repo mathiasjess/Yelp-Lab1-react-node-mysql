@@ -19,6 +19,7 @@ class RestaurantProfile extends React.Component {
         }
         this.editDish = this.editDish.bind(this)
         this.vieweventDetails = this.vieweventDetails.bind(this)
+        this.registeredList = this.registeredList.bind(this)
     }
     editDish(ID){
         this.props.history.replace(`/editdish/${ID}`);
@@ -26,7 +27,11 @@ class RestaurantProfile extends React.Component {
 
     vieweventDetails(eventIDDetails){
         this.props.history.replace(`/editevent/${eventIDDetails}`)
-    }  
+    } 
+    
+    registeredList(eventIDDetails){
+        this.props.history.replace(`/eventlist/${eventIDDetails}`)
+    }
 
     componentDidMount() {
         axios.all([
@@ -101,6 +106,7 @@ class RestaurantProfile extends React.Component {
                                 <p>{event.eventLocation}</p>
                                 <p><b>{event.eventHashtag}</b></p>
                                 <button class="btn btn-primary" value={event.eventId} onClick={()=> this.vieweventDetails(event.eventId)}>Edit Event</button>
+                                <button class="btn btn-primary" value={event.eventId} onClick={()=> this.registeredList(event.eventId)}>Customer Registration Info</button>
                             </div>
                         </div>
                     })}

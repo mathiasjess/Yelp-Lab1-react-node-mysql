@@ -107,4 +107,24 @@ router.delete('/deleteEvent/:id', function(req,res) {
 
 })
 
+//Router to handle get request to fetch list of users registered for the event
+router.get('/fetchregistry/:id', function(req,res) {
+    let returnObject = {};
+    console.log("Inside fetchRegistry Event")
+    console.log("ID", req.params.id);
+    var sql8 = "select customer.id, customer.firstName, customer.lastName from customer, eventregister where customer.id = eventregister.customerId and eventregister.eventId = " + req.params.id + "";
+    console.log(sql8)
+    mysqlConnection.query(sql8,(err,result)=>{
+        if(err) {
+            returnObject.message = 'error'
+        }
+        else{
+            returnObject.message = "success"
+            returnObject.data = result
+            res.json(returnObject)
+        }
+    })
+
+})
+
 module.exports = router;

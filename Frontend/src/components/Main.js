@@ -13,6 +13,9 @@ import CustomerHomePage from './customer/CustomerHomePage'
 import RestaurantHomePage from './restaurantOwner/RestaurantHomePage'
 import EditDish from './restaurantOwner/EditDish'
 import EditEvent from './restaurantOwner/EditEvent'
+import EventList from './restaurantOwner/Events/EventList'
+import RestaurantViewOfCustomer from './restaurantOwner/CustomerView/RestaurantViewOfCustomer'
+import UpdateOrder from './restaurantOwner/Orders/UpdateOrder'
 import UpdateCustomerProfile from './customer/Profile/UpdateCustomerProfile'
 import SearchRestaurant from './customer/Search/SearchRestaurant'
 import CustomerViewofRestaurant from './customer/Search/CustomerViewofRestaurant'
@@ -66,8 +69,20 @@ class Main extends Component {
                         render={props => <EditDish  {...props} />}
                     />
                     <Route
+                        path="/updateorder/:id"
+                        render={props => <UpdateOrder  {...props} />}
+                    />
+                    <Route
                         path="/editevent/:id"
                         render={props => <EditEvent  {...props} />}
+                    />
+                    <Route
+                        path="/restaurantviewofcustomer"
+                        render={props => <RestaurantViewOfCustomer {...props} />}
+                    />
+                    <Route
+                        path="/eventlist/:id"
+                        render={props => <EventList {...props} />}
                     />
                     <Route
                         path="/updatecustomerprofile"
@@ -82,25 +97,25 @@ class Main extends Component {
                         render={props => <CustomerViewofRestaurant  {...props} />}
                     />
                     <Route
-                    path="/writereview/:id"
-                    render={props => <WriteaReview  {...props} />}
+                        path="/writereview/:id"
+                        render={props => <WriteaReview  {...props} />}
                     />
                     <Route
-                    path="/customerorder/:id/:option"
-                    render={props => <CustomerOrders  {...props} />}
+                        path="/customerorder/:id/:option"
+                        render={props => <CustomerOrders  {...props} />}
                     />
                     <Route
-                    path="/customerorderhistory/:id"
-                    render={props => <CustomerOrderHistory  {...props} />}
+                        path="/customerorderhistory/:id"
+                        render={props => <CustomerOrderHistory  {...props} />}
                     />
                     <Route
                         path="/mainevents/:id"
                         render={props => <MainEventsPage  {...props} />}
                     />
                     <Route
-                    path="/customerevents/:id"
-                    render={props => <CustomerEvents  {...props} />}
-                />
+                        path="/customerevents/:id"
+                        render={props => <CustomerEvents  {...props} />}
+                    />
 
                     <Route path="/home" component={Home} />
                 </div>

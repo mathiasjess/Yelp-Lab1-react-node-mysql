@@ -22,6 +22,8 @@ var customerevents = require('./routes/customer/events')
 
 var restaurant = require('./routes/restaurant')
 var restaurantevents = require('./routes/restaurant/restaurantevents');
+var restaurantorders = require('./routes/restaurant/restaurantorders')
+var customerdetails = require('./routes/restaurant/customerdetails')
 
 
 //use cors to allow cross origin resource sharing
@@ -79,6 +81,12 @@ app.use('/restaurant',restaurant)
 
 //Routes to handle Calls for restaurant event actions
 app.use('/restaurantevents',restaurantevents)
+
+//Routes to handle Calls for restaurant orders
+app.use('/restaurantorders',restaurantorders)
+
+//Routes to handle Calls for customer details
+app.use('/restaurantviewofcustomer',customerdetails)
 
 //start your server on port 3001
 app.listen(3001);
