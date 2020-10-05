@@ -56,13 +56,13 @@ class Navbar extends Component {
         })
     }
     componentDidMount() {
-        if (Cookies.get('role' === "customer")) {
+        if (Cookies.get('id')){
             this.setState({
-                customeractionsFlag: true
+                displayHome: false
             })
         }
-
     }
+
     render() {
         //if Cookie is set render Logout Button
         let navLogin = null;
@@ -84,6 +84,16 @@ class Navbar extends Component {
                 </ul>
             )
         }
+
+        let customerFeatures = null;
+        if(Cookies.get('id') && Cookies.get('role' === "customer")){
+            customerFeatures = (
+                <ul class="nav navbar-nav">
+                    <button class="customerFeatures" onClick = {()=>this.props.history.push(`/customerhomepage/${Cookies.get('id')}`)}>Home</button>
+                    <button class="customerFeatures" onClick = {()=>this.props.history.push(`/mainevents/${Cookies.get('id')}`)}>Events</button>
+                </ul>
+            )
+        }
         let redirectVar = null;
         // if (cookie.load('cookie')) {
         //     redirectVar = <Redirect to="/home" />
@@ -95,10 +105,9 @@ class Navbar extends Component {
                     <div class="container-fluid">
                         <div class="navbar-header">
                             <a class="navbar-brand"><Link to="/home"><img class="yelpLogo" src={yelp_logo} /></Link></a>
+                            {customerFeatures}
                         </div>
-                        <ul class="nav navbar-nav">
-                            {this.state.customeractionsFlag && <li><Link to="/create">Events</Link></li>}
-                        </ul>
+
 
                         {navLogin}
                     </div>

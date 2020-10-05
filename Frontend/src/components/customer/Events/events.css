@@ -6,7 +6,12 @@
   }
   .tr-onerow{ 
     display: table-row; 
-    height: 100%;
+    height: 30%;
+    background-color: white;
+  }
+  .tr-tworow{ 
+    display: table-row; 
+    height: 70%;
     background-color: white;
   }
   .td-onerow1{ 
@@ -22,7 +27,32 @@
     width: 15%;
     vertical-align: center;
   }
+  .td-tworow1{ 
+    display: table-cell; 
+    width: 15%;
+  }
+  .td-tworow2{ 
+    display: table-cell; 
+    width: 60%;
+  }
+  .td-tworow3{ 
+    display: table-cell; 
+    width: 15%;
+    vertical-align: center;
+  }
   .card-img-top{
     height: 250px;
     width: 600px;
+  }
+  .search-class{
+    padding-top: 0.25%;
+    padding-bottom: 1%;
+    display: flex;
+    position:absolute;
+    left : 20%
+  }
+  .Reviews{
+    width: 100%;
+    display: inline-block;
+    border:0.25px solid rgba(194, 191, 191, 0.8);
   }

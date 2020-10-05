@@ -17,6 +17,7 @@ import UpdateCustomerProfile from './customer/Profile/UpdateCustomerProfile'
 import SearchRestaurant from './customer/Search/SearchRestaurant'
 import CustomerViewofRestaurant from './customer/Search/CustomerViewofRestaurant'
 import MainEventsPage from './customer/Events/MainEventPage'
+import CustomerEvents from './customer/Events/CustomerRegisteredevents'
 import WriteaReview from './customer/review/WriteReview'
 import CustomerOrders from './customer/Orders/CustomerOrders'
 import CustomerOrderHistory from './customer/Orders/CustomerOrderHistory'
@@ -93,9 +94,13 @@ class Main extends Component {
                     render={props => <CustomerOrderHistory  {...props} />}
                     />
                     <Route
-                        path="/mainevents"
+                        path="/mainevents/:id"
                         render={props => <MainEventsPage  {...props} />}
                     />
+                    <Route
+                    path="/customerevents/:id"
+                    render={props => <CustomerEvents  {...props} />}
+                />
 
                     <Route path="/home" component={Home} />
                 </div>

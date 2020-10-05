@@ -11,15 +11,15 @@ class ProfileDetails extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            reviews : []
+            reviews: []
         }
         this.handleOrderPage = this.handleOrderPage.bind(this)
+        this.handleEventsPage = this.handleEventsPage.bind(this)
     }
-    componentDidMount(){
-            axios.get(`http://localhost:3001/reviews/getcustomerreview/${this.props.user.id}`)
+    componentDidMount() {
+        axios.get(`http://localhost:3001/reviews/getcustomerreview/${this.props.user.id}`)
             .then((response) => {
-                if(response.data.message === "success")
-                {
+                if (response.data.message === "success") {
                     console.log("reviews data", response.data.data)
                     this.setState({
                         reviews: response.data.data
@@ -28,10 +28,13 @@ class ProfileDetails extends React.Component {
 
             })
     }
-    handleOrderPage(custID){
+    handleOrderPage(custID) {
         this.props.history.push(`/customerorderhistory/${custID}`)
     }
 
+    handleEventsPage(custID) {
+        this.props.history.push(`/customerevents/${custID}`)
+    }
     render() {
         return (
             <div class="table">
@@ -65,11 +68,11 @@ class ProfileDetails extends React.Component {
                                 {/* <span  class="nav-link" >Update  Restaurant Profile</span>*/}
                             </li>
                             <li class="nav-item">
-                                <button class="profileLinks" onClick={()=>this.handleOrderPage(this.props.user.id)}>Order History</button>
+                                <button class="profileLinks" onClick={() => this.handleOrderPage(this.props.user.id)}>Order History</button>
                                 {/* <span  class="nav-link" >Update  Restaurant Profile</span>*/}
                             </li>
                             <li class="nav-item">
-                                <Link to='#' class="nav-link" onClick={this.handleMainProfile}>Events</Link>
+                                <button class="profileLinks" onClick={() => this.handleEventsPage(this.props.user.id)}>Events</button>
                                 {/* <span  class="nav-link" >Update  Restaurant Profile</span>*/}
                             </li>
                             <li class="nav-item">
@@ -102,12 +105,12 @@ class ProfileDetails extends React.Component {
                         <h2>Reviews</h2>
                         {this.state.reviews.map((review, i) => {
                             return <div class="Reviews">
-                                 <h4>{review.ratings}/5</h4>
-                                 <h5>{review.restaurantName}</h5>
-                                 <h6> <Moment>{review.reviewDate}</Moment></h6>
-                                 <h6>{review.comments}</h6>
-                             </div>
-                         })}
+                                <h4>{review.ratings}/5</h4>
+                                <h5>{review.restaurantName}</h5>
+                                <h6> <Moment>{review.reviewDate}</Moment></h6>
+                                <h6>{review.comments}</h6>
+                            </div>
+                        })}
                     </div>
                     <div class="td-3">
                         <h4> About Customer</h4>
