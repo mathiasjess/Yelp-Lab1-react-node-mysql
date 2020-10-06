@@ -16,6 +16,7 @@ import EditEvent from './restaurantOwner/EditEvent'
 import EventList from './restaurantOwner/Events/EventList'
 import RestaurantViewOfCustomer from './restaurantOwner/CustomerView/RestaurantViewOfCustomer'
 import UpdateOrder from './restaurantOwner/Orders/UpdateOrder'
+import CustomerReviews from './restaurantOwner/reviews/CustomerReviews'
 import UpdateCustomerProfile from './customer/Profile/UpdateCustomerProfile'
 import SearchRestaurant from './customer/Search/SearchRestaurant'
 import CustomerViewofRestaurant from './customer/Search/CustomerViewofRestaurant'
@@ -83,6 +84,10 @@ class Main extends Component {
                     <Route
                         path="/eventlist/:id"
                         render={props => <EventList {...props} />}
+                    />
+                    <Route
+                        path="/viewcustomerreviews"
+                        render={props => <CustomerReviews {...props} />}
                     />
                     <Route
                         path="/updatecustomerprofile"

@@ -29,6 +29,7 @@ class Menu extends React.Component {
         event.target.type === "file" ? this.setState({[event.target.name]: event.target.files[0]}) : this.setState({
             [event.target.name]: event.target.value
         })
+        console.log(this.state.dishImage1)
     }
 
     handleCategoryChange(event){
@@ -53,6 +54,7 @@ class Menu extends React.Component {
         //     dishCategory: this.state.dishCategory
         // }
         const form = new FormData();
+        console.log("FormData", form);
         form.append("restaurantId",this.props.user.restaurantId);
         form.append("dishName",this.state.dishName);
         form.append("dishIngredients",this.state.dishIngredients);

@@ -24,7 +24,7 @@ router.get('/getcustomerreview', function(req,res) {
     let returnObject = {};
     let param1 = req.query[0]
     console.log(req.query[0])
-    var sql1 = "select * FROM review WHERE id = " + param1 + ""; 
+    var sql1 = "select restaurant.restaurantName, review.ratings, review.comments, review.reviewDate FROM restaurant, review WHERE restaurant.restaurantId = review.restaurantId and id = " + param1 + ""; 
     mysqlConnection.query(sql1,(err,result)=>{
         if(err) {
             returnObject.message = 'error'

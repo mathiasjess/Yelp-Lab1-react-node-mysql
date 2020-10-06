@@ -21,6 +21,7 @@ class ProfileDetails extends React.Component {
             axios.get('http://localhost:3001/restaurantviewofcustomer/getcustomerreview', { params: [this.props.location.aboutProps.id] })
         ])
         .then(axios.spread((response1, response2)=>{
+            console.log(response2.data.data)
             this.setState({
                 profileDetails : response1.data.data[0],
                 reviews : response2.data.data

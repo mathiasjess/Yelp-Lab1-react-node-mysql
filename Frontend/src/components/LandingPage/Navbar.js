@@ -47,7 +47,7 @@ class Navbar extends Component {
         }
         this.props.restaurantProfileLogout(data)
         this.setState({
-            customeractionsFlag : false
+            customeractionsFlag: false
         })
     }
     handleHome() {
@@ -56,7 +56,7 @@ class Navbar extends Component {
         })
     }
     componentDidMount() {
-        if (Cookies.get('id')){
+        if (Cookies.get('id')) {
             this.setState({
                 displayHome: false
             })
@@ -86,13 +86,22 @@ class Navbar extends Component {
         }
 
         let customerFeatures = null;
-        if(Cookies.get('id') && Cookies.get('role' === "customer")){
-            customerFeatures = (
-                <ul class="nav navbar-nav">
-                    <button class="customerFeatures" onClick = {()=>this.props.history.push(`/customerhomepage/${Cookies.get('id')}`)}>Home</button>
-                    <button class="customerFeatures" onClick = {()=>this.props.history.push(`/mainevents/${Cookies.get('id')}`)}>Events</button>
+        if (Cookies.get('id')) {
+            if (Cookies.get('role') === 'customer') {
+                customerFeatures = (
+                    <ul class="nav navbar-nav">
+                        <button class="customerFeatures" onClick={() => this.props.history.push(`/customerhomepage/${Cookies.get('id')}`)}>Home</button>
+                        <button class="customerFeatures" onClick={() => this.props.history.push(`/mainevents/${Cookies.get('id')}`)}>Events</button>
+                    </ul>
+                )
+            }
+            else if(Cookies.get('role') === 'restaurant'){
+                customerFeatures = (
+                    <ul class="nav navbar-nav">
+                <button class="customerFeatures" onClick={() => this.props.history.push(`/restauranthomepage/${Cookies.get('id')}`)}>Home</button>
                 </ul>
-            )
+                )
+            }
         }
         let redirectVar = null;
         // if (cookie.load('cookie')) {

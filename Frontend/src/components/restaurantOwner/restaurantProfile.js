@@ -36,19 +36,7 @@ class RestaurantProfile extends React.Component {
     componentDidMount() {
         axios.all([
             axios.get(`http://localhost:3001/restaurant/fetchMenu/${this.props.user.restaurantId}`),
-            // .then((response) => {
-            //     console.log(response.data)
-            //     this.setState({
-            //         menuData: response.data.data
-            //     })
-            // }),
             axios.get(`http://localhost:3001/restaurantevents/fetchEvents/${this.props.user.restaurantId}`)
-            // .then((response) => {
-            //     console.log(response.data)
-            //     this.setState({
-            //         menuData: response.data.data
-            //     })
-            // })
         ])
         .then(axios.spread((response1, response2)=>{
             this.setState({
@@ -73,31 +61,37 @@ class RestaurantProfile extends React.Component {
                     <p>{this.props.user.description}</p>
                     <p>{this.props.user.timings}</p>
                 </div>
+                <h4> Services</h4>
+                <div class="modeofDelivery">
+                    <h5>{this.props.user.curbPickup ? <span class="glyphicon glyphicon-ok">Curbside Pickup</span> : <span class="glyphicon glyphicon-remove">Curbside Pickup</span>}</h5>
+                    <h5>{this.props.user.yelpDelivery ? <span class="glyphicon glyphicon-ok">Yelp Delivery</span> : <span class="glyphicon glyphicon-remove">Yelp Delivery</span>}</h5>
+                    <h5>{this.props.user.dineIn ? <span class="glyphicon glyphicon-ok">Dine In</span> : <span class="glyphicon glyphicon-remove">Dine In</span>}</h5>
+                </div>
                 <div class="menu">
                     <h2>Restaurant Menu</h2>
-                    <div><h3>Appetizers</h3>
+                    <div class="flex-display-items">
                         {this.state.menuData.map((menu, i) => {
                             // if(menu.dishCategory === "Appetizers"){
-                            return <div class="card" key={i}>
-                                <img src={menu.dishImage1} alt="Avatar" style={{ width: "170px", height: "170px" }} />
+                            return <div class="card1" key={i}>
+                                <img src={`/uploads/${menu.dishImage1}`} alt="Avatar" class = "card-img-top-items" />
                                 <div class="container">
                                     <h4><b>{menu.dishName}</b></h4>
+                                    <h5>Category: {menu.dishCategory}</h5>
                                     <p>{menu.dishDescription}</p>
                                     <p><b>{menu.price}</b></p>
-                                    <button class="btn btn-primary" value={menu.itemID} onClick={()=>this.editDish(menu.itemID)}>Edit Dish</button>
+                                    <button class="btn btn-primary" value={menu.itemID} onClick={()=>this.editDish(menu.itemID)}>Edit Dish/View Details</button>
                                    {/* <Link to = {`/editdish/${menu.itemID}`}>Edit Dish</Link> */}
                                 </div>
                             </div>
                             // }
                             console.log(menu.dishName)
                         })}
-
-                    </div>
+                </div>
                 </div>
                 <div class="menu">
                     <h2>Events</h2>
                     {this.state.eventData.map((event, i) => {
-                        return <div class="card" key={i}>
+                        return <div class="card1" key={i}>
                             <div class="container">
                                 <h4><b>{event.eventName}</b></h4>
                                 <p>{event.dishDescription}</p>
@@ -106,7 +100,7 @@ class RestaurantProfile extends React.Component {
                                 <p>{event.eventLocation}</p>
                                 <p><b>{event.eventHashtag}</b></p>
                                 <button class="btn btn-primary" value={event.eventId} onClick={()=> this.vieweventDetails(event.eventId)}>Edit Event</button>
-                                <button class="btn btn-primary" value={event.eventId} onClick={()=> this.registeredList(event.eventId)}>Customer Registration Info</button>
+                                <button class="btn btn-primary" value={event.eventId} onClick={()=> this.registeredList(event.eventId)}>Registered List</button>
                             </div>
                         </div>
                     })}

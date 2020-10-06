@@ -9,6 +9,7 @@ const saltRounds = 10;
 const path = require('path');
 var multer = require('multer')  
 
+router.use(express.static(__dirname+"./public/"));
 var filepath = "";
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -92,9 +93,10 @@ router.post('/restaurantlogin', function (req, res) {
 });
 
 //Router to handle post request to update restaurant Profile Data
-router.post('/restaurantprofileUpdate/:id', function (req, res) {
+router.post('/restaurantprofileUpdate/:id',upload.single('file'), function (req, res) {
     let returnObject = {};
     console.log("ID", req.params.id);
+    if(req.file){
     var sql3 = "update restaurant set restaurantImage ='" + req.body.restaurantImage
         + "',restaurantName='" + req.body.restaurantName
         + "',email='" + req.body.email
@@ -106,10 +108,13 @@ router.post('/restaurantprofileUpdate/:id', function (req, res) {
         + "',country='" + req.body.country
         + "',zipcode='" + req.body.zipcode
         + "',timings='" + req.body.timings
+        + "',restaurantImage ='"+ req.file.originalname
         + "',curbPickup='" + req.body.curbPickup
         + "',dineIn='" + req.body.dineIn
         + "',yelpDelivery ='" + req.body.yelpDelivery
         + "' where restaurantId='" + req.params.id + "'";
+
+        console.log(sql3)
     mysqlConnection.query(sql3, (err, result) => {
         console.log("result", result);
         if (err) {
@@ -121,7 +126,7 @@ router.post('/restaurantprofileUpdate/:id', function (req, res) {
             returnObject.data = result;
             res.json(returnObject);
         }
-    });
+    })};
 });
 
 //Router to handle get request to fetch dishes
@@ -146,14 +151,14 @@ router.get('/restaurantprofiledetails/:id', function(req,res) {
 //Router to handle post request to add dishes to Menu
 router.post('/updateMenu', upload.single('dishImage1'),function (req, res) {
     let returnObject = {};
-    console.log("filepath",filepath)
+    console.log("req.file", req.file)
     if(req.file){
         let sql4 = "insert into menu (restaurantId, dishName, dishIngredients, dishDescription, dishImage1,price,dishCategory) values ('" +
         req.body.restaurantId + "', '" +
         req.body.dishName + "', '" +
         req.body.dishIngredients + "','" +
         req.body.dishDescription + "','" +
-        req.file.originalname + "','" +
+        req.file.filename + "','" +
         // req.file.dishImage2 + "','" +
         // req.file.dishImage3 + "','" +
         // req.file.dishImage4 + "','" +

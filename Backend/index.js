@@ -24,7 +24,7 @@ var restaurant = require('./routes/restaurant')
 var restaurantevents = require('./routes/restaurant/restaurantevents');
 var restaurantorders = require('./routes/restaurant/restaurantorders')
 var customerdetails = require('./routes/restaurant/customerdetails')
-
+var restaurantreviews = require('./routes/restaurant/restaurantreviews')
 
 //use cors to allow cross origin resource sharing
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
@@ -37,8 +37,8 @@ app.use(session({
     duration: 60 * 60 * 1000,    // Overall duration of Session : 30 minutes : 1800 seconds
     activeDuration: 5 * 60 * 1000
 }));
+// app.use(express.static(path.join(__dirname + "./public")));
 app.use(express.static(path.join(__dirname + 'public')));
-// app.use(express.static(path.join(__dirname + 'public')));
 
 // app.use(bodyParser.urlencoded({
 //     extended: true
@@ -84,6 +84,9 @@ app.use('/restaurantevents',restaurantevents)
 
 //Routes to handle Calls for restaurant orders
 app.use('/restaurantorders',restaurantorders)
+
+//Routes to handle Calls for restaurant reviews
+app.use('/restaurantreviews', restaurantreviews)
 
 //Routes to handle Calls for customer details
 app.use('/restaurantviewofcustomer',customerdetails)

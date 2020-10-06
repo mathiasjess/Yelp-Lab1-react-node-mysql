@@ -24,21 +24,32 @@ class UpdateRestaurantProfile extends React.Component {
             zipcode: this.props.user.zipcode,
             restaurantImage: this.props.user.restaurantImage,
             timings: this.props.user.timings,
-            curbPickup: this.props.user.curbPickup,
-            dineIn: this.props.user.dineIn,
-            yelpDelivery: this.props.user.yelpDelivery
+            delivery: {
+                curbPickup: Boolean(this.props.user.curbPickup),
+                dineIn: Boolean(this.props.user.dineIn),
+                yelpDelivery: Boolean(this.props.user.yelpDelivery)
+            },
         }
 
         this.handleRestaurantInfoUpdate = this.handleRestaurantInfoUpdate.bind(this)
         this.updateRestaurantProfile = this.updateRestaurantProfile.bind(this)
+        this.handledeliveryOptions = this.handledeliveryOptions.bind(this)
     } 
     handleRestaurantInfoUpdate(event) {
         event.preventDefault();
-        event.target.type === "checkbox"? 
-        this.setState({[event.target.name] : event.target.checked}) : 
-        this.setState({[event.target.name]: event.target.value})
-        console.log(event.target.value)
+        event.target.type === "file" ? this.setState({[event.target.name]: event.target.files[0]}) : this.setState({[event.target.name]: event.target.value})
 
+    }
+    handledeliveryOptions(e) {
+        const name = e.target.name;
+        this.setState((prevState) => {
+            return {
+                delivery: {
+                    ...prevState.delivery,
+                    [name]: !prevState.delivery[name]
+                }
+            }
+        })
     }
     updateRestaurantProfile(event){
         event.preventDefault();
@@ -52,11 +63,10 @@ class UpdateRestaurantProfile extends React.Component {
             state: this.state.state,
             country: this.state.country,
             zipcode: this.state.zipcode,
-            restaurantImage: this.state.restaurantImage,
             timings: this.state.timings,
-            curbPickup: this.state.curbPickup,
-            dineIn: this.state.dineIn,
-            yelpDelivery: this.state.yelpDelivery,
+            curbPickup: Number(this.state.delivery.curbPickup),
+            dineIn: Number(this.state.delivery.dineIn),
+            yelpDelivery: Number(this.state.delivery.yelpDelivery),
         }
         axios.post(`http://localhost:3001/restaurant/restaurantprofileUpdate/${this.props.user.restaurantId}`,data)
         .then(response => {
@@ -145,21 +155,21 @@ class UpdateRestaurantProfile extends React.Component {
                                 <li class="BusinessName"><label class="u-nowrap">
                                     <input type="checkbox"
                                         name="curbPickup"
-                                        checked={this.state.curbPickup}
-                                        onChange={this.handleRestaurantInfoUpdate} />
+                                        checked={this.state.delivery.curbPickup}
+                                        onChange={this.handledeliveryOptions} />
                                         Curbside Pickup</label></li>
 
                                 <li class="BusinessName"><label class="u-nowrap">
                                     <input type="checkbox"
                                         name="dineIn"
-                                        checked={this.state.dineIn}
-                                        onChange={this.handleRestaurantInfoUpdate} />
+                                        checked={this.state.delivery.dineIn}
+                                        onChange={this.handledeliveryOptions} />
                                         Dine In</label></li>
                                 <li class="BusinessName"><label class="u-nowrap">
                                     <input type="checkbox"
                                         name="yelpDelivery"
-                                        checked={this.state.yelpDelivery}
-                                        onChange={this.handleRestaurantInfoUpdate} />
+                                        checked={this.state.delivery.yelpDelivery}
+                                        onChange={this.handledeliveryOptions} />
                                         Yelp Delivery</label></li>
                             </ul>
                         </div>
