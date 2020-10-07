@@ -16,7 +16,8 @@ class EditDish extends React.Component {
             dishImage3 :'',
             dishImage4 :'',
             price :'',
-            dishCategory :''
+            dishCategory :'',
+            dishData : []
         }
         this.handleMenuChange = this.handleMenuChange.bind(this);
         this.updateDish = this.updateDish.bind(this)
@@ -55,8 +56,9 @@ class EditDish extends React.Component {
             })       
 
     }
-    deleteDish(ID){
-        axios.delete(`http://localhost:3001/restaurant/deleteMenu/${this.state.itemID}`)
+    deleteDish(event){
+        event.preventDefault(); 
+        axios.delete(`http://localhost:3001/restaurant/deleteMenu/${this.props.match.params.id}`)
         .then(response =>{
             if(response.data.message ==="success"){
                 alert("Deleted dish")
@@ -74,14 +76,16 @@ class EditDish extends React.Component {
         .then((response) =>{
             console.log(response.data.data)
             if(response.data.message === "success"){
-
-                this.setState({
-                    itemID : this.props.match.params.id,
-                    dishName : response.data.data.dishName,
-                    dishIngredients :response.data.data.dishIngredients,
-                    dishDescription :response.data.data.dishDescription,
-                    price :response.data.data.price,
-                    dishCategory :response.data.data.dishCategory
+                response.data.data.map((dish)=>{
+                    return this.setState({
+                        itemID: this.props.match.params.id,
+                        dishName :dish.dishName,
+                        dishIngredients :dish.dishIngredients,
+                        dishDescription :dish.dishDescription,
+                        dishImage1 :dish.dishImag1,
+                        price :dish.price,
+                        dishCategory :dish.dishCategory,
+                    })
                 })
             }
         })

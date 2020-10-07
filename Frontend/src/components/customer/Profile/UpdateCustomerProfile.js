@@ -10,66 +10,71 @@ class UpdateCustomerProfile extends React.Component {
         super()
         this.state = {
             id: '',
-            email: '', 
+            email: '',
             firstName: '',
             lastName: '',
             DOB: '',
-            location : '',
+            location: '',
             city: '',
             state: '',
             country: '',
             nickName: '',
-            phoneNumber : '',
-            thingsILove : '',
-            findmeIn : '',
-            websiteDetails : '',
-            favourites : '',
-            headline : '',
+            phoneNumber: '',
+            thingsILove: '',
+            findmeIn: '',
+            websiteDetails: '',
+            profileImage: '',
+            favourites: '',
+            headline: '',
             zipcode: ''
         }
         this.handleChange = this.handleChange.bind(this)
         this.updateProfile = this.updateProfile.bind(this)
+        this.updateallprofileData = this.updateallprofileData.bind(this);
     }
     handleChange(event) {
         event.preventDefault();
-        this.setState({
+        event.target.type === "file" ? this.setState({ [event.target.name]: event.target.files[0] }) : this.setState({
             [event.target.name]: event.target.value
         })
     }
 
     updateProfile(event) {
         event.preventDefault();
-        const data = {
-            id: this.props.user.id,
-            email: this.state.email,
-            firstName: this.state.firstName,
-            lastName: this.state.lastName,
-            DOB: this.state.DOB,
-            location: this.state.location,
-            city: this.state.city,
-            state: this.state.state,
-            country: this.state.country,
-            nickName: this.state.nickName,
-            phoneNumber: this.state.phoneNumber,
-            thingsILove: this.state.thingsILove,
-            findmeIn: this.state.findmeIn,
-            websiteDetails: this.state.websiteDetails,
-            favourites: this.state.favourites,
-            headline: this.state.headline,
-            zipcode: this.state.zipcode
-        }
+        const data = new FormData()
+        data.append("id", this.props.user.id);
+        data.append("email", this.state.email);
+        data.append("firstName", this.state.firstName);
+        data.append("lastName", this.state.lastName);
+        data.append("DOB", this.state.DOB);
+        data.append("location", this.state.location);
+        data.append("city", this.state.city);
+        data.append("state", this.state.state);
+        data.append("country", this.state.country);
+        data.append("nickName", this.state.nickName);
+        data.append("phoneNumber", this.state.phoneNumber);
+        data.append("thingsILove", this.state.thingsILove);
+        data.append("findmeIn", this.state.findmeIn);
+        data.append("websiteDetails", this.state.websiteDetails);
+        data.append("profileImage", this.state.profileImage)
+        data.append("favourites", this.state.favourites);
+        data.append("headline", this.state.headline);
+        data.append("zipcode", this.state.zipcode);
         axios.put(`http://localhost:3001/customerprofile/updatecustomerprofile`, data)
-        .then((response)=>{
-            if(response.data.message === "success"){
-                alert('Updated Profile')
-                this.props.customerProfileUpdate(data)
+            .then((response) => {
+                if (response.data.message === "success") {
+                    alert('Updated Profile')
+                    this.setState({
+                        profileImage : response.data.data
+                    })
+                    this.updateallprofileData();
 
-            }
-            else if(response.data.message === "error"){
-                alert('Something went wrong. Please try again')
-            }
-            this.props.history.push(`/customerhomepage/${this.props.user.id}`)
-        })
+                }
+                else if (response.data.message === "error") {
+                    alert('Something went wrong. Please try again')
+                }
+                this.props.history.push(`/customerhomepage/${this.props.user.id}`)
+            })
     }
     componentDidMount() {
         this.setState({
@@ -92,6 +97,30 @@ class UpdateCustomerProfile extends React.Component {
             zipcode: this.props.user.zipcode
         })
     }
+    updateallprofileData(){
+        const data = {
+            id: this.props.user.id,
+            email: this.state.email,
+            firstName: this.state.firstName,
+            lastName: this.state.lastName,
+            DOB: this.state.DOB,
+            location: this.state.location,
+            city: this.state.city,
+            state: this.state.state,
+            country: this.state.country,
+            nickName: this.state.nickName,
+            phoneNumber: this.state.phoneNumber,
+            thingsILove: this.state.thingsILove,
+            findmeIn: this.state.findmeIn,
+            websiteDetails: this.state.websiteDetails,
+            profileImage : this.state.profileImage,
+            favourites: this.state.favourites,
+            headline: this.state.headline,
+            zipcode: this.state.zipcode
+        }
+        this.props.customerProfileUpdate(data)
+
+    }
     render() {
         return (
             <div class="biz-site-expanded-grid-content-column">
@@ -100,6 +129,11 @@ class UpdateCustomerProfile extends React.Component {
                     <div class="biz-info-section">
                         <div class="biz-info-row">
                             <ul>
+                                <li class="BusinessName"><label class="u-nowrap">Profile Image</label></li>
+                                <li><input type="file"
+                                    name="profileImage"
+                                    onChange={this.handleChange}
+                                    class="inputFields" /></li>
                                 <li class="BusinessName"><label class="u-nowrap">First Name</label></li>
                                 <li><input type="text" class="inputFields"
                                     onChange={this.handleChange}

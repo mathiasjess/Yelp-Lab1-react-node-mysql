@@ -2,7 +2,7 @@
   display: table; 
   width: 100%;
   height: 100%;
-position: absolute; top: 7%; bottom: 0; left: 0; right: 0
+  position: absolute; top: 7%; bottom: 0; left: 0; right: 0
 }
 .tr-top{ 
   display: table-row; 
@@ -11,17 +11,17 @@ position: absolute; top: 7%; bottom: 0; left: 0; right: 0
 }
 .td-top1{ 
   display: table-cell; 
-  width: 20%;
+  width: 15%;
   vertical-align: middle;
   text-align: center;
 }
 .td-top2{ 
   display: table-cell; 
-  width: 60%;
+  width: 55%;
 }
 .td-top3{ 
   display: table-cell; 
-  width: 20%;
+  width: 30%;
   vertical-align: middle;
 }
 .tr-middle1{
@@ -32,28 +32,29 @@ position: absolute; top: 7%; bottom: 0; left: 0; right: 0
 
 .td-filter{ 
   display: table-cell; 
-  width: 20%;
+  width: 15%;
+  align-items: center;
 }
 .tr-filtermode{
   top: 0%;
   height: 250px;
-  justify-content: left;
+  justify-content: center;
 }
 .tr-filterlocation{
   height : 250px;
+  justify-content: center;
 }
 .tr-filterOthers{
   height : 30%;
+  justify-content: center;
 }
 .td-restaurant{ 
   display: table-cell; 
   width: 55%;
-  align-items: center;
 }
 .td-maps{ 
   display: table-cell; 
-  width: 25%;
-  vertical-align: middle;
+  width: 30%;
 }
 .card{
   width: 600px;

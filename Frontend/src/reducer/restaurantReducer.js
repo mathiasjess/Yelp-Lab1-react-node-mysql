@@ -17,7 +17,9 @@ export const restaurantInitialState = {
     timings: '',
     curbPickup: false,
     dineIn: false,
-    yelpDelivery: false
+    yelpDelivery: false,
+    latitude : '',
+    longitude : ''
 }
 
 const restaurantReducer = ((state = restaurantInitialState, action) => {

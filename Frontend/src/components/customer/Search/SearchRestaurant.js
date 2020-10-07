@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import default_pic from '../../../images/restaurantprofileImage.png'
 import yelp_brand from '../../../images/yelp_brand.png'
 import { Link } from 'react-router-dom'
+import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 
 class SearchRestaurant extends React.Component {
     constructor(props) {
@@ -16,17 +17,19 @@ class SearchRestaurant extends React.Component {
                 curbPickup: false,
                 dineIn: false,
                 yelpDelivery: false,
-                location : false
+                location: false
             },
             searchResults: [],
             staticResults: []
         }
         this.goToRestaurant = this.goToRestaurant.bind(this)
         this.Filter = this.Filter.bind(this)
+        this.displayMarkers = this.displayMarkers.bind(this)
     }
     componentDidMount() {
         axios.get('http://localhost:3001/search/searchforrestaurant', { params: [this.props.location.aboutProps.searchParameter1, this.props.location.aboutProps.searchParameter2] })
             .then((response) => {
+                console.log(response.data.data)
                 if (response.data.message === "success") {
                     this.setState({
                         searchResults: response.data.data,
@@ -40,15 +43,15 @@ class SearchRestaurant extends React.Component {
 
     }
     goToRestaurant(restaurantId) {
-        if(this.state.delivery.curbPickup == true){
+        if (this.state.delivery.curbPickup == true) {
             let delivery_option = 'pickup'
             this.props.history.push(`/customerviewofrestaurant/${restaurantId}/${delivery_option}`)
         }
-        if(this.state.delivery.yelpDelivery == true){
+        if (this.state.delivery.yelpDelivery == true) {
             let delivery_option = 'delivery'
             this.props.history.push(`/customerviewofrestaurant/${restaurantId}/${delivery_option}`)
         }
-            
+
     }
     Filter(e) {
         this.setState({
@@ -64,7 +67,7 @@ class SearchRestaurant extends React.Component {
             }
         }), function () {
             console.log(this.state.delivery.curbPickup)
-            if(this.state.delivery.location === true){
+            if (this.state.delivery.location === true) {
                 this.setState(({
                     searchResults: this.state.searchResults.filter((result) => {
                         return result.curbPickup === Number(this.state.delivery.curbPickup) ||
@@ -74,7 +77,7 @@ class SearchRestaurant extends React.Component {
                     })
                 }), function () { console.log("New results", this.state.searchResults) })
             }
-            else{
+            else {
                 this.setState(({
                     searchResults: this.state.searchResults.filter((result) => {
                         return result.curbPickup === Number(this.state.delivery.curbPickup) ||
@@ -82,12 +85,25 @@ class SearchRestaurant extends React.Component {
                             result.yelpDelivery === Number(this.state.delivery.yelpDelivery);
                     })
                 }), function () { console.log("New results", this.state.searchResults) })
-            }  
+            }
 
         });
 
     }
+    displayMarkers = () => {
+        return this.state.searchResults.map((store, index) => {
+          return <Marker key={index} id={index} position={{
+           lat: store.latitude,
+           lng: store.longitude
+         }}
+         onClick={() => console.log("You clicked me!")} />
+        })
+      }
     render() {
+        const mapStyles = {
+            width: '45rem',
+            height: '50rem',
+          };
         return (
             <div class="table">
                 <div class="tr-top">
@@ -156,13 +172,20 @@ class SearchRestaurant extends React.Component {
                                     <h5>{result.location},{result.city}-{result.zipcode}</h5>
                                     <h6>Cuisine: {result.cuisine}</h6>
                                     <p class="card-text">{result.description}</p>
-                                    <button class="btn btn-danger" onClick={()=>this.goToRestaurant(result.restaurantId)}>Visit website</button>
+                                    <button class="btn btn-danger" onClick={() => this.goToRestaurant(result.restaurantId)}>Visit website</button>
                                 </div>
                             </div>)
                         })}
                     </div>
                     <div class="td-maps">
-                        <p>maps</p>
+                        <Map
+                            google={this.props.google}
+                            zoom={8}
+                            style={mapStyles}
+                            initialCenter={{ lat: 37.40377490, lng: -121.87985110 }}
+                        >
+                            {this.displayMarkers()}
+                        </Map>
                     </div>
                 </div>
             </div>
@@ -175,4 +198,6 @@ const mapStateToProps = state => ({
     user: state.customerReducer
 });
 
-export default connect(mapStateToProps)(SearchRestaurant);
+export default GoogleApiWrapper({
+    apiKey: 'AIzaSyCiheh-O9omWKbtCfWf-S539GT82IK8aNQ'
+  })(connect(mapStateToProps)(SearchRestaurant));

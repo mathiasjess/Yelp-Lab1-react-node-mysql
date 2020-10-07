@@ -55,15 +55,14 @@ class CustomerHomePage extends React.Component {
                 <input class="form-control mr-sm-2" name = "searchParameter1" type="text" onChange = {this.captureSearchParameters} placeholder="dish names,cuisines," aria-label="Search" />
                 <input class="form-control mr-sm-2" name = "searchParameter2" type="text" onChange={this.captureSearchParameters} placeholder="location, zipcode" aria-label="Search" />
                 {/*<button class="btn btn-outline-success my-2 my-sm-0" onClick = {this.searchRestaurant} type="submit">Search</button>*/}
-                <Link to ={{pathname : '/searchrestaurant', 
+                <button class= "btn btn-danger"><Link to ={{pathname : '/searchrestaurant', 
                                                                     aboutProps:
                                                                          {searchParameter1 : this.state.searchParameter1,
                                                                           searchParameter2 : this.state.searchParameter2
-                                                                        }}}>Search</Link>
+                                                                        }}} class = "search-link">Search</Link></button>
                 </form>
                 </div>
                 <div class="td-top3">
-                <Link to='#' class="nav-link" onClick={this.handleAddMenu}>Events</Link>
                 </div>
                 </div>
                 {/* {searchactive? <SearchRestaurant {...this.state.props} />: <ProfileDetails />}*/}

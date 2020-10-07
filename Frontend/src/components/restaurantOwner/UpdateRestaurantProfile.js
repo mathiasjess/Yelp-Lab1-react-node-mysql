@@ -5,7 +5,7 @@ import Cookies from 'js-cookie';
 import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import { connect } from 'react-redux';
-import {restaurantProfileUpdate} from '../../actions/restaurantAction'
+import { restaurantProfileUpdate } from '../../actions/restaurantAction'
 import restaurantprofileImage from '../../images/restaurantprofileImage.png'
 
 
@@ -34,10 +34,11 @@ class UpdateRestaurantProfile extends React.Component {
         this.handleRestaurantInfoUpdate = this.handleRestaurantInfoUpdate.bind(this)
         this.updateRestaurantProfile = this.updateRestaurantProfile.bind(this)
         this.handledeliveryOptions = this.handledeliveryOptions.bind(this)
-    } 
+        this.updateallprofileData = this.updateallprofileData.bind(this)
+    }
     handleRestaurantInfoUpdate(event) {
         event.preventDefault();
-        event.target.type === "file" ? this.setState({[event.target.name]: event.target.files[0]}) : this.setState({[event.target.name]: event.target.value})
+        event.target.type === "file" ? this.setState({ [event.target.name]: event.target.files[0] }) : this.setState({ [event.target.name]: event.target.value })
 
     }
     handledeliveryOptions(e) {
@@ -51,8 +52,43 @@ class UpdateRestaurantProfile extends React.Component {
             }
         })
     }
-    updateRestaurantProfile(event){
+    updateRestaurantProfile(event) {
         event.preventDefault();
+        const data = new FormData()
+        data.append('restaurantName', this.state.restaurantName);
+        data.append('email', this.state.email);
+        data.append('description', this.state.description);
+        data.append('contact', this.state.contact);
+        data.append('location', this.state.location);
+        data.append('city', this.state.city);
+        data.append('state', this.state.state);
+        data.append('country', this.state.country);
+        data.append('zipcode', this.state.zipcode);
+        data.append('timings', this.state.timings);
+        data.append('restaurantImage', this.state.restaurantImage);
+        data.append('curbPickup', Number(this.state.delivery.curbPickup));
+        data.append('dineIn', Number(this.state.delivery.dineIn));
+        data.append('yelpDelivery', Number(this.state.delivery.yelpDelivery));
+        axios.post(`http://localhost:3001/restaurant/restaurantprofileUpdate/${this.props.user.restaurantId}`, data)
+            .then(response => {
+                if (response.data.message === "success") {
+                    this.setState({
+                        restaurantImage: response.data.data
+                    })
+                    // console.log('Getting Cookie ID', Cookies.get('id'))
+                    this.updateallprofileData();
+
+                    this.props.history.push(`/restauranthomepage/${this.props.user.restaurantId}`);
+                    alert('Saved Changes to Profile')
+                }
+                else if (response.data.message === "error") {
+                    alert("Something Went wrong. Could not update")
+                    this.props.history.push(`/restauranthomepage/${this.props.user.restaurantId}`);
+                }
+            })
+
+    }
+    updateallprofileData() {
         const data = {
             restaurantName: this.state.restaurantName,
             email: this.state.email,
@@ -63,28 +99,17 @@ class UpdateRestaurantProfile extends React.Component {
             state: this.state.state,
             country: this.state.country,
             zipcode: this.state.zipcode,
+            restaurantImage: this.state.restaurantImage,
             timings: this.state.timings,
             curbPickup: Number(this.state.delivery.curbPickup),
             dineIn: Number(this.state.delivery.dineIn),
             yelpDelivery: Number(this.state.delivery.yelpDelivery),
         }
-        axios.post(`http://localhost:3001/restaurant/restaurantprofileUpdate/${this.props.user.restaurantId}`,data)
-        .then(response => {
-            if(response.data.message === "success"){
-                console.log("The data got is", response.data)
-                // console.log('Getting Cookie ID', Cookies.get('id'))
-                this.props.restaurantProfileUpdate(data);
-                
-                this.props.history.push(`/restauranthomepage/${this.props.user.restaurantId}`);
-                alert('Saved Changes to Profile')
-            }
-            else if (response.data.message === "error"){
-                alert("Something Went wrong. Could not update")
-                this.props.history.push(`/restauranthomepage/${this.props.user.restaurantId}`);
-            }
-        })
+        console.log("After update", data)
+        this.props.restaurantProfileUpdate(data)
 
     }
+
     render() {
         return (
             <div class="biz-site-expanded-grid-content-column">
@@ -94,9 +119,9 @@ class UpdateRestaurantProfile extends React.Component {
                         <div class="biz-info-row">
                             <ul>
                                 <li class="BusinessName"><label class="u-nowrap">Restaurant Profile Image</label></li>
-                                <li><input type="file" 
-                                    name="restaurantImage" 
-                                    onChange={this.handleRestaurantInfoUpdate} 
+                                <li><input type="file"
+                                    name="restaurantImage"
+                                    onChange={this.handleRestaurantInfoUpdate}
                                     class="inputFields" /></li>
                                 <li class="BusinessName"><label class="u-nowrap">Restaurant Name</label></li>
                                 <li><input type="text" class="inputFields"
@@ -132,8 +157,8 @@ class UpdateRestaurantProfile extends React.Component {
                                 <li><textarea class="inputFields"
                                     name="description"
                                     rows="4" cols="50"
-                                    placeholder = {this.props.user.description}
-                                    onChange = {this.handleRestaurantInfoUpdate}>
+                                    placeholder={this.props.user.description}
+                                    onChange={this.handleRestaurantInfoUpdate}>
                                 </textarea></li>
                                 <li class="BusinessName"><label class="u-nowrap">Contact Information</label></li>
                                 <li><input type="text" class="inputFields"
@@ -176,7 +201,7 @@ class UpdateRestaurantProfile extends React.Component {
 
                     </div>
                     <div class="SubmitUpdate">
-                        <button type="submit" onClick = {this.updateRestaurantProfile} class="ybtn ybtn--primary"><span>Save Changes</span></button>
+                        <button type="submit" onClick={this.updateRestaurantProfile} class="ybtn ybtn--primary"><span>Save Changes</span></button>
                         <Link to="#" >Cancel</Link>
                     </div>
                 </form>
@@ -190,11 +215,11 @@ const mapStateToProps = state => ({
     user: state.restaurantReducer
 });
 
-function mapDispatchToProps(dispatch){
+function mapDispatchToProps(dispatch) {
     return {
-        restaurantProfileUpdate : (data) => dispatch(restaurantProfileUpdate(data))
+        restaurantProfileUpdate: (data) => dispatch(restaurantProfileUpdate(data))
     }
 }
 
 // export default connect(mapStateToProps)(UpdateRestaurantProfile);
-export default withRouter(connect(mapStateToProps,mapDispatchToProps)(UpdateRestaurantProfile));
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(UpdateRestaurantProfile));

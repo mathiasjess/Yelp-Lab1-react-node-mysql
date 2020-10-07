@@ -60,3 +60,8 @@ position: absolute; top: 7%; bottom: 0; left: 0; right: 0
   -ms-flex-line-pack: center;
   align-content: center;
 }
+.search-link{
+  color: white;
+  font-weight: bold;
+  text-decoration: none;
+}

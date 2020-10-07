@@ -53,7 +53,7 @@
     color: #2b273c;
 }
 .restaurantdetails{
-    width: 80%;
+    width: 60%;
     display: flex;
     justify-content: space-between;
     line-height: 20px;
@@ -102,7 +102,20 @@
   color: red;
 }
 .modeofDelivery{
-  width: 100%;
+  width: 60%;
   display: flex;
-  justify-content:space-evenly;
+  justify-content: left;
+}
+.card-img-top-profile{
+  height: 30rem;
+  width: 60rem;
+}
+.maps{
+  float: right;
+  height: 30rem;
+  width: 45rem;
+}
+.header{
+  display: flex;
+  justify-content: space-between;
 }

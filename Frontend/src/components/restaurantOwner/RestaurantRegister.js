@@ -11,7 +11,11 @@ class restaurantRegister extends React.Component {
             restaurantname : "",
             email : "",
             password : "",
-            location : ""
+            location : "",
+            city: "",
+            state : "",
+            country : "",
+            zipcode: "",
         }
         this.ChangeHandler = this.ChangeHandler.bind(this)
         this.submitRegister = this.submitRegister.bind(this)
@@ -30,8 +34,13 @@ class restaurantRegister extends React.Component {
         restaurantname: this.state.restaurantname,
         email: this.state.email,
         password: this.state.password,
-        location : this.state.location
+        location : this.state.location,
+        city: this.state.city,
+        state : this.state.state,
+        country : this.state.country,
+        zipcode: this.state.zipcode
     }
+    console.log(restaurantRegistrationData)
     //set the with credentials to true
     axios.defaults.withCredentials = true;
     //make a post request with the user data
@@ -45,8 +54,7 @@ class restaurantRegister extends React.Component {
         }
     })
     .catch(error=>{
-        console.log(error.response.data.msg)
-        alert(error.response.data.msg)
+        alert("Could not register")
     })
     }
     render() {
@@ -63,7 +71,12 @@ class restaurantRegister extends React.Component {
                         <input onChange={this.ChangeHandler} type="password" class="form-control" name="password" placeholder="Password" />
                     </div>
                     <div class="form-group">
-                        <input onChange={this.ChangeHandler} type="text" class="form-control" name="location" placeholder="location" />
+                        <label> Location</label>
+                        <input onChange={this.ChangeHandler} type="text" class="form-control" name="location" placeholder="Building, Street Name" />
+                        <input onChange={this.ChangeHandler} type="text" class="form-control" name="city" placeholder="City" />
+                        <input onChange={this.ChangeHandler} type="text" class="form-control" name="state" placeholder="state" />
+                        <input onChange={this.ChangeHandler} type="text" class="form-control" name="country" placeholder="Country" />
+                        <input onChange={this.ChangeHandler} type="text" class="form-control" name="zipcode" placeholder="zipcode" />
                     </div>
                     <button onClick={this.submitRegister} class="btn btn-danger">Sign Up</button>
                 </div>

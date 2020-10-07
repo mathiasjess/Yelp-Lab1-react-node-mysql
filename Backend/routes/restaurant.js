@@ -1,5 +1,10 @@
 var express = require('express');
 var router = express.Router();
+const googleMapsClient = require('@google/maps').createClient({
+    key: 'AIzaSyCiheh-O9omWKbtCfWf-S539GT82IK8aNQ'
+});
+
+// var geocoder = require('geocoder');
 
 var mysqlConnection = require('../models/index')
 
@@ -7,9 +12,10 @@ var bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 const path = require('path');
-var multer = require('multer')  
+var multer = require('multer');
+const { Console } = require('console');
 
-router.use(express.static(__dirname+"./public/"));
+router.use(express.static(__dirname + "./public/"));
 var filepath = "";
 var storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -20,40 +26,67 @@ var storage = multer.diskStorage({
         cb(null, filepath);
     }
 });
+
 var upload = multer({ storage: storage });
+
 
 
 //Route to handle Post Request Call for Restaurant Registration
 router.post('/restaurantregister', function (req, res) {
+    let addressDetails = []
+    let lat = null
+    let lon = null
+    let address = req.body.location + ',' + req.body.city + ',' + req.body.state
+    console.log("address", address)
     let returnObject = {}
     restaurantname = req.body.restaurantname
     email = req.body.email
     password = req.body.password
     location = req.body.location
-
-    new Promise((resolve, reject) => {
-        bcrypt.genSalt(saltRounds, (err, salt) => {
-            if (err) throw err;
-            bcrypt.hash(password, salt, (err, encrypted) => {
-                if (err) throw err;
-                resolve(encrypted)
+    console.log("zipcode", req.body.zipcode)
+    // Geocode an address.
+    googleMapsClient.geocode({
+        address: address
+    }, function (err, response) {
+        if (!err) {
+            console.log(response.json.results)
+            lat = response.json.results[0].geometry.location.lat
+            lon = response.json.results[0].geometry.location.lng
+            new Promise((resolve, reject) => {
+                bcrypt.genSalt(saltRounds, (err, salt) => {
+                    if (err) throw err;
+                    bcrypt.hash(password, salt, (err, encrypted) => {
+                        if (err) throw err;
+                        resolve(encrypted)
+                    })
+                })
             })
-        })
-    })
-        .then((value) => {
-            var sql1 = "insert into restaurant (restaurantName, email, password, location) values ('" + restaurantname + "', '" + email + "', '" + value + "','" + location + "')";
-            mysqlConnection.query(sql1, function (error, result) {
-                if (error) {
-                    returnObject.message = "error";
-                    res.return(returnObject);
-                }
+                .then((value) => {
+                    var sql1 = "insert into restaurant (restaurantName, email, password, location,city, state, zipcode, country, latitude, longitude) values ('" + restaurantname + "', '"
+                        + email + "', '"
+                        + value + "','"
+                        + req.body.location + "','"
+                        + req.body.city + "','"
+                        + req.body.state + "','"
+                        + req.body.zipcode + "','" + req.body.country + "', " + lat + ", " + lon + ")";
+                    console.log(sql1)
+                    console.log("lat, lon", lat, lon)
+                    mysqlConnection.query(sql1, function (error, rows) {
+                        if (error) {
+                            returnObject.message = "error";
+                            returnObject.data = []
+                            res.json(returnObject);
+                        }
+                        else {
+                            returnObject.message = "Registered Successfully";
+                            returnObject.data = rows[0]
+                            res.json(returnObject);
+                        }
+                    });
+                });
+        }
+    });
 
-                if (result.affectedRows === 1) {
-                    returnObject.message = "Registered Successfully";
-                    res.json(returnObject);
-                }
-            });
-        })
 });
 
 //Route to handle Post Request Call to update basic Restaurant Information
@@ -93,11 +126,14 @@ router.post('/restaurantlogin', function (req, res) {
 });
 
 //Router to handle post request to update restaurant Profile Data
-router.post('/restaurantprofileUpdate/:id',upload.single('file'), function (req, res) {
+router.post('/restaurantprofileUpdate/:id', upload.single('restaurantImage'), function (req, res) {
+    let imagename = null;
+    if (req.file) {
+        imagename = req.file.filename
+    }
     let returnObject = {};
     console.log("ID", req.params.id);
-    if(req.file){
-    var sql3 = "update restaurant set restaurantImage ='" + req.body.restaurantImage
+    var sql3 = "update restaurant set restaurantImage ='" + imagename
         + "',restaurantName='" + req.body.restaurantName
         + "',email='" + req.body.email
         + "',description='" + req.body.description
@@ -108,13 +144,12 @@ router.post('/restaurantprofileUpdate/:id',upload.single('file'), function (req,
         + "',country='" + req.body.country
         + "',zipcode='" + req.body.zipcode
         + "',timings='" + req.body.timings
-        + "',restaurantImage ='"+ req.file.originalname
         + "',curbPickup='" + req.body.curbPickup
         + "',dineIn='" + req.body.dineIn
         + "',yelpDelivery ='" + req.body.yelpDelivery
         + "' where restaurantId='" + req.params.id + "'";
 
-        console.log(sql3)
+    console.log(sql3)
     mysqlConnection.query(sql3, (err, result) => {
         console.log("result", result);
         if (err) {
@@ -123,22 +158,22 @@ router.post('/restaurantprofileUpdate/:id',upload.single('file'), function (req,
         }
         else {
             returnObject.message = "success";
-            returnObject.data = result;
+            returnObject.data = imagename;
             res.json(returnObject);
         }
-    })};
+    });
 });
 
 //Router to handle get request to fetch dishes
-router.get('/restaurantprofiledetails/:id', function(req,res) {
+router.get('/restaurantprofiledetails/:id', function (req, res) {
     let returnObject = {};
     console.log("Inside restaurant profile");
     var sql5 = "select * from  restaurant where restaurantId = '" + req.params.id + "'";
-    mysqlConnection.query(sql5,(err,result)=>{
-        if(err) {
+    mysqlConnection.query(sql5, (err, result) => {
+        if (err) {
             returnObject.message = 'error'
         }
-        else{
+        else {
             returnObject.message = "success"
             returnObject.data = result
             res.json(returnObject)
@@ -149,41 +184,41 @@ router.get('/restaurantprofiledetails/:id', function(req,res) {
 })
 
 //Router to handle post request to add dishes to Menu
-router.post('/updateMenu', upload.single('dishImage1'),function (req, res) {
+router.post('/updateMenu', upload.single('dishImage1'), function (req, res) {
     let returnObject = {};
     console.log("req.file", req.file)
-    if(req.file){
+    if (req.file) {
         let sql4 = "insert into menu (restaurantId, dishName, dishIngredients, dishDescription, dishImage1,price,dishCategory) values ('" +
-        req.body.restaurantId + "', '" +
-        req.body.dishName + "', '" +
-        req.body.dishIngredients + "','" +
-        req.body.dishDescription + "','" +
-        req.file.filename + "','" +
-        // req.file.dishImage2 + "','" +
-        // req.file.dishImage3 + "','" +
-        // req.file.dishImage4 + "','" +
-        req.body.price + "','" +
-        req.body.dishCategory + "')";
-    mysqlConnection.query(sql4, (err, result) => {
-        if (err) {
-            returnObject.message = "error";
-            res.json(returnObject);
-        }
-        else {
-            returnObject.message = "success";
-            returnObject.data = result;
-            res.json(returnObject);
-        }
-    });
+            req.body.restaurantId + "', '" +
+            req.body.dishName + "', '" +
+            req.body.dishIngredients + "','" +
+            req.body.dishDescription + "','" +
+            req.file.filename + "','" +
+            // req.file.dishImage2 + "','" +
+            // req.file.dishImage3 + "','" +
+            // req.file.dishImage4 + "','" +
+            req.body.price + "','" +
+            req.body.dishCategory + "')";
+        mysqlConnection.query(sql4, (err, result) => {
+            if (err) {
+                returnObject.message = "error";
+                res.json(returnObject);
+            }
+            else {
+                returnObject.message = "success";
+                returnObject.data = result;
+                res.json(returnObject);
+            }
+        });
     }
 });
 
 //Router to handle post request to edit dish from menu
-router.put('/editMenu', upload.single('dishImage1'),function (req, res) {
+router.put('/editMenu', upload.single('dishImage1'), function (req, res) {
     let returnObject = {};
     // console.log("filepath",filepath)
     // if(req.file){
-        var sql4 = "update menu set dishName ='" + req.body.dishName
+    var sql4 = "update menu set dishName ='" + req.body.dishName
         + "',dishIngredients ='" + req.body.dishIngredients
         + "',dishDescription ='" + req.body.dishDescription
         // + "',req.file.dishImage1 ='" + req.file.originalname
@@ -208,35 +243,35 @@ router.put('/editMenu', upload.single('dishImage1'),function (req, res) {
 });
 
 //Router to handle post request to fetch dishes
-router.get('/fetchMenu/:id', function(req,res) {
+router.get('/fetchMenu/:id', function (req, res) {
     let returnObject = {};
     console.log("Inside fetch Menu");
     var sql5 = "select * from  menu where restaurantId = '" + req.params.id + "'";
-    mysqlConnection.query(sql5,(err,result)=>{
-        if(err) {
+    mysqlConnection.query(sql5, (err, result) => {
+        if (err) {
             returnObject.message = 'error'
         }
-        else{
+        else {
             returnObject.message = "success"
             returnObject.data = result
             res.json(returnObject)
-            console.log("Menu Data",returnObject)
+            console.log("Menu Data", returnObject)
         }
     })
 
 })
 
 //Router to handle post request to fetch dish to edit or delete
-router.get('/fetchdish/:id', function(req,res) {
+router.get('/fetchdish/:id', function (req, res) {
     console.log("Inside edit dish");
     let returnObject = {};
     console.log("ID", req.params.id);
     var sql8 = "select * from  menu where itemID = '" + req.params.id + "'";
-    mysqlConnection.query(sql8,(err,result)=>{
-        if(err) {
+    mysqlConnection.query(sql8, (err, result) => {
+        if (err) {
             returnObject.message = 'error'
         }
-        else{
+        else {
             returnObject.message = "success"
             returnObject.data = result
             res.json(returnObject)
@@ -246,16 +281,16 @@ router.get('/fetchdish/:id', function(req,res) {
 })
 
 //Router to handle delete request for a dish
-router.delete('/deleteMenu/:id', function(req,res) {
+router.delete('/deleteMenu/:id', function (req, res) {
     let returnObject = {};
     console.log("Inside deleting dish")
     console.log("ID", req.params.id);
-    var sql7 = "delete from  menu where itemID = '" + req.params.id + "'";
-    mysqlConnection.query(sql7,(err,result)=>{
-        if(err) {
+    var sql7 = "delete from  menu where itemID = " + req.params.id + "";
+    mysqlConnection.query(sql7, (err, result) => {
+        if (err) {
             returnObject.message = 'error'
         }
-        else{
+        else {
             returnObject.message = "success"
             returnObject.data = result
             res.json(returnObject)

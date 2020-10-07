@@ -1,5 +1,6 @@
 import React from 'react'
 import axios from 'axios'
+import {connect} from 'react-redux'
 
 class CustomerReviews extends React.Component{
     constructor(props){
@@ -9,7 +10,7 @@ class CustomerReviews extends React.Component{
         }
     }
     componentDidMount(){
-        axios.get(`http://localhost:3001/restaurantreviews//getrestaurantreview/${this.props.restaurant.restaurantId}`)
+        axios.get(`http://localhost:3001/restaurantreviews/getcustomerreview/${this.props.user.restaurantId}`)
         .then(response =>{
             if(response.data.message === "success"){
                 reviews: response.data.data
@@ -36,5 +37,8 @@ class CustomerReviews extends React.Component{
         )
     }
 }
+const mapStateToProps = state => ({
+    user: state.restaurantReducer
+});
 
-export default CustomerReviews
+export default connect(mapStateToProps)(CustomerReviews);
