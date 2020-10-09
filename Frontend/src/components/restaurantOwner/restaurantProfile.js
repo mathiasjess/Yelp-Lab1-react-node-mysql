@@ -5,6 +5,7 @@ import restaurantprofileImage from '../../images/restaurantprofileImage.png'
 import { connect } from 'react-redux';
 import { Route, Link, withRouter } from 'react-router-dom';
 import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
+import Moment from 'react-moment';
 
 
 
@@ -50,7 +51,7 @@ class RestaurantProfile extends React.Component {
         const mapStyles = {
             width: '45rem',
             height: '30rem',
-          };
+        };
         return (
             <div class="centeredRight" >
                 <div class="header">
@@ -62,7 +63,7 @@ class RestaurantProfile extends React.Component {
                             style={mapStyles}
                             initialCenter={{ lat: this.props.user.latitude, lng: this.props.user.longitude }}
                         >
-                        <Marker position={{ lat: this.props.user.latitude, lng: this.props.user.longitude}} />
+                            <Marker position={{ lat: this.props.user.latitude, lng: this.props.user.longitude }} />
                         </Map>
                     </div>
                 </div>
@@ -78,7 +79,7 @@ class RestaurantProfile extends React.Component {
                     <p>{this.props.user.timings}</p>
                 </div>
                 <h4> Services</h4>
-                <div class="modeofDelivery">
+                <div class="services">
                     <h5>{this.props.user.curbPickup ? <span class="glyphicon glyphicon-ok">Curbside Pickup     </span> : <span class="glyphicon glyphicon-remove">Curbside Pickup</span>}</h5>
                     <h5>{this.props.user.yelpDelivery ? <span class="glyphicon glyphicon-ok">Yelp Delivery      </span> : <span class="glyphicon glyphicon-remove">Yelp Delivery</span>}</h5>
                     <h5>{this.props.user.dineIn ? <span class="glyphicon glyphicon-ok">Dine In                  </span> : <span class="glyphicon glyphicon-remove">Dine In</span>}</h5>
@@ -89,12 +90,12 @@ class RestaurantProfile extends React.Component {
                     <div class="flex-display-items">
                         {this.state.menuData.map((menu, i) => {
                             // if(menu.dishCategory === "Appetizers"){
-                            return <div class="card1" key={i}>
-                                <img src={`/uploads/${menu.dishImage1}`} alt="Avatar" class="card-img-top-items" />
-                                <div class="container">
-                                    <h4><b>{menu.dishName}</b></h4>
-                                    <h5>Category: {menu.dishCategory}</h5>
-                                    <p>{menu.dishDescription}</p>
+                            return <div class="card-menu" key={i}>
+                                <div class="card-items">
+                                <h5 style={{textAlign: 'center', lineHeight:'2rem'}}><b>{menu.dishName}</b></h5>
+                                    <img src={`/uploads/${menu.dishImage1}`} alt="Avatar" class="card-img-top-menu-items" />
+                                    <p style={{lineHeight:'2rem'}}><b><span class="glyphicon glyphicon-th-list"></span>Category: </b> {menu.dishCategory}</p>
+                                    <p><b>Description: </b>{menu.dishDescription}</p>
                                     <p><b>{menu.price}</b></p>
                                     <button class="btn btn-primary" value={menu.itemID} onClick={() => this.editDish(menu.itemID)}>Edit Dish/View Details</button>
                                     {/* <Link to = {`/editdish/${menu.itemID}`}>Edit Dish</Link> */}
@@ -107,20 +108,24 @@ class RestaurantProfile extends React.Component {
                 </div>
                 <div class="menu">
                     <h2>Events</h2>
+                    <div class="flex-display-items">
                     {this.state.eventData.map((event, i) => {
-                        return <div class="card1" key={i}>
-                            <div class="container">
-                                <h4><b>{event.eventName}</b></h4>
-                                <p>{event.dishDescription}</p>
-                                <p>{event.eventTime}</p>
-                                <p>{event.eventDate}</p>
-                                <p>{event.eventLocation}</p>
+                        return <div class="card-menu" key={i}>
+                            <div class="card-items">
+                                <h4 style={{textAlign: "center"}}><b>{event.eventName}</b></h4>
+                                <p><b> Details: </b>{event.dishDescription}</p>
+                                <p><b>Timings: </b> {event.eventTime}</p>
+                                <p><b>Date: </b><Moment>{event.eventDate}</Moment></p>
+                                <p><b>Location: </b>{event.eventLocation}</p>
                                 <p><b>{event.eventHashtag}</b></p>
+                                <div class="event-actions">
                                 <button class="btn btn-primary" value={event.eventId} onClick={() => this.vieweventDetails(event.eventId)}>Edit Event</button>
                                 <button class="btn btn-primary" value={event.eventId} onClick={() => this.registeredList(event.eventId)}>Registered List</button>
+                                </div>
                             </div>
                         </div>
                     })}
+                    </div>
 
                 </div>
             </div>
@@ -136,4 +141,4 @@ const mapStateToProps = state => ({
 
 export default GoogleApiWrapper({
     apiKey: 'AIzaSyCiheh-O9omWKbtCfWf-S539GT82IK8aNQ'
-  })(withRouter(connect(mapStateToProps)(RestaurantProfile)));
+})(withRouter(connect(mapStateToProps)(RestaurantProfile)));

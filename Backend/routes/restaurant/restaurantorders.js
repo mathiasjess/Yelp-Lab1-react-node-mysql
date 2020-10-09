@@ -5,7 +5,7 @@ var mysqlConnection = require('../../models/index')
 //Router to handle get request for orders summary
 router.get('/restaurantordersummary/:id', function(req,res) {
     let returnObject = {}
-    let sql1 = "SELECT customer.firstName, customer.lastName,ordersummary.customerId, ordersummary.orderID, ordersummary.totalPrice, ordersummary.deliveryOption, ordersummary.delivery_status, ordersummary.deliveryFilter, ordersummary.Date FROM customer, ordersummary where customer.id = ordersummary.customerId and ordersummary.restaurantId = " + req.params.id + "";
+    let sql1 = "SELECT customer.profileImage, customer.firstName, customer.lastName,ordersummary.customerId, ordersummary.orderID, ordersummary.totalPrice, ordersummary.deliveryOption, ordersummary.delivery_status, ordersummary.deliveryFilter, ordersummary.Date FROM customer, ordersummary where customer.id = ordersummary.customerId and ordersummary.restaurantId = " + req.params.id + "";
     console.log(sql1)
     mysqlConnection.query(sql1,(err,result)=>{
         if(err) {
@@ -41,7 +41,7 @@ router.get('/fetchrestaurantorderdetails/:id', function(req,res) {
 //Router to handle get request for orders summary
 router.get('/individualrestaurantordersummary/:id', function(req,res) {
     let returnObject = {}
-    let sql3 = "SELECT customer.firstName, customer.lastName,ordersummary.customerId, ordersummary.orderID, ordersummary.totalPrice, ordersummary.deliveryOption, ordersummary.delivery_status, ordersummary.deliveryFilter, ordersummary.Date FROM customer, ordersummary where customer.id = ordersummary.customerId and ordersummary.orderID = " + req.params.id + "";
+    let sql3 = "SELECT customer.profileImage, customer.firstName, customer.lastName,ordersummary.customerId, ordersummary.orderID, ordersummary.totalPrice, ordersummary.deliveryOption, ordersummary.delivery_status, ordersummary.deliveryFilter, ordersummary.Date FROM customer, ordersummary where customer.id = ordersummary.customerId and ordersummary.orderID = " + req.params.id + "";
     console.log(sql3)
     mysqlConnection.query(sql3,(err,result)=>{
         if(err) {
@@ -77,8 +77,9 @@ router.get('/individualfetchrestaurantorderdetails/:id', function(req,res) {
 //Router to handle updating order status
 router.put('/updateorderstatus',function (req, res) {
     let returnObject = {};
-        var sql5 = "update ordersummary set delivery_status ='" + req.body.delivery_status
-        + "' where orderID='" + req.body.orderID + "'";
+    var sql5 = "update ordersummary set delivery_status ='" + req.body.delivery_status
+    + "',deliveryFilter ='" + req.body.deliveryFilter
+    + "' where orderID ='" + req.body.orderID + "'";
         console.log(sql5)
     mysqlConnection.query(sql5, (err, result) => {
         if (err) {

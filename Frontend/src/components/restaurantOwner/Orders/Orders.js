@@ -4,6 +4,8 @@ import Popup from "reactjs-popup";
 import { connect } from 'react-redux';
 import {Link, withRouter} from 'react-router-dom';
 import '../Orders/orderhistory.css'
+import Moment from 'react-moment';
+import default_image from '../../../images/customer_default_pic.png'
 
 class RestaurantOrderHistory extends React.Component {
     constructor(props) {
@@ -77,13 +79,14 @@ class RestaurantOrderHistory extends React.Component {
             <div class="table">
                 <div class="tr-items1">
                     <div class="td-items1">
-                    <button onClick={() => { this.handleAllOrders() }}>All orders</button>
-                        <h3> Filters</h3>
+                    <ul>
+                    <li><button class="no-show" onClick={() => { this.handleAllOrders() }}>All orders</button></li>
+                    </ul>
                         <ul>
-                        <h4> Pick Up Filters</h4>
-                            <li><button onClick={()=>this.handleFilters('New Order')}>New Order</button></li>
-                            <li><button onClick={()=>this.handleFilters('Delivered Order')}>Delivered Order</button></li>
-                            <li> <button onClick={()=>this.handleFilters('Cancelled Order')}>Cancelled Order</button></li>
+                        <h4 class="Filter-headings">Filters</h4>
+                            <li><button class="no-show" onClick={()=>this.handleFilters('New Order')}>New Order</button></li>
+                            <li><button class="no-show" onClick={()=>this.handleFilters('Delivered')}>Delivered</button></li>
+                            <li> <button class="no-show" onClick={()=>this.handleFilters('Cancelled Order')}>Cancelled Order</button></li>
                         </ul>
                     </div>
                     <div class="td-items2">
@@ -91,20 +94,23 @@ class RestaurantOrderHistory extends React.Component {
                         {this.state.orderSummary.map((summary, i) => {
                             return (
                                 <div class="card-order" key={i}>
+                                <div class="order-header">
+                                {summary.profileImage ? <img src={`/uploads/${summary.profileImage}`} alt="Avatar" class="photo-box" /> : <img  class="photo-box" src={default_image} alt="Avatar"/>}
                                     <Link to={{pathname : '/restaurantviewofcustomer', 
                                                 aboutProps:
                                                 {id : summary.customerId,
                                               }}}>
-                                              <h4>{summary.firstName} {summary.lastName}</h4></Link>
+                                              <h5>{summary.firstName} {summary.lastName}</h5></Link>
+                                </div>
                                     <div class="order-footer">
-                                        <h4>Date: {summary.Date}</h4>
-                                        <h4>Total Price: {summary.totalPrice}</h4>
+                                        <p><b>Date:</b> <Moment>{summary.Date}</Moment></p>
+                                        <p><b>Total Price:</b> {summary.totalPrice}</p>
                                     </div>
                                     <div class="order-footer">
-                                        <h5>Delivery Option: {summary.deliveryOption}</h5>
-                                        <h5>Status: {summary.delivery_status}</h5>
-                                        <h5>Order Type: {summary.deliveryFilter}</h5>
-                                        <button onClick={() => this.updateOrder(summary.orderID)}>Update Order Status</button>
+                                        <p><b>Delivery Option:</b> {summary.deliveryOption}</p>
+                                        <p><b>Status:</b> {summary.delivery_status}</p>
+                                        <p><b>Order Type:</b> {summary.deliveryFilter}</p>
+                                        <button class = "btn btn-primary" onClick={() => this.updateOrder(summary.orderID)}>Update Order Status</button>
                                     </div>
                                 </div>
                             );

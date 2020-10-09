@@ -41,6 +41,7 @@ h1.page-title {
   box-sizing: border-box;
   width: 55.55556%;
   *width: 376px;
+  top: 20%
 }
 ol, ul {
   list-style: none;
@@ -51,11 +52,12 @@ li {
 }
 .BusinessName{
   margin: 0;
-    padding: 0;
+    padding: 10px;
     border: 0;
     font-size: 100%;
     font: inherit;
     vertical-align: baseline;
+
 }
 .u-nowrap {
   white-space: nowrap !important;
@@ -139,4 +141,12 @@ Link{
 }
 .card{
   width: 80%;
+}
+.main-link{
+  margin-top: 5%;
+}
+.order-update{
+  width: 50%;
+  display: flex;
+  justify-content: space-between;
 }

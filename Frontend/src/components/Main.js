@@ -15,6 +15,7 @@ import EditDish from './restaurantOwner/EditDish'
 import EditEvent from './restaurantOwner/EditEvent'
 import EventList from './restaurantOwner/Events/EventList'
 import RestaurantViewOfCustomer from './restaurantOwner/CustomerView/RestaurantViewOfCustomer'
+import Orders from './restaurantOwner/Orders/Orders'
 import UpdateOrder from './restaurantOwner/Orders/UpdateOrder'
 import CustomerReviews from './restaurantOwner/reviews/CustomerReviews'
 import UpdateCustomerProfile from './customer/Profile/UpdateCustomerProfile'
@@ -68,6 +69,10 @@ class Main extends Component {
                     <Route
                         path="/editdish/:id"
                         render={props => <EditDish  {...props} />}
+                    />
+                    <Route
+                        path="/orders"
+                        render={props => <Orders  {...props} />}
                     />
                     <Route
                         path="/updateorder/:id"

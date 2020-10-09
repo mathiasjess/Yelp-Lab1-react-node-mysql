@@ -33,7 +33,7 @@ class ProfileDetails extends React.Component {
             <div class="table">
                 <div class="tr-middle">
                     <div class="td-11">
-                        <img class="photo-box-img" src={default_image} alt="Avatar" />
+                    {this.state.profileDetails.profileImage ? <img src={`/uploads/${this.state.profileDetails.profileImage}`} alt="Avatar" class="photo-box-img" /> : <img src={default_image} class="photo-box-img" alt="Avatar"/>}
                     </div>
                     <div class="td-21">
                         <h1> {this.state.profileDetails.firstName} {this.state.profileDetails.lastName} (Also known as {this.state.profileDetails.nickName})</h1>

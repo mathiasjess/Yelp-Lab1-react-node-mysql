@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import { connect } from 'react-redux';
 import { Route, Link , withRouter} from 'react-router-dom';
+import './EventList.css'
 
 class EventList extends React.Component{
     constructor(props){
@@ -25,24 +26,25 @@ class EventList extends React.Component{
         let count = 0
         return(
             <div>
-            <table>
+            <h2 style ={{textAlign: 'center'}}> List of Users Registered for Event</h2>
+            <table class="table-event-list">
             <tr>
-            <td>Sl No.</td>
-            <td>Customer Name</td>
+            <th>Sl No.</th>
+            <th>Customer Name</th>
             </tr>
             {this.state.registryList.length == 1 && 
                 <tr>
                 <td>{count = count + 1}</td>
-                <Link to= {{pathname: '/restaurantviewofcustomer',
+                <td><Link to= {{pathname: '/restaurantviewofcustomer',
                             aboutProps:{id: this.state.registryList[0].id}}}>
-                            <td>{this.state.registryList[0].firstName} {this.state.registryList[0].lastName}</td></Link>
+                            {this.state.registryList[0].firstName} {this.state.registryList[0].lastName}</Link></td>
                 </tr>}
             {this.state.registryList.length > 1 && this.state.registryList.map((customer, i)=>{
                 <tr key = {i}>
                 <td>{count = count + 1}</td>
-                <Link to= {{pathname: '/restaurantviewofcustomer',
+                <td><Link to= {{pathname: '/restaurantviewofcustomer',
                             aboutProps:{id: customer.id}}}>
-                            <td>{customer.firstName} {customer.lastName}</td></Link>
+                            {customer.firstName} {customer.lastName}</Link></td>
                 </tr>
             })}
             </table>

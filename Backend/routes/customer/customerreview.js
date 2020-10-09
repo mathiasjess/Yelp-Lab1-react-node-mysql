@@ -22,7 +22,7 @@ router.post('/writereview', function (req, res) {
 //Router to handle get request of reviews for a particular restaurant
 router.get('/getrestaurantreview/:id', function(req,res) {
     let returnObject = {}
-    let sql2 = "SELECT customer.id, customer.firstName, customer.LastName,review.reviewDate, review.ratings, review.comments from customer, review where customer.id = review.id and review.restaurantId = " + req.params.id + "";
+    let sql2 = "SELECT customer.id, customer.profileImage, customer.firstName, customer.LastName,review.reviewDate, review.ratings, review.comments from customer, review where customer.id = review.id and review.restaurantId = " + req.params.id + "";
     console.log(sql2)
     mysqlConnection.query(sql2,(err,result)=>{
         if(err) {

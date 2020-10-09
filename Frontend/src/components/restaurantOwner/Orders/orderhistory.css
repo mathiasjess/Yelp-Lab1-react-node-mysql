@@ -56,6 +56,51 @@
 }
 .order-footer{
   display: flex;
-  justify-content: space-around;
+  justify-content:left;
   padding: 10px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 14px;
+  line-height: 2em;
+  margin: 0 0 6px;
+}
+.no-show{
+  display: block;
+  padding: 12px;
+  position: relative;
+  background: none!important;
+  border: none;
+  /*optional*/
+  font-family: arial, sans-serif;
+  /*input has OS specific font-family*/
+  color: #333;
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.Filter-headings{
+text-align: center;
+}
+h4{
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 2em;
+    margin: 0 0 6px;
+}
+h5{
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: 16px;
+    line-height: 2em;
+    margin: 0 0 6px;
+}
+.photo-box{
+  height: 5rem;
+  width: 5rem;
+}
+.order-header{
+  display: flex;
+  justify-content: left;
+  padding:5px;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 2em;
+  margin: 0 0 6px;
 }

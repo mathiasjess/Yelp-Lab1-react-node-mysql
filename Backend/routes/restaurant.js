@@ -131,6 +131,9 @@ router.post('/restaurantprofileUpdate/:id', upload.single('restaurantImage'), fu
     if (req.file) {
         imagename = req.file.filename
     }
+    else{
+        imagename = req.body.restaurantImage
+    }
     let returnObject = {};
     console.log("ID", req.params.id);
     var sql3 = "update restaurant set restaurantImage ='" + imagename

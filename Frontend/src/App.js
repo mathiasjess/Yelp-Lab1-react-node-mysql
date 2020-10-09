@@ -5,9 +5,8 @@ import Main from './components/Main';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import allYelpReducers from './reducer/index'
-
-
 const store = createStore(allYelpReducers, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__())
+
 //  render Main component to App component
 function App() {
   return (
@@ -15,6 +14,7 @@ function App() {
 
     <BrowserRouter>
       <Provider store={store}>
+
         <div className="App">
           {/* App Component Has a Child Component called Main */}
           <Main />

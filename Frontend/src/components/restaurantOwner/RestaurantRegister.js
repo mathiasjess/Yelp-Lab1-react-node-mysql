@@ -1,7 +1,6 @@
 import React from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
-import {connect} from 'react-redux';
 import {registerRestaurant} from '../../actions/restaurantAction'
 
 class restaurantRegister extends React.Component {
@@ -49,7 +48,6 @@ class restaurantRegister extends React.Component {
         console.log("Status Code : ",response.status);
         if(response.status === 200){
             alert("Restaurant Registration successful")
-            this.props.registerRestaurant(restaurantRegistrationData);
             this.props.history.replace('/login/restaurantlogin');
         }
     })
@@ -71,7 +69,7 @@ class restaurantRegister extends React.Component {
                         <input onChange={this.ChangeHandler} type="password" class="form-control" name="password" placeholder="Password" />
                     </div>
                     <div class="form-group">
-                        <label> Location</label>
+                        <label>Location</label>
                         <input onChange={this.ChangeHandler} type="text" class="form-control" name="location" placeholder="Building, Street Name" />
                         <input onChange={this.ChangeHandler} type="text" class="form-control" name="city" placeholder="City" />
                         <input onChange={this.ChangeHandler} type="text" class="form-control" name="state" placeholder="state" />
@@ -87,11 +85,5 @@ class restaurantRegister extends React.Component {
 
 }
 
-function mapDispatchToProps(dispatch){
-    console.log("Dispatch",dispatch);
-    return {
-        registerRestaurant : (data) => dispatch(registerRestaurant(data))
-    }
-}
 
-export default connect(null, mapDispatchToProps)(restaurantRegister) ;
+export default restaurantRegister ;

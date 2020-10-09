@@ -69,6 +69,7 @@ class UpdateRestaurantProfile extends React.Component {
         data.append('curbPickup', Number(this.state.delivery.curbPickup));
         data.append('dineIn', Number(this.state.delivery.dineIn));
         data.append('yelpDelivery', Number(this.state.delivery.yelpDelivery));
+        console.log("Data", data)
         axios.post(`http://localhost:3001/restaurant/restaurantprofileUpdate/${this.props.user.restaurantId}`, data)
             .then(response => {
                 if (response.data.message === "success") {
