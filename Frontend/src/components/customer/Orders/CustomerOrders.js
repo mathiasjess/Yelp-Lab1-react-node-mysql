@@ -4,6 +4,7 @@ import default_pic from '../../../images/restaurantprofileImage.png'
 import './CustomerOrders.css'
 import { connect } from 'react-redux'
 import { addToCart, addItem, removeItem, removecart } from '../../../actions/cartActions'
+import { Link } from 'react-router-dom';
 
 class CustomerOrders extends React.Component {
     constructor(props) {
@@ -13,13 +14,14 @@ class CustomerOrders extends React.Component {
             restaurantID: '',
             customerID: '',
             orderID: '',
-            delivey_option: '',
-            completeOrderFlag: false
+            completeOrderFlag: false,
+            takeOutValue : '',
 
         }
         this.addtoCart = this.handleAddToCart.bind(this)
         this.handleAddquantity = this.handleAddquantity.bind(this)
         this.handleremovequantity = this.handleremovequantity.bind(this)
+        this.handleTakeOutChange = this.handleTakeOutChange.bind(this)
         this.completeOrder = this.completeOrder.bind(this)
         this.CancelOrder = this.CancelOrder.bind(this)
     }
@@ -27,10 +29,8 @@ class CustomerOrders extends React.Component {
         this.setState({
             restaurantID: this.props.match.params.id,
             customerID: this.props.user.id,
-            delivery_option: this.props.match.params.option
 
         })
-        console.log('delivery option', this.props.match.params.option)
         axios.get(`http://localhost:3001/restaurant/fetchMenu/${this.props.match.params.id}`)
             .then((response) => {
                 console.log(response.data.data)
@@ -64,12 +64,18 @@ class CustomerOrders extends React.Component {
     handleremovequantity(itemID) {
         this.props.removeItem(itemID)
     }
+    handleTakeOutChange(event){
+        event.preventDefault();
+        this.setState({
+            takeOutValue : event.target.value
+        })
+    }
     completeOrder(restaurantId) {
         let OrderDetails = {
             customerID: this.props.user.id,
             restaurantID: restaurantId,
             total_price: this.props.cartItems.total,
-            delivery_option: this.props.match.params.option,
+            delivery_option: this.state.takeOutValue,
             delivery_status: 'Order Recieved',
             deliveryFilter: 'New Order'
         }
@@ -83,7 +89,7 @@ class CustomerOrders extends React.Component {
                             if (response.data.message === "success") {
                                 alert('Placed order successfully')
                                 this.props.removecart()
-                                this.props.history.push(`/customerorderhistory/${this.props.user.id}`)
+                                this.props.history.push(`/customerorderhistory`)
                             }
                             else {
                                 console.log('Could not complete order')
@@ -130,6 +136,7 @@ class CustomerOrders extends React.Component {
                     <div class="td-items1">
                     </div>
                     <div class="td-items2">
+                    <button class = "btn btn-primary" onClick={()=>{this.props.history.push(`/customerviewofrestaurant/${this.props.match.params.id}`)}}> Go Back to Restaurant Page</button>
                         <h2>Order Food from our Menu</h2>
                         <div class="flex-display-items">
                             {this.state.items.map((menu, i) => {
@@ -169,6 +176,13 @@ class CustomerOrders extends React.Component {
                                         </tr>
                                     </tfoot>
                                 </table>
+                                <form>
+                                <label>Select Takeout Option</label>
+                                    <select onChange={this.handleTakeOutChange}>
+                                    <option value = "pickup">Pick Up</option>
+                                    <option value = "delivery">Delivery</option>
+                                    </select>
+                                </form>
                                 <button class="btn btn-danger" onClick={() => this.completeOrder(this.props.match.params.id)}>Complete Order</button>
                                 <button class="btn btn-danger" onClick={() => this.CancelOrder(this.props.match.params.id)}>Cancel Order</button>
                                 {this.state.completeOrderFlag && <div>

@@ -19,7 +19,6 @@ class MainEventsPage extends React.Component {
         this.captureSearchParameters = this.captureSearchParameters.bind(this)
         this.getSearchResults = this.getSearchResults.bind(this)
         this.registerForEvent = this.registerForEvent.bind(this)
-        this.seeDetails = this.seeDetails.bind(this)
         this.getAllResults = this.getAllResults.bind(this)
     }
     componentDidMount() {
@@ -88,24 +87,10 @@ class MainEventsPage extends React.Component {
             eventsData: this.state.originaleventsData
         })
     }
-    seeDetails(eventID) {
-        this.state.originaleventsData.map((event, i) => {
-            if (event.eventId === eventID) {
-                return <div class="Reviews" key={i}>
-                    <h4>{event.eventName}</h4>
-                    <h5>{event.eventDescription}</h5>
-                    <h6> {event.eventTime}</h6>
-                    <h6> {event.eventDate}</h6>
-                    <h6>{event.eventLocation}</h6>
-                    <h6>{event.eventHashtag}</h6>
-                </div>
-            }
-        })
-    }
     render() {
         return (
             <div class="table">
-                <div class="tr-onerow1">
+                <div class="tr-onerow">
                     <div class="td-onerow1">
                         {this.state.searchFlag && <button class="btn btn-danger" onClick={() => this.getAllResults()}>All search Results</button>}
                     </div>
@@ -124,34 +109,18 @@ class MainEventsPage extends React.Component {
                     </div>
                     <div class="td-tworow2">
                         {this.state.eventsData && this.state.eventsData.map((event, i) => {
-                            if (event.eventDate < this.currentDate) {
-                                return <div class="card">
-                                    <div class="card-body">
-                                        <h6>Upcoming</h6>
+                                return <div class="card-events">
+                                    <div class="card-events-body">
+                                        <p>Upcoming</p>
                                         <h4 class="card-title">{event.eventName}</h4>
-                                        <h5>Details:</h5>
-                                        <h6>Host: {event.restaurantName}</h6>
-                                        <h6>{event.eventTime}</h6>
-                                        <h6>{event.eventDate}</h6>
+                                        <p>Host: {event.restaurantName}</p>
+                                        <p>{event.eventDate}</p>
+                                        <div class="event-details">
                                         <button class="btn btn-danger" onClick={() => this.registerForEvent(event.eventId, event.restaurantId)}>Register</button>
-                                        <button class="btn btn-danger">See details</button>
+                                        <button class="btn btn-primary" onClick={()=> this.props.history.push(`individualeventdetails/${event.eventId}`)}>See details</button>
+                                        </div>
                                     </div>
                                 </div>
-                            }
-                            else {
-                                return <div class="card">
-                                    <div class="card-body">
-                                        <h6>Past</h6>
-                                        <h4 class="card-title">{event.eventName}</h4>
-                                        <h5>Details:</h5>
-                                        <h6>Host: {event.restaurantName}</h6>
-                                        <h6>{event.eventTime}</h6>
-                                        <h6>{event.eventDate}</h6>
-                                        <button class="btn btn-danger" onClick={() => this.registerForEvent(event.eventId, event.restaurantId)}>Register</button>
-                                        <button class="btn btn-danger" onClick={() => this.seeDetails(event.eventId)}>See details</button>
-                                    </div>
-                                </div>
-                            }
                         })}
                     </div>
                     <div class="td-tworow3">

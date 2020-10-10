@@ -27,7 +27,7 @@ class SearchRestaurant extends React.Component {
         this.displayMarkers = this.displayMarkers.bind(this)
     }
     componentDidMount() {
-        axios.get('http://localhost:3001/search/searchforrestaurant', { params: [this.props.location.aboutProps.searchParameter1, this.props.location.aboutProps.searchParameter2] })
+        axios.get('http://localhost:3001/search/searchforrestaurant', { params: [this.props.location.aboutProps.searchParameter1] })
             .then((response) => {
                 console.log(response.data.data)
                 if (response.data.message === "success") {
@@ -43,14 +43,9 @@ class SearchRestaurant extends React.Component {
 
     }
     goToRestaurant(restaurantId) {
-        if (this.state.delivery.curbPickup == true) {
-            let delivery_option = 'pickup'
-            this.props.history.push(`/customerviewofrestaurant/${restaurantId}/${delivery_option}`)
-        }
-        if (this.state.delivery.yelpDelivery == true) {
-            let delivery_option = 'delivery'
-            this.props.history.push(`/customerviewofrestaurant/${restaurantId}/${delivery_option}`)
-        }
+
+            this.props.history.push(`/customerviewofrestaurant/${restaurantId}`)
+            // this.props.history.push(`/customerviewofrestaurant/${restaurantId}/${delivery_option}`)
 
     }
     Filter(e) {
@@ -70,40 +65,48 @@ class SearchRestaurant extends React.Component {
             if (this.state.delivery.location === true) {
                 this.setState(({
                     searchResults: this.state.searchResults.filter((result) => {
-                        return result.curbPickup === Number(this.state.delivery.curbPickup) ||
-                            result.dineIn === Number(this.state.delivery.dineIn) ||
-                            result.yelpDelivery === Number(this.state.delivery.yelpDelivery &&
-                                result.zipcode === this.props.user.zipcode);
+                        return result.zipcode === this.props.user.zipcode;
                     })
                 }), function () { console.log("New results", this.state.searchResults) })
             }
-            else {
+            else if (this.state.delivery.curbPickup === true) {
                 this.setState(({
                     searchResults: this.state.searchResults.filter((result) => {
-                        return result.curbPickup === Number(this.state.delivery.curbPickup) ||
-                            result.dineIn === Number(this.state.delivery.dineIn) ||
-                            result.yelpDelivery === Number(this.state.delivery.yelpDelivery);
+                        return result.curbPickup === 1;
                     })
                 }), function () { console.log("New results", this.state.searchResults) })
             }
-
+            else if (this.state.delivery.dineIn === true) {
+                this.setState(({
+                    searchResults: this.state.searchResults.filter((result) => {
+                        return result.dineIn === 1;
+                    })
+                }), function () { console.log("New results", this.state.searchResults) })
+            }
+            else if (this.state.delivery.yelpDelivery === true) {
+                this.setState(({
+                    searchResults: this.state.searchResults.filter((result) => {
+                        return result.yelpDelivery === 1;
+                    })
+                }), function () { console.log("New results", this.state.searchResults) })
+            }
         });
 
     }
     displayMarkers = () => {
         return this.state.searchResults.map((store, index) => {
-          return <Marker key={index} id={index} position={{
-           lat: store.latitude,
-           lng: store.longitude
-         }}
-         onClick={() => console.log("You clicked me!")} />
+            return <Marker key={index} id={index} position={{
+                lat: store.latitude,
+                lng: store.longitude
+            }}
+                onClick={() => console.log("You clicked me!")} />
         })
-      }
+    }
     render() {
         const mapStyles = {
             width: '45rem',
             height: '50rem',
-          };
+        };
         return (
             <div class="table">
                 <div class="tr-top">
@@ -111,20 +114,15 @@ class SearchRestaurant extends React.Component {
                         <img class="yelp_logo" src={yelp_brand} alt="Avatar" />
                     </div>
                     <div class="td-top2">
-                        <form class="search-class">
-                            <input class="form-control mr-sm-2" name="searchParameter1" type="text" onChange={this.captureSearchParameters} placeholder="dish names,cuisines," aria-label="Search" />
-                            <input class="form-control mr-sm-2" name="searchParameter2" type="text" onChange={this.captureSearchParameters} placeholder="location, zipcode" aria-label="Search" />
-                            <button class="btn btn-outline-success my-2 my-sm-0" onClick={this.searchRestaurant} type="submit">Search</button>
-                        </form>
+                        <h2 style={{ textAlign: 'center' }}> Restaurant Search Results</h2>
                     </div>
                     <div class="td-top3">
-                        <Link to='#' class="nav-link" onClick={this.handleAddMenu}>Events</Link>
                     </div>
                 </div>
                 <div class="tr-middle1">
                     <div class="td-filter">
                         <div class="tr-filtermode">
-                            <h5>Mode</h5>
+                            <h5 style={{textAlign:'center'}}>Mode</h5>
                             <p>{this.state.curbPickup}</p>
                             <ul>
                                 <li class="BusinessName"><label class="u-nowrap">
@@ -132,24 +130,24 @@ class SearchRestaurant extends React.Component {
                                         name="curbPickup"
                                         checked={this.state.delivery.curbPickup}
                                         onChange={this.Filter} />
-                                        Curbside Pickup</label></li>
+                                        <p>Curbside Pickup</p></label></li>
 
                                 <li class="BusinessName"><label class="u-nowrap">
                                     <input type="checkbox"
                                         name="dineIn"
                                         checked={this.state.delivery.dineIn}
                                         onChange={this.Filter} />
-                                        Dine In</label></li>
+                                        <p>Dine In</p></label></li>
                                 <li class="BusinessName"><label class="u-nowrap">
                                     <input type="checkbox"
                                         name="yelpDelivery"
                                         checked={this.state.delivery.yelpDelivery}
                                         onChange={this.Filter} />
-                                        Yelp Delivery</label></li>
+                                        <p>Yelp Delivery</p></label></li>
                             </ul>
                         </div>
                         <div class="tr-filterlocation">
-                            <p>Neighbourhood Locations</p>
+                            <h5 style={{textAlign:'center'}}>Neighbourhood Locations</h5>
                             <ul>
                                 <li class="BusinessName"><label class="u-nowrap">
                                     <input type="checkbox"
@@ -160,18 +158,26 @@ class SearchRestaurant extends React.Component {
                             </ul>
                         </div>
                         <div class="tr-filterOthers">
-                            <p>Filter Others</p>
                         </div>
                     </div>
                     <div class="td-restaurant">
                         {this.state.searchResults.map((result, i) => {
                             return (<div class="card" key={i}>
-                                <img class="card-img-top" src={default_pic} alt="Card image cap" />
+                                <div class="search-res-header">
+                                    {result.restaurantImage ? <img src={`/uploads/${result.restaurantImage}`} alt="Avatar" class="card-img-top-search" /> : <img class="card-img-top-search" src={default_pic} alt="Card image cap" />}
+                                    <h4 style={{paddingTop:'45px'}}>{result.restaurantName}</h4>
+                                </div>
                                 <div class="card-body">
-                                    <h4 class="card-title">{result.restaurantName}</h4>
-                                    <h5>{result.location},{result.city}-{result.zipcode}</h5>
-                                    <h6>Cuisine: {result.cuisine}</h6>
-                                    <p class="card-text">{result.description}</p>
+                                    <p><b>Address:</b>{result.location},{result.city}-{result.zipcode}</p>
+                                    <p><b>Cuisine:</b> {result.cuisine}</p>
+                                    <p><b> Description:</b>{result.description}</p>
+                                    <p><b>Mode of Delivery:</b></p>
+                                    <div class="services1">
+                                        <h6>{result.curbPickup ? <span class="glyphicon glyphicon-ok">Curbside Pickup</span> : <span class="glyphicon glyphicon-remove">Curbside Pickup</span>}</h6>
+                                        <h6>{result.yelpDelivery ? <span class="glyphicon glyphicon-ok">Yelp Delivery </span> : <span class="glyphicon glyphicon-remove">Yelp Delivery</span>}</h6>
+                                        <h6>{result.dineIn ? <span class="glyphicon glyphicon-ok">Dine In </span> : <span class="glyphicon glyphicon-remove">Dine In</span>}</h6>
+                                    </div>
+                                    <p><b>Phone No:</b>{result.contact}</p>
                                     <button class="btn btn-danger" onClick={() => this.goToRestaurant(result.restaurantId)}>Visit website</button>
                                 </div>
                             </div>)
@@ -200,4 +206,4 @@ const mapStateToProps = state => ({
 
 export default GoogleApiWrapper({
     apiKey: 'AIzaSyCiheh-O9omWKbtCfWf-S539GT82IK8aNQ'
-  })(connect(mapStateToProps)(SearchRestaurant));
+})(connect(mapStateToProps)(SearchRestaurant));

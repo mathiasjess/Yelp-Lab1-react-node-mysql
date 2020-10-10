@@ -2,8 +2,10 @@ import React from 'react'
 import axios from 'axios'
 import './customerviewofrestaurant.css'
 import default_pic from '../../../images/restaurantprofileImage.png'
+import default_customer_pic from '../../../images/customer_default_pic.png'
 import Moment from 'react-moment';
 import 'moment-timezone';
+import { Map, GoogleApiWrapper, Marker } from 'google-maps-react';
 
 class CustomerViewofRestaurant extends React.Component {
     constructor(props) {
@@ -14,14 +16,7 @@ class CustomerViewofRestaurant extends React.Component {
             eventData: [],
             reviews: []
         }
-        this.goToEvents = this.goToEvents.bind(this)
         this.goToOrders = this.goToOrders.bind(this)
-    }
-    goToEvents() {
-
-    }
-    goToOrders(restaurantID, pickup){
-        return this.props.history.push(`/customerorder/${restaurantID}/${pickup}`)
     }
     componentDidMount() {
         console.log("RestaurantID", this.props.match.params.id)
@@ -44,24 +39,37 @@ class CustomerViewofRestaurant extends React.Component {
                 })
             }))
     }
+    goToOrders = (event)=>{
+        event.preventDefault();
+        return this.props.history.push(`/customerorder/${this.props.match.params.id}`)
+    }
     render() {
+        const mapStyles = {
+            width: '35rem',
+            height: '25rem',
+        };
         return (
-            <div class="table">
+            <div class="table-restaurant-view">
                 <div class="tr-first">
-                    <div class="td-first1">
-                    </div>
-
+                <div class="td-first1"></div>
                     <div class="td-first2">
                         <img class="card-img-top" src={default_pic} alt="Card image cap" />
                     </div>
                     <div class="td-first3">
+                        <Map
+                            google={this.props.google}
+                            zoom={13}
+                            style={mapStyles}
+                            initialCenter={{ lat:37.4166721, lng:  -121.9534241}}
+                        >
+                            <Marker position={{ lat: parseFloat(this.state.profileData.latitude), lng: parseFloat(this.state.profileData.longitude) }} />
+                        </Map>
                     </div>
                     <div class="td-first4">
                     </div>
                 </div>
                 <div class="tr-second">
-                    <div class="td-second1">
-                    </div>
+                <div class="td-second1"></div>
                     <div class="td-second2">
                         <h1>{this.state.profileData.restaurantName}</h1>
                         <h4 class="sub-heading">{this.state.profileData.cuisine}</h4>
@@ -85,22 +93,21 @@ class CustomerViewofRestaurant extends React.Component {
                         <div class="grid-container">
                             <div class="grid-item">Order food</div>
                             <div class="grid-item"><h6>No Fees, Pick up 20-30 min</h6></div>
-                            <div class="grid-item"><button class="btn btn-danger" onClick= {()=>this.goToOrders(this.props.match.params.id, this.props.match.params.option)}> Start Order</button></div>
+                            <button class="btn btn-danger" onClick={() => this.props.history.push(`/customerorder/${this.props.match.params.id}`)}><span class="glyphicon glyphicon-bookmark">Start Order</span></button>
                         </div>
                     </div>
                     <div class="td-second4">
                     </div>
                 </div>
                 <div class="tr-third">
-                    <div class="td-third1">
-                    </div>
+                <div class="td-third1"></div>
                     <div class="td-third2">
                         <h2>Menu</h2>
                         <div class="flex-display">
                             {this.state.menuData.map((menu, i) => {
                                 return <div class="card1" key={i}>
                                     <img class="card-img-top1" src={default_pic} alt="Card image cap" />
-                                    <div class="container">
+                                    <div class="container1">
                                         <h4>{menu.dishName}</h4>
                                         <h5><b>{menu.price}</b></h5>
                                         <button class="btn btn-primary" value={menu.itemID} onClick={() => this.viewDish(menu.itemID)}>View Dish Details</button>
@@ -109,42 +116,49 @@ class CustomerViewofRestaurant extends React.Component {
                             })}
                         </div>
                         <h2>Events</h2>
+                        <div class="flex-display">
                         {this.state.eventData.map((event, i) => {
                             return <div class="card1" key={i}>
-                                <div class="container">
+                                <div class="container1">
                                     <h5><b>{event.eventName}</b></h5>
-                                    <p>{event.dishDescription}</p>
-                                    <p>{event.eventTime}</p>
-                                    <p>{event.eventDate}</p>
-                                    <p>{event.eventLocation}</p>
+                                    <p><b>Details:</b>{event.dishDescription}</p>
+                                    <p><b>Timings: </b>{event.eventTime}</p>
+                                    <p><b> Date: </b><Moment>{event.eventDate}</Moment></p>
+                                    <p><b>Location: </b>{event.eventLocation}</p>
                                     <p><b>{event.eventHashtag}</b></p>
                                     <button class="btn btn-primary" value={event.eventId} onClick={() => this.vieweventDetails(event.eventId)}>Register for Event</button>
                                 </div>
                             </div>
                         })}
+                        </div>
                         <h2>Reviews</h2>
                         {this.state.reviews.map((review, i) => {
-                           return <div class="Reviews" key = {i}>
+                            return <div class="Reviews" key={i}>
+                            <div class="review-header">
+                            {review.profileImage ? <img src={`/uploads/${review.profileImage}`} alt="Avatar" class="photo-box" /> : <img  class="photo-box" src={default_customer_pic} alt="Avatar"/>}
+                            <h5 style = {{marginTop:'2rem'}}>{review.firstName} {review.LastName}</h5>
+                            </div>
                                 <h4>{review.ratings}/5</h4>
-                                <h5>{review.firstName} {review.LastName}</h5>
                                 <h6> <Moment>{review.reviewDate}</Moment></h6>
                                 <h6>{review.comments}</h6>
                             </div>
                         })}
-                </div>
-                <div class="td-third3">
-                    <div class="grid-container2">
-                        <div class="grid-item2">{this.state.profileData.contact}</div>
-                        <div class="grid-item2">{this.state.profileData.email}</div>
-                        <div class="grid-item2">{this.state.profileData.location}, {this.state.profileData.city}, {this.state.profileData.state}, {this.state.profileData.zipcode} </div>
+                    </div>
+                    <div class="td-third3">
+                        <div class="grid-container2">
+                            <div class="grid-item2"><b>Phone No:</b>{this.state.profileData.contact}</div>
+                            <div class="grid-item2"><b>Email:</b> {this.state.profileData.email}</div>
+                            <div class="grid-item2"><b>Address: </b>{this.state.profileData.location}, {this.state.profileData.city}, {this.state.profileData.state}, {this.state.profileData.zipcode} </div>
+                        </div>
+                    </div>
+                    <div class="td-third4">
                     </div>
                 </div>
-                <div class="td-third4">
-                </div>
             </div>
-        </div>
         )
     }
 }
 
-export default CustomerViewofRestaurant;
+export default GoogleApiWrapper({
+    apiKey: 'AIzaSyCiheh-O9omWKbtCfWf-S539GT82IK8aNQ'
+})(CustomerViewofRestaurant);

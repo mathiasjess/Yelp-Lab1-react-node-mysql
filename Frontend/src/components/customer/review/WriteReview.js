@@ -45,11 +45,11 @@ class WriteReview extends React.Component{
     }
     render(){
         return(
-            <div class="biz-site-expanded-grid-content-column">
-            <h1 class="page-title">Write a review</h1>
+            <div class="biz-site-expanded-grid-content-column" style={{marginTop: '5%'}}>
+            <button class = "btn btn-primary" onClick={()=>{this.props.history.push(`/customerviewofrestaurant/${this.props.match.params.id}`)}}> Go Back to Restaurant Page</button>
             <form>
+            <h2 class="page-title">Write a review</h2>
                 <div class="biz-info-section">
-                    <div class="biz-info-row">
                         <ul>
                             <li class="BusinessName"><label class="u-nowrap">Ratings</label></li>
                             <li><input type="text" class="inputFields"
@@ -64,7 +64,6 @@ class WriteReview extends React.Component{
                             </textarea></li>
                         </ul>
                     </div>
-                </div>
                 <div class="SubmitUpdate">
                     <button type="submit" class="ybtn ybtn--primary" onClick={this.addReview}><span>Submit Review</span></button>
                     <button type="submit" class="ybtn ybtn--primary" onClick={()=>{this.props.history.push(`/customerviewofrestaurant/${this.props.match.params.id}`)}}><span>Cancel Review</span></button>

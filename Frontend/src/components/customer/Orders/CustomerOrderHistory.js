@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios'
 import './CustomerOrders.css'
 import Popup from "reactjs-popup";
+import { connect } from 'react-redux'
 
 class CustomerOrderHistory extends React.Component {
     constructor(props) {
@@ -22,8 +23,8 @@ class CustomerOrderHistory extends React.Component {
     }
     componentDidMount() {
         axios.all([
-            axios.get(`http://localhost:3001/orders/fetchcustomerordersummary/${this.props.match.params.id}`),
-            axios.get(`http://localhost:3001/orders/fetchcustomerorderdetails/${this.props.match.params.id}`)
+            axios.get(`http://localhost:3001/orders/fetchcustomerordersummary/${this.props.user.id}`),
+            axios.get(`http://localhost:3001/orders/fetchcustomerorderdetails/${this.props.user.id}`)
         ])
             .then(axios.spread((response1, response2) => {
                 this.setState({
@@ -36,22 +37,7 @@ class CustomerOrderHistory extends React.Component {
 
     }
     orderdetails(orderID) {
-        return (
-            <div>
-                {this.state.orderDetails.length > 0 ? this.state.orderDetails.map(function (order, j) {
-                    if (order.orderID === orderID) {
-                        return (
-                            <div class="order-footer" key={j}>
-                                <h6>{order.dishName}</h6>
-                                <h6>{order.price}</h6>
-                                <h6>{order.quantity}</h6>
-                            </div>
-                        );
-                    }
-                }) : null}
-                <button onClick={() => this.handleClose}>Close</button>
-            </div>
-        );
+         return this.props.history.push(`customerorderdetails/${orderID}`)
     }
     handlePickUp() {
         this.setState({
@@ -99,10 +85,10 @@ class CustomerOrderHistory extends React.Component {
             filters = (
                 <ul>
                 <h4> Pick Up Filters</h4>
-                    <li><button onClick={()=>this.handleFilters('pickup', 'Order Recieved')}>Order Recieved</button></li>
-                    <li><button onClick={()=>this.handleFilters('pickup', 'Preparing')}>Preparing</button></li>
-                    <li> <button onClick={()=>this.handleFilters('pickup', 'PickUp Ready')}>PickUp Ready</button></li>
-                    <li> <button onClick={()=>this.handleFilters('pickup', 'Picked Up')}>Picked</button></li>
+                    <li><button class= "no-button-show" onClick={()=>this.handleFilters('pickup', 'Order Recieved')}>Order Recieved</button></li>
+                    <li><button class= "no-button-show" onClick={()=>this.handleFilters('pickup', 'Preparing')}>Preparing</button></li>
+                    <li> <button class= "no-button-show" onClick={()=>this.handleFilters('pickup', 'PickUp Ready')}>PickUp Ready</button></li>
+                    <li> <button class= "no-button-show" onClick={()=>this.handleFilters('pickup', 'Picked Up')}>Picked</button></li>
 
                 </ul>
             );
@@ -111,10 +97,10 @@ class CustomerOrderHistory extends React.Component {
             filters = (
                 <ul>
                 <h4> Delivery Filters</h4>
-                    <li><button onClick={()=>this.handleFilters('delivery', 'Order Recieved')}>Order Recieved</button></li>
-                    <li><button onClick={()=>this.handleFilters('delivery', 'Order Recieved')}>Preparing</button></li>
-                    <li> <button onClick={()=>this.handleFilters('delivery', 'On the way')}>On the Way</button></li>
-                    <li> <button onClick={()=>this.handleFilters('delivery', 'Delivered')}>Delivered</button></li>
+                    <li><button class= "no-button-show" onClick={()=>this.handleFilters('delivery', 'Order Recieved')}>Order Recieved</button></li>
+                    <li><button class= "no-button-show" onClick={()=>this.handleFilters('delivery', 'Order Recieved')}>Preparing</button></li>
+                    <li> <button  class= "no-button-show" onClick={()=>this.handleFilters('delivery', 'On the way')}>On the Way</button></li>
+                    <li> <button class= "no-button-show" onClick={()=>this.handleFilters('delivery', 'Delivered')}>Delivered</button></li>
                 </ul>
             )
         }
@@ -122,11 +108,13 @@ class CustomerOrderHistory extends React.Component {
             <div class="table">
                 <div class="tr-items1">
                     <div class="td-items1">
-                    <button onClick={() => { this.handleAllOrders() }}>All orders</button>
-                        <h3> Filters</h3>
+                    <ul>
+                    <li><button class="no-button-show" onClick={() => { this.handleAllOrders() }}><span class="glyphicon glyphicon-th-list"/>All orders</button></li>
+                    </ul>
+                        <h3 style = {{textAlign: 'center'}}> Filters</h3>
                         <ul>
-                            <li> <button onClick={() => { this.handlePickUp() }}>Pickup</button></li>
-                            <li> <button onClick={() => { this.handleDelivered() }}>Delivered</button></li>
+                            <li> <button class= "no-button-show" onClick={() => { this.handlePickUp() }}>Pickup</button></li>
+                            <li> <button class= "no-button-show" onClick={() => { this.handleDelivered() }}>Delivered</button></li>
                         </ul>
                         {filters}
                     </div>
@@ -137,14 +125,14 @@ class CustomerOrderHistory extends React.Component {
                                 <div class="card-order" key={i}>
                                     <h4>Restaurant: {summary.restaurantName}</h4>
                                     <div class="order-footer">
-                                        <h4>Date: {summary.Date}</h4>
-                                        <h4>Total Price: {summary.totalPrice}</h4>
+                                        <p><b>Date: </b>{summary.Date}</p>
+                                        <p><b>Total Price:</b> {summary.totalPrice}</p>
                                     </div>
                                     <div class="order-footer">
-                                        <h5>Delivery Option: {summary.deliveryOption}</h5>
-                                        <h5>Status: {summary.delivery_status}</h5>
-                                        <h5>Order Type: {summary.deliveryFilter}</h5>
-                                        <button onClick={() => this.orderdetails(summary.orderID)}>View Details</button>
+                                        <p><b>Delivery Option:</b> {summary.deliveryOption}</p>
+                                        <p><b>Status:</b> {summary.delivery_status}</p>
+                                        <p><b>Order Type: </b> {summary.deliveryFilter}</p>
+                                        <button class="btn btn-primary" onClick={() => this.orderdetails(summary.orderID)}>View Details</button>
                                     </div>
                                 </div>
                             );
@@ -156,4 +144,8 @@ class CustomerOrderHistory extends React.Component {
     }
 }
 
-export default CustomerOrderHistory
+const mapStateToProps = state => ({
+    user: state.customerReducer
+});
+
+export default connect(mapStateToProps)(CustomerOrderHistory);

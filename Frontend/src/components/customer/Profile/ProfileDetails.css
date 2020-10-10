@@ -58,10 +58,12 @@ position: absolute; top: 7%; bottom: 0; left: 0; right: 0
 .td-2{ 
   display: table-cell; 
   width: 55%;
+  left: 10%
 }
 .td-3{ 
   display: table-cell; 
   width: 25%;
+  left: 3%
 }
 
 h1 {
@@ -177,8 +179,7 @@ h5{
   align-content: center;
 }
 .Reviews{
-
-  width: 100%;
+  width: 80%;
   display: inline-block;
   border:0.25px solid rgba(194, 191, 191, 0.8);
 }
@@ -194,4 +195,13 @@ h5{
   color: #333;
   cursor: pointer;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+.photo-box-rest{
+height: 4rem;
+width: 6rem
+}
+.reviews-header-details{
+  width: 20%;
+display: flex;
+justify-content: space-between;
 }

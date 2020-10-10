@@ -91,7 +91,7 @@ class Navbar extends Component {
                 customerFeatures = (
                     <ul class="nav navbar-nav">
                         <button class="customerFeatures" onClick={() => this.props.history.push(`/customerhomepage/${Cookies.get('id')}`)}>Home</button>
-                        <button class="customerFeatures" onClick={() => this.props.history.push(`/mainevents/${Cookies.get('id')}`)}>Events</button>
+                        <button class="customerFeatures" onClick={() => this.props.history.push(`/mainevents`)}>Events</button>
                     </ul>
                 )
             }

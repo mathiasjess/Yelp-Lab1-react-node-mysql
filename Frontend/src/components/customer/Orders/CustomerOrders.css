@@ -59,3 +59,16 @@
   justify-content: space-around;
   padding: 10px;
 }
+.no-button-show{
+  display: block;
+  padding: 12px;
+  position: relative;
+  background: none!important;
+  border: none;
+  /*optional*/
+  font-family: arial, sans-serif;
+  /*input has OS specific font-family*/
+  color: #333;
+  cursor: pointer;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}

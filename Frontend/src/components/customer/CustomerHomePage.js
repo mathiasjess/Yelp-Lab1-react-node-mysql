@@ -51,14 +51,12 @@ class CustomerHomePage extends React.Component {
                 <img class = "yelp_logo"src = {yelp_brand} alt="Avatar" />
                 </div>
                 <div class="td-top2">
+                <p>Search for a restaurant based on dish name, cuisine, location, zipcode or mode of delivery(Curb Pickup, Dine In or Yelp Delivery)</p>
                 <form class = "search-class">
-                <input class="form-control mr-sm-2" name = "searchParameter1" type="text" onChange = {this.captureSearchParameters} placeholder="dish names,cuisines," aria-label="Search" />
-                <input class="form-control mr-sm-2" name = "searchParameter2" type="text" onChange={this.captureSearchParameters} placeholder="location, zipcode" aria-label="Search" />
-                {/*<button class="btn btn-outline-success my-2 my-sm-0" onClick = {this.searchRestaurant} type="submit">Search</button>*/}
+                <input class="form-control mr-sm-4" name = "searchParameter1" type="text" onChange = {this.captureSearchParameters} placeholder="dish names,cuisines,location, zipcode, mode of delivery" aria-label="Search" />                {/*<button class="btn btn-outline-success my-2 my-sm-0" onClick = {this.searchRestaurant} type="submit">Search</button>*/}
                 <button class= "btn btn-danger"><Link to ={{pathname : '/searchrestaurant', 
                                                                     aboutProps:
-                                                                         {searchParameter1 : this.state.searchParameter1,
-                                                                          searchParameter2 : this.state.searchParameter2
+                                                                         {searchParameter1 : this.state.searchParameter1
                                                                         }}} class = "search-link">Search</Link></button>
                 </form>
                 </div>

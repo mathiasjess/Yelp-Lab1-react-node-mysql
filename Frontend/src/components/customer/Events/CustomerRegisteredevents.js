@@ -45,13 +45,14 @@ class MainEventsPage extends React.Component {
     render() {
         return (
             <div class="table">
-                <div class="tr-onerow1">
+                <div class="tr-onerow">
                     <div class="td-onerow1">
                     </div>
                     <div class="td-onerow2">
+                    <h2 style={{textAlign:'center'}}> Registered Events</h2>
                     </div>
                     <div class="td-onerow3">
-                    <h3> Registered Events</h3>
+
                     </div>
                 </div>
                 <div class="tr-tworow">
@@ -61,12 +62,10 @@ class MainEventsPage extends React.Component {
                         {this.state.eventsData && this.state.eventsData.map((event, i) => {
                                 return <div class="card">
                                     <div class="card-body">
-                                        <h6>Past</h6>
-                                        <h4 class="card-title">{event.eventName}</h4>
-                                        <h5>Details:</h5>
-                                        <h6>Host: {event.restaurantName}</h6>
-                                        <h6>{event.eventTime}</h6>
-                                        <h6>{event.eventDate}</h6>
+                                        <h6 class="card-title">{event.eventName}</h6>
+                                        <p>Host: {event.restaurantName}</p>
+                                        <p><b>Timings: </b>{event.eventTime}</p>
+                                        <p><b>Date: </b>{event.eventDate}</p>
                                         <button class="btn btn-danger" onClick={() => this.deleteRegisteredEvent(event.eventId)}>Delete Event</button>
                                     </div>
                                 </div>

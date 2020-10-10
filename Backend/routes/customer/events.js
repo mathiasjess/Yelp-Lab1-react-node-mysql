@@ -84,4 +84,19 @@ router.delete('/deleteregisteredevent/:id', function(req,res) {
         }
     })
 })
+router.get('/fetchsinglevent/:id', function(req,res) {
+    let returnObject = {}
+    let sql1 = "SELECT * from events where eventId = "+req.params.id+"";
+    console.log("Inside Individual event",sql1)
+    mysqlConnection.query(sql1,(err,result)=>{
+        if(err) {
+            returnObject.message = 'error'
+        }
+        else{
+            returnObject.message = "success"
+            returnObject.data = result
+            res.json(returnObject)
+        }
+    })
+})
 module.exports = router;

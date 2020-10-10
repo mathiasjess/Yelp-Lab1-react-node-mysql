@@ -41,7 +41,7 @@ router.get('/fetchrestaurantorderdetails/:id', function(req,res) {
 //Router to handle get request for orders summary
 router.get('/individualrestaurantordersummary/:id', function(req,res) {
     let returnObject = {}
-    let sql3 = "SELECT customer.profileImage, customer.firstName, customer.lastName,ordersummary.customerId, ordersummary.orderID, ordersummary.totalPrice, ordersummary.deliveryOption, ordersummary.delivery_status, ordersummary.deliveryFilter, ordersummary.Date FROM customer, ordersummary where customer.id = ordersummary.customerId and ordersummary.orderID = " + req.params.id + "";
+    let sql3 = "SELECT restaurant.restaurantImage, restaurant.restaurantName, customer.profileImage, customer.firstName, customer.lastName,ordersummary.customerId, ordersummary.orderID, ordersummary.totalPrice, ordersummary.deliveryOption, ordersummary.delivery_status, ordersummary.deliveryFilter, ordersummary.Date FROM restaurant, customer, ordersummary where restaurant.restaurantId = ordersummary.restaurantId and customer.id = ordersummary.customerId and ordersummary.orderID = " + req.params.id + "";
     console.log(sql3)
     mysqlConnection.query(sql3,(err,result)=>{
         if(err) {

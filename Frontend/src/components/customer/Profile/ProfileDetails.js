@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link, withRouter } from 'react-router-dom';
 import './ProfileDetails.css'
 import default_image from '../../../images/customer_default_pic.png'
+import restaurant_image from '../../../images/restaurantprofileImage.png'
 import { connect } from 'react-redux';
 import Moment from 'react-moment';
 import 'moment-timezone';
@@ -29,7 +30,7 @@ class ProfileDetails extends React.Component {
             })
     }
     handleOrderPage(custID) {
-        this.props.history.push(`/customerorderhistory/${custID}`)
+        this.props.history.push('/customerorderhistory')
     }
 
     handleEventsPage(custID) {
@@ -44,18 +45,19 @@ class ProfileDetails extends React.Component {
                     </div>
                     <div class="td-21">
                         <h1> {this.props.user.firstName} {this.props.user.lastName} (Also known as {this.props.user.nickName})</h1>
-                        <h3> {this.props.user.city}, {this.props.user.state} </h3>
-                        <h5> #HeadLine {this.props.user.headline} </h5>
+                        <h3>HeadLine: #{this.props.user.headline} </h3>
+                        <h5> {this.props.user.city}, {this.props.user.state} </h5>
+
                         <h6> Favourites Include: {this.props.user.favourites} </h6>
                     </div>
                     <div class="td-31">
                         <ul class="nav flex-column">
                             <li class="nav-item">
                                 <Link to='#' class="nav-link1" onClick={this.handleUpdateRestaurantProfile} >
-                                    <span class="glyphicon glyphicon-picture">Add Profile Photos</span></Link></li>
+                                    <span class="glyphicon glyphicon-picture"/>Add Profile Photos</Link></li>
                             <li class="nav-item">
                                 <Link to='/updatecustomerprofile' class="nav-link1">
-                                    <span class="glyphicon glyphicon-user">Update your Profile</span></Link>
+                                    <span class="glyphicon glyphicon-user"/>Update your Profile</Link>
                             </li>
                         </ul>
                     </div>
@@ -105,21 +107,24 @@ class ProfileDetails extends React.Component {
                         <h2>Reviews</h2>
                         {this.state.reviews.map((review, i) => {
                             return <div class="Reviews">
-                                <h4>{review.ratings}/5</h4>
-                                <h5>{review.restaurantName}</h5>
-                                <h6> <Moment>{review.reviewDate}</Moment></h6>
-                                <h6>{review.comments}</h6>
+                                <h4>Ratings: {review.ratings}/5</h4>
+                                <div class="reviews-header-details">
+                                {review.restaurantImage ? <img src={`/uploads/${review.restaurantImage }`} alt="Avatar" class="photo-box-rest" />: <img class="photo-box-rest" src={restaurant_image} alt="Avatar" /> }
+                                <h5 style={{paddingTop:'1rem'}}>  {review.restaurantName}</h5>
+                                </div>
+                                <p style={{paddingTop:'2rem'}}><b>Date: </b><Moment>{review.reviewDate}</Moment></p>
+                                <p><b>Comments: </b>{review.comments}</p>
                             </div>
                         })}
                     </div>
                     <div class="td-3">
-                        <h4> About Customer</h4>
+                        <h2> About Me</h2>
                         <p class="details-heading">Location</p>
                         <p class="details-info">{this.props.user.location}{this.props.user.city}, {this.props.user.state} {this.props.user.country}, {this.props.user.zipcode}</p>
                         <p class="details-heading">Date of Birth</p>
-                        <p class="details-info">{this.props.user.DOB}</p>
+                        <p class="details-info"><Moment>{this.props.user.DOB}</Moment></p>
                         <p class="details-heading">Yelping Since</p>
-                        <p class="details-info">{this.props.user.yelpingSince}</p>
+                        <p class="details-info"><Moment>{this.props.user.yelpingSince}</Moment></p>
                         <p class="details-heading">Things I Love</p>
                         <p class="details-info">{this.props.user.thingsILove}</p>
                         <p class="details-heading">Find me In</p>

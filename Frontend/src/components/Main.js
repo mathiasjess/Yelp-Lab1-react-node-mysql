@@ -22,10 +22,12 @@ import UpdateCustomerProfile from './customer/Profile/UpdateCustomerProfile'
 import SearchRestaurant from './customer/Search/SearchRestaurant'
 import CustomerViewofRestaurant from './customer/Search/CustomerViewofRestaurant'
 import MainEventsPage from './customer/Events/MainEventPage'
+import IndividualEventDetails from './customer/Events/IndividualEventDetails'
 import CustomerEvents from './customer/Events/CustomerRegisteredevents'
 import WriteaReview from './customer/review/WriteReview'
 import CustomerOrders from './customer/Orders/CustomerOrders'
 import CustomerOrderHistory from './customer/Orders/CustomerOrderHistory'
+import CustomerOrderDetails from './customer/Orders/CustomerOrderDetails'
 import { Switch, Route, withRouter } from 'react-router-dom';
 //Create a Main Component
 class Main extends Component {
@@ -103,7 +105,7 @@ class Main extends Component {
                         render={props => <SearchRestaurant  {...props} />}
                     />
                     <Route
-                        path="/customerviewofrestaurant/:id/:option"
+                        path="/customerviewofrestaurant/:id"
                         render={props => <CustomerViewofRestaurant  {...props} />}
                     />
                     <Route
@@ -111,16 +113,24 @@ class Main extends Component {
                         render={props => <WriteaReview  {...props} />}
                     />
                     <Route
-                        path="/customerorder/:id/:option"
+                        path="/customerorder/:id"
                         render={props => <CustomerOrders  {...props} />}
                     />
                     <Route
-                        path="/customerorderhistory/:id"
+                        path="/customerorderdetails/:id"
+                        render={props => <CustomerOrderDetails  {...props} />}
+                    />
+                    <Route
+                        path="/customerorderhistory"
                         render={props => <CustomerOrderHistory  {...props} />}
                     />
                     <Route
-                        path="/mainevents/:id"
+                        path="/mainevents"
                         render={props => <MainEventsPage  {...props} />}
+                    />
+                    <Route
+                        path="/individualeventdetails/:id"
+                        render={props => <IndividualEventDetails {...props} />}
                     />
                     <Route
                         path="/customerevents/:id"

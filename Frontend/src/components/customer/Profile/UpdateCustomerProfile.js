@@ -90,6 +90,7 @@ class UpdateCustomerProfile extends React.Component {
             nickName: this.props.user.nickName,
             phoneNumber: this.props.user.phoneNumber,
             thingsILove: this.props.user.thingsILove,
+            profileImage : this.props.user.profileImage,
             findmeIn: this.props.user.findmeIn,
             websiteDetails: this.props.user.websiteDetails,
             favourites: this.props.user.favourites,

@@ -20,7 +20,7 @@ var upload = multer({ storage: storage });
 //Router to handle post request to update Customer Profile Data
 router.put('/updatecustomerprofile',upload.single('profileImage'), function (req, res) {
     let returnObject = {};
-    let imagename = ''
+    let imagename = null
     if (req.file){
         imagename = req.file.filename
     }
