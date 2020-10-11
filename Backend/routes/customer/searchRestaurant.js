@@ -24,6 +24,7 @@ router.get('/searchforrestaurant', function(req,res) {
         + '%'+ "' OR location LIKE '"+ '%'  
         + param1 + '%'+ "' OR city LIKE '"+ '%' 
          + param1 + '%'+ "' OR cuisine LIKE '"
+          + '%' +param1+ '%' + "' OR restaurantName LIKE '"
           + '%' +param1+ '%' + "'";
     }
     console.log(param1)

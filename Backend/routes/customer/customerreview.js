@@ -39,7 +39,8 @@ router.get('/getrestaurantreview/:id', function(req,res) {
 //Router to handle get request of reviews for a particular restaurant
 router.get('/getcustomerreview/:id', function(req,res) {
     let returnObject = {}
-    let sql3 = "SELECT restaurant.restaurantImage, restaurant.restaurantName ,review.reviewDate, review.ratings, review.comments from restaurant, review where restaurant.restaurantId = review.reviewId AND review.id = " + req.params.id + " ";
+    let sql3 = "SELECT restaurant.restaurantImage, restaurant.restaurantName ,review.reviewDate, review.ratings, review.comments from restaurant, review where restaurant.restaurantId = review.restaurantId AND review.id = " + req.params.id + " ";
+    console.log("Inside customer reviews", sql3)
     mysqlConnection.query(sql3,(err,result)=>{
         if(err) {
             returnObject.message = 'error'
