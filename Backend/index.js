@@ -7,7 +7,8 @@ var cookieParser = require('cookie-parser');
 var cors = require('cors');
 var path = require('path')
 app.set('view engine', 'ejs')
-;
+
+const PORT = process.env.PORT || 3001
 
 
 var customerlogin = require('./routes/customer/customerlogin')
@@ -95,5 +96,5 @@ app.use('/restaurantviewofcustomer',customerdetails)
 app.use('/restaurantmenu', restaurantmenu)
 
 //start your server on port 3001
-app.listen(3001);
+app.listen(PORT);
 console.log("Server Listening on port 3001");

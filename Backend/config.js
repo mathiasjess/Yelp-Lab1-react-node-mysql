@@ -11,6 +11,10 @@
 //     initDb: process.env.INITDB === "true"
 // };
 module.exports = {
+    // connectionLimit : 1000,
+    // connectTimeout  : 60 * 60 * 1000,
+    // acquireTimeout  : 60 * 60 * 1000,
+    // timeout         : 60 * 60 * 1000,
     sql_host: 'yelp-db.c24qs1tiowed.us-west-1.rds.amazonaws.com',
     sql_port: "3306",
     sql_user: 'yelp_admin',

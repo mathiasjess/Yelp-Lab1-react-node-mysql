@@ -39,12 +39,20 @@
     "eslint-plugin-react-hooks": "^4.1.2",
     "react-test-renderer": "^16.13.1"
   },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
   "devServer": {
-    "proxy": {
-      "/uploads": {
-        "target": "http://localhost:3001",
-        "secure": "false"
-      }
-    }
+    "compress": true,
+    "disableHostCheck": true
   }
 }
