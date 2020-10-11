@@ -17,6 +17,10 @@ class CustomerViewofRestaurant extends React.Component {
             reviews: []
         }
         this.goToOrders = this.goToOrders.bind(this)
+        this.viewDish = this.viewDish.bind(this)
+    }
+    viewDish(menuId){
+        return this.props.history.push(`/viewindividualdish/${menuId}/${this.props.match.params.id}`)
     }
     componentDidMount() {
         console.log("RestaurantID", this.props.match.params.id)
