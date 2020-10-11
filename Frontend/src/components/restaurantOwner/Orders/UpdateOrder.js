@@ -23,7 +23,7 @@ class UpdateOrder extends React.Component {
             axios.get(`http://localhost:3001/restaurantorders/individualfetchrestaurantorderdetails/${this.props.match.params.id}`)
         ])
             .then(axios.spread((response1, response2) => {
-
+                console.log(response1.data.data[0])
                 this.setState({
                     orderSummary: response1.data.data[0],
                     orderDetails: response2.data.data,
@@ -39,12 +39,14 @@ class UpdateOrder extends React.Component {
     }
     updateOrderStatus(event) {
         event.preventDefault();
+        console.log("Delivery Filter", this.state.orderSummary.deliveryFilter)
+
         let deliveryFilter = null;
         if(this.state.optionValue === "Picked Up" || this.state.optionValue === "Delivered"){
             deliveryFilter = "Delivered"
         }
         else{
-            deliveryFilter = this.state.ordersummary.deliveryFilter
+            deliveryFilter = this.state.orderSummary.deliveryFilter
         }
         console.log("Delivery Filter", deliveryFilter)
 

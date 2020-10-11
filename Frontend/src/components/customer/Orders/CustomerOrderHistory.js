@@ -3,6 +3,8 @@ import axios from 'axios'
 import './CustomerOrders.css'
 import Popup from "reactjs-popup";
 import { connect } from 'react-redux'
+import Moment from 'react-moment';
+
 
 class CustomerOrderHistory extends React.Component {
     constructor(props) {
@@ -98,7 +100,7 @@ class CustomerOrderHistory extends React.Component {
                 <ul>
                 <h4> Delivery Filters</h4>
                     <li><button class= "no-button-show" onClick={()=>this.handleFilters('delivery', 'Order Recieved')}>Order Recieved</button></li>
-                    <li><button class= "no-button-show" onClick={()=>this.handleFilters('delivery', 'Order Recieved')}>Preparing</button></li>
+                    <li><button class= "no-button-show" onClick={()=>this.handleFilters('delivery', 'Preparing')}>Preparing</button></li>
                     <li> <button  class= "no-button-show" onClick={()=>this.handleFilters('delivery', 'On the way')}>On the Way</button></li>
                     <li> <button class= "no-button-show" onClick={()=>this.handleFilters('delivery', 'Delivered')}>Delivered</button></li>
                 </ul>
@@ -125,7 +127,7 @@ class CustomerOrderHistory extends React.Component {
                                 <div class="card-order" key={i}>
                                     <h4>Restaurant: {summary.restaurantName}</h4>
                                     <div class="order-footer">
-                                        <p><b>Date: </b>{summary.Date}</p>
+                                        <p><b>Date: </b><Moment>{summary.Date}</Moment></p>
                                         <p><b>Total Price:</b> {summary.totalPrice}</p>
                                     </div>
                                     <div class="order-footer">

@@ -72,3 +72,6 @@
   cursor: pointer;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
+.container-order-menu{
+  text-align: left;
+}

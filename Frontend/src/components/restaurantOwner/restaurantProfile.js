@@ -84,47 +84,43 @@ class RestaurantProfile extends React.Component {
                     <h5>{this.props.user.yelpDelivery ? <span class="glyphicon glyphicon-ok">Yelp Delivery      </span> : <span class="glyphicon glyphicon-remove">Yelp Delivery</span>}</h5>
                     <h5>{this.props.user.dineIn ? <span class="glyphicon glyphicon-ok">Dine In                  </span> : <span class="glyphicon glyphicon-remove">Dine In</span>}</h5>
                 </div>
-
                 <div class="menu">
-                    <h2>Restaurant Menu</h2>
-                    <div class="flex-display-items">
-                        {this.state.menuData.map((menu, i) => {
-                            // if(menu.dishCategory === "Appetizers"){
-                            return <div class="card-menu" key={i}>
-                                <div class="card-items">
-                                <h5 style={{textAlign: 'center', lineHeight:'2rem'}}><b>{menu.dishName}</b></h5>
-                                    <img src={`/uploads/${menu.dishImage1}`} alt="Avatar" class="card-img-top-menu-items" />
-                                    <p style={{lineHeight:'2rem'}}><b><span class="glyphicon glyphicon-th-list"></span>Category: </b> {menu.dishCategory}</p>
-                                    <p><b>Description: </b>{menu.dishDescription}</p>
-                                    <p><b>{menu.price}</b></p>
-                                    <button class="btn btn-primary" value={menu.itemID} onClick={() => this.editDish(menu.itemID)}>Edit Dish/View Details</button>
-                                    {/* <Link to = {`/editdish/${menu.itemID}`}>Edit Dish</Link> */}
-                                </div>
-                            </div>
-                            // }
-                            console.log(menu.dishName)
-                        })}
+                <h2>Menu</h2>
+                <div class="flex-display-items">
+                {this.state.menuData.map((menu, i) => {
+                    return <div class="card-menu" key={i}>
+                        <div class="card-items">
+                        <h5 style={{textAlign: 'center', lineHeight:'2rem'}}><b>{menu.dishName}</b></h5>
+                            <img src={`/uploads/${menu.dishImage1}`} alt="Avatar" class="card-img-top-menu" />
+                            <p style={{lineHeight:'2rem'}}><b><span class="glyphicon glyphicon-th-list"></span>Category: </b> {menu.dishCategory}</p>
+                            <p><b>Description: </b>{menu.dishDescription}</p>
+                            <p><b>{menu.price}</b></p>
+                        </div>
+                        <button class="btn btn-primary" value={menu.itemID} onClick={() => this.editDish(menu.itemID)}>View Details</button>
                     </div>
+                })}
                 </div>
+                </div>
+
                 <div class="menu">
                     <h2>Events</h2>
                     <div class="flex-display-items">
-                    {this.state.eventData.map((event, i) => {
-                        return <div class="card-menu" key={i}>
-                            <div class="card-items">
-                                <h4 style={{textAlign: "center"}}><b>{event.eventName}</b></h4>
-                                <p><b> Details: </b>{event.dishDescription}</p>
-                                <p><b>Timings: </b> {event.eventTime}</p>
-                                <p><b>Date: </b><Moment>{event.eventDate}</Moment></p>
-                                <p><b>Location: </b>{event.eventLocation}</p>
-                                <p><b>{event.eventHashtag}</b></p>
-                                <div class="event-actions">
-                                <button class="btn btn-primary" value={event.eventId} onClick={() => this.vieweventDetails(event.eventId)}>Edit Event</button>
-                                <button class="btn btn-primary" value={event.eventId} onClick={() => this.registeredList(event.eventId)}>Registered List</button>
+                        {this.state.eventData.map((event, i) => {
+                            return <div class="card-menu" key={i}>
+                                <div class="card-items">
+                                    <h4 style={{ textAlign: "center" }}><b>{event.eventName}</b></h4>
+                                    <p><b> Details: </b>{event.dishDescription}</p>
+                                    <p><b>Timings: </b> {event.eventTime}</p>
+                                    <p><b>Date: </b><Moment>{event.eventDate}</Moment></p>
+                                    <p><b>Location: </b>{event.eventLocation}</p>
+                                    <p><b>{event.eventHashtag}</b></p>
+                                    <div class="event-actions">
+                                        <button class="btn btn-primary" value={event.eventId} onClick={() => this.vieweventDetails(event.eventId)}>Edit Event</button>
+                                        <button class="btn btn-primary" value={event.eventId} onClick={() => this.registeredList(event.eventId)}>Registered List</button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    })}
+                        })}
                     </div>
 
                 </div>

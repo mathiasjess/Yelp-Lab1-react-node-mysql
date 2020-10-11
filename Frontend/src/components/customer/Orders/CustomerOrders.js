@@ -24,6 +24,7 @@ class CustomerOrders extends React.Component {
         this.handleTakeOutChange = this.handleTakeOutChange.bind(this)
         this.completeOrder = this.completeOrder.bind(this)
         this.CancelOrder = this.CancelOrder.bind(this)
+        this.viewDetails = this.viewDetails.bind(this)
     }
     componentDidMount() {
         this.setState({
@@ -44,6 +45,9 @@ class CustomerOrders extends React.Component {
                     alert("Something went wrong. Please try again")
                 }
             })
+    }
+    viewDetails(menuId){
+        return this.props.history.push(`/viewindividualdish/${menuId}/${this.props.match.params.id}`)
     }
     handleAddToCart(itemID, dishName, price) {
         let Orderdata = {
@@ -71,6 +75,7 @@ class CustomerOrders extends React.Component {
         })
     }
     completeOrder(restaurantId) {
+        console.log("Take Out value", this.state.takeOutValue)
         let OrderDetails = {
             customerID: this.props.user.id,
             restaurantID: restaurantId,
@@ -141,11 +146,11 @@ class CustomerOrders extends React.Component {
                         <div class="flex-display-items">
                             {this.state.items.map((menu, i) => {
                                 return <div class="card1" key={i}>
-                                    <img class="card-img-top-items" src={default_pic} alt="Card image cap" />
-                                    <div class="container">
-                                        <h4>{menu.dishName}</h4>
-                                        <h4>{menu.quantity}</h4>
-                                        <h5><b>{menu.price}</b></h5>
+                                <img src={`/uploads/${menu.dishImage1}`} alt="Avatar" class="card-img-top-items" alt="Card image cap" />
+                                    <div class="container-order-menu">
+                                        <p style={{textAlign:'left'}}><b> Dish Name: </b>{menu.dishName}</p>
+                                        <p style={{textAlign:'left'}}><b>Price: </b>{menu.price}</p>
+                                        <button class="btn btn-primary" value={menu.itemID} onClick={() => this.viewDetails(menu.itemID)}>View Details</button>
                                         <button class="btn btn-primary" value={menu.itemID} onClick={() => this.handleAddToCart(menu.itemID, menu.dishName, menu.price)}>Add to Cart</button>
                                     </div>
                                 </div>
@@ -179,6 +184,7 @@ class CustomerOrders extends React.Component {
                                 <form>
                                 <label>Select Takeout Option</label>
                                     <select onChange={this.handleTakeOutChange}>
+                                    <option> Select a value</option>
                                     <option value = "pickup">Pick Up</option>
                                     <option value = "delivery">Delivery</option>
                                     </select>

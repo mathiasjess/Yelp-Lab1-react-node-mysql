@@ -25,7 +25,7 @@ router.put('/updatecustomerprofile',upload.single('profileImage'), function (req
         imagename = req.file.filename
     }
     else{
-        imagename = req.body.restaurantImage
+        imagename = req.body.profileImage
     }
     console.log(imagename)
     console.log("ID", req.body.id);
@@ -48,6 +48,7 @@ router.put('/updatecustomerprofile',upload.single('profileImage'), function (req
     + "', zipcode= '" + req.body.zipcode
     + "' where id='" + req.body.id + "'";
 
+    console.log(sql1)
     mysqlConnection.query(sql1, (err, result) => {
         console.log("result", result);
         if (err) {

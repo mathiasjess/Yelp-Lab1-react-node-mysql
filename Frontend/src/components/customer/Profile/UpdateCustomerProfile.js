@@ -183,7 +183,7 @@ class UpdateCustomerProfile extends React.Component {
                                 <li class="BusinessName"><label class="u-nowrap">Country</label></li>
                                 <li><input type="text" class="inputFields"
                                     onChange={this.handleChange}
-                                    name="state"
+                                    name="country"
                                     placeholder={this.props.user.country} /></li>
                                 <li class="BusinessName"><label class="u-nowrap">Zip Code</label></li>
                                 <li><input type="text" class="inputFields"

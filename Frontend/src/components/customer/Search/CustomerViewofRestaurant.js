@@ -106,7 +106,7 @@ class CustomerViewofRestaurant extends React.Component {
                         <div class="flex-display">
                             {this.state.menuData.map((menu, i) => {
                                 return <div class="card1" key={i}>
-                                    <img class="card-img-top1" src={default_pic} alt="Card image cap" />
+                                <img src={`/uploads/${menu.dishImage1}`} alt="Avatar" class="card-img-top1" alt="Card image cap" />
                                     <div class="container1">
                                         <h4>{menu.dishName}</h4>
                                         <h5><b>{menu.price}</b></h5>

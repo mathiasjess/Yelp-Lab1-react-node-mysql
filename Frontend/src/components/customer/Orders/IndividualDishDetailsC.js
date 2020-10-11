@@ -1,11 +1,9 @@
 import React from 'react'
-import './RestaurantHomePage.css'
-import restaurantprofileImage from '../../images/restaurantprofileImage.png'
-import { connect } from 'react-redux';
+import '../../restaurantOwner/RestaurantHomePage.css'
 import axios from 'axios';
 import { Link } from 'react-router-dom'
 
-class EditDish extends React.Component {
+class IndividualDishDetailsC extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -25,7 +23,7 @@ class EditDish extends React.Component {
     }
 
     componentDidMount() {
-        axios.get(`http://localhost:3001/restaurant/fetchdish/${this.props.match.params.id}`)
+        axios.get(`http://localhost:3001/restaurant/fetchdish/${this.props.match.params.menuId}`)
             // axios.get(`http://localhost:3001/restaurant/fetchMenu/${this.props.user.restaurantId}`)
             .then((response) => {
                 console.log(response.data.data)
@@ -52,7 +50,7 @@ class EditDish extends React.Component {
             <div class="biz-site-expanded-grid-content-column">
                 <div>
                     <div class="main-link">
-                        <Link to='/restaurantHomePage'><span class="glyphicon glyphicon-arrow-left" />Return to RestaurantHomePage</Link>
+                    <button class="btn btn-primary" onClick = {()=> this.props.history.push(`/customerorder/${this.props.match.params.restId}`)}>Back to Orders Page</button>
                     </div>
                     <h2 style={{ textAlign: 'center' }}> Dish Details</h2>
                     <div class="card-order">
@@ -73,8 +71,5 @@ class EditDish extends React.Component {
 
 }
 
-const mapStateToProps = state => ({
-    user: state.restaurantReducer
-});
 
-export default connect(mapStateToProps)(EditDish);
+export default IndividualDishDetailsC;

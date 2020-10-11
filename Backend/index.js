@@ -25,6 +25,7 @@ var restaurantevents = require('./routes/restaurant/restaurantevents');
 var restaurantorders = require('./routes/restaurant/restaurantorders')
 var customerdetails = require('./routes/restaurant/customerdetails')
 var restaurantreviews = require('./routes/restaurant/restaurantreviews')
+var restaurantmenu = require('./routes/restaurant/updatemenudetails')
 
 //use cors to allow cross origin resource sharing
 app.use(cors({ origin: 'http://localhost:3000', credentials: true }));
@@ -90,6 +91,8 @@ app.use('/restaurantreviews', restaurantreviews)
 
 //Routes to handle Calls for customer details
 app.use('/restaurantviewofcustomer',customerdetails)
+
+app.use('/restaurantmenu', restaurantmenu)
 
 //start your server on port 3001
 app.listen(3001);
