@@ -36,6 +36,7 @@ router.post('/customerregister', function (req, res) {
                     returnObject.message = "Registered Successfully";
                     returnObject.data = rows[0]
                     res.json(returnObject);
+                    console.log("Registered Successfully", returnObject)
                 }
             });
         })
@@ -77,6 +78,7 @@ router.post('/customerlogin', function (req, res) {
                         returnObject.message = "error"
                     }
                     res.json(returnObject)
+                    console.log("Successfully Logged in", returnObject)
                 })
         })
 });

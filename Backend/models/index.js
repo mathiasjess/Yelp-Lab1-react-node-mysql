@@ -4,6 +4,7 @@ const createTablesquery = require('./init')
 const { sql_host, sql_port, sql_user, sql_password, sql_database, sql_connectionLimit } = require('../config');
 
 const pool = mysql.createPool({
+
     connectionLimit : 1000,
     connectTimeout  : 60 * 60 * 1000,
     acquireTimeout  : 60 * 60 * 1000,

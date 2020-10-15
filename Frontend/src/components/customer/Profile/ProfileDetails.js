@@ -39,6 +39,7 @@ class ProfileDetails extends React.Component {
     render() {
         return (
             <div class="table">
+            <img src = {`../../../../../Backend/public/uploads/${this.props.user.profileImage}`}/>
                 <div class="tr-middle">
                     <div class="td-11">
                     {this.props.user.profileImage ? <img src={`/uploads/${this.props.user.profileImage }`} alt="Avatar" class="photo-box-img" />: <img class="photo-box-img" src={default_image} alt="Avatar" /> }
