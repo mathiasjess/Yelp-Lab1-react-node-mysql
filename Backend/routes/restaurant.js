@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 const googleMapsClient = require('@google/maps').createClient({
-    key: 'AIzaSyCiheh-O9omWKbtCfWf-S539GT82IK8aNQ'
+    key: ''
 });
 
 // var geocoder = require('geocoder');
